@@ -2,9 +2,6 @@ import React from "react";
 import {
   Layout,
   Button,
-  Cascader,
-  Checkbox,
-  ColorPicker,
   DatePicker,
   Form,
   Input,
@@ -51,7 +48,7 @@ const PatientForm = () => {
           <InputNumber />
         </Form.Item>
         <Form.Item label="Doctors">
-            <Flex gap ="middle" align="start">
+            <Flex style={{gap:"middle",align:"start"}}>
                 <DoctorCard />
             </Flex>
         </Form.Item>
