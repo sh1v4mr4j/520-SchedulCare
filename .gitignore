@@ -1,1 +1,10 @@
 client/node_modules/
+
+# Jetbrains configuration files
+**/.idea/
+
+# All pycaches
+**/__pycache__/
+
+# All .DS_Store files
+**/.DS_Store
