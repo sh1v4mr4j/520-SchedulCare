@@ -2,12 +2,14 @@
   "name": "schedul-care-frontend",
   "version": "1.0.0",
   "scripts": {
-    "start": "react-scripts start"
+    "start": "react-scripts start",
+    "build": "react-scripts build"
   },
   "dependencies": {
     "@babel/core": "^7.26.0",
     "@babel/preset-env": "^7.26.0",
     "@babel/preset-react": "^7.25.9",
+    "antd": "^5.22.1",
     "babel-loader": "^9.2.1",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",

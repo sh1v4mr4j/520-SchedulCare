@@ -7,7 +7,7 @@ module.exports = {
   // Output configuration for Webpack (where to store the bundled file)
   output: {
     filename: 'bundle.js', // The name of the bundled file
-    path: path.resolve(__dirname, 'public'), // The 'public' folder to serve from
+    path: path.resolve(__dirname, 'build'), // The 'public' folder to serve from
   },
 
   // Module configuration: how to handle different file types
