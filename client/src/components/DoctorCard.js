@@ -13,8 +13,8 @@ const DoctorCard = () => {
         "Additional details here.",
       ],
       actions: [
-        <button key="share">Check availability</button>,
-        <button key="share">Schedule Meeting</button>,
+        <Button key="checkAvailability">Check availability</Button>,
+        <Button type="primary" key="scheduleMeeting">Schedule Meeting</Button>,
       ],
     },
     {
@@ -23,8 +23,8 @@ const DoctorCard = () => {
       title: "Card Title 2",
       description: ["Description for the second card.", "Some more text."],
       actions: [
-        <button key="share">Check availability</button>,
-        <button key="share">Schedule Meeting</button>,
+        <Button key="share">Check availability</Button>,
+        <Button type="primary" key="share">Schedule Meeting</Button>,
       ],
     },
     {
@@ -33,8 +33,8 @@ const DoctorCard = () => {
       title: "Card Title 3",
       description: ["Card three description.", "More content here."],
       actions: [
-        <button key="share">Check availability</button>,
-        <button key="share">Schedule Meeting</button>,
+        <Button key="share">Check availability</Button>,
+        <Button type="primary" key="share">Schedule Meeting</Button>,
       ],
     },
   ];

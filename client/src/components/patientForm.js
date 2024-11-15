@@ -56,7 +56,7 @@ const PatientForm = () => {
             </Flex>
         </Form.Item>
         <Form.Item>
-          <Button>Submit Changes</Button>
+          <Button type="primary">Submit Changes</Button>
         </Form.Item>
       </Form>
     </>
