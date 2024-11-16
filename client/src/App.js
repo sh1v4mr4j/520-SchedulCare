@@ -8,6 +8,7 @@ import DoctorPage from './pages/Doctorpage';
 import MapViewPage from './pages/MapViewPage';
 import ChatAssistantPage from './pages/ChatAssistancePage';
 import PatientPage from './pages/PatientPage';
+import MapView from './components/MapView';
 
 
 const App = () =>{
@@ -23,6 +24,7 @@ const App = () =>{
           <Route path="/mapview" element={<MapViewPage />} />
           <Route path="/chatassist" element ={<ChatAssistantPage />} />
           <Route path="/patient/payment" element ={<PaymentPage />} />
+          <Route path="/test" element={<MapView />} />
         </Routes>
       </Layout>
     </Router>
