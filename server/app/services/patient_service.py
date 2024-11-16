@@ -44,5 +44,5 @@ class PatientService:
         :return: Created time of the record
         """
         resp = await self.patient_collection.insert_one(patient.model_dump())
-        created_time = await self.patient_collection.find_one({"username": resp.inserted_id})
+        created_time = await self.patient_collection.find_one({"id": resp.inserted_id})
         return created_time
