@@ -1,5 +1,4 @@
-from pydantic import BaseModel
+from app.shared.response import Response
 
-class NoBiggie(BaseModel):
-    age: int
-    name: str
+resp = Response(status_code=200, body="I'm alive")
+print(resp)
