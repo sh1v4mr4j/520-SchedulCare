@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React from "react";
 import {Link} from "react-router-dom";
 import {Image, Layout, Menu} from "antd";
 import SchedulCareLogo from "../images/SchedulCareLogo.jpg";
