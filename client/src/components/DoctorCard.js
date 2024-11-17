@@ -1,31 +1,6 @@
-import React, { useState } from "react";
+import React, { useState} from "react";
 import { Avatar, Card, Switch, Button, Modal, Layout } from "antd";
-
-const { Content } = Layout;
-
-export const DoctorCheckAvailabilityModal = ({ isModalOpen, onClose }) => {
-  const handleOk = () => {
-    onClose();
-  };
-  return (
-    <>
-      <Modal
-        open={isModalOpen}
-        title="Doctor's availability"
-        onOk={handleOk}
-        onCancel={handleOk}
-        footer={[
-          <Button key="back" onClick={onClose}>
-            Return
-          </Button>,
-          <Button key="submit" type="primary" onClick={handleOk}>
-            Schedule Meeting
-          </Button>,
-        ]}
-      />
-    </>
-  );
-};
+import { DoctorCheckAvailabilityModal } from "./Modals";
 
 const DoctorCard = () => {
   const [loading, setLoading] = useState(true);
@@ -59,7 +34,9 @@ const DoctorCard = () => {
       title: "Card Title 2",
       description: ["Description for the second card.", "Some more text."],
       actions: [
-        <Button key="share">Check availability</Button>,
+        <Button key="share" onClick={showModal}>
+          Check availability2
+        </Button>,
         <Button type="primary" key="share">
           Schedule Meeting
         </Button>,
@@ -94,7 +71,7 @@ const DoctorCard = () => {
           key={card.id}
           loading={loading}
           actions={card.actions}
-          style={{ minWidth: 300, margin: "auto"}}
+          style={{ minWidth: 300, margin: "auto" }}
         >
           <Card.Meta
             avatar={<Avatar src={card.avatar} />}
@@ -113,6 +90,7 @@ const DoctorCard = () => {
         open={isModalOpen}
         onClose={() => setIsModalOpen(false)}
       />
+      {console.log(isModalOpen)}
     </div>
   );
 };
