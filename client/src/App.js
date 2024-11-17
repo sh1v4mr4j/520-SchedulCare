@@ -9,6 +9,7 @@ import MapViewPage from './pages/MapViewPage';
 import ChatAssistantPage from './pages/ChatAssistancePage';
 import PatientPage from './pages/PatientPage';
 import MapView from './components/MapView';
+import AddressPicker from "./components/AddressPicker";
 
 const {Content} = Layout;
 
@@ -51,7 +52,7 @@ const App = () => {
                   <Route path="/mapview" element={<MapViewPage/>}/>
                   <Route path="/chatassist" element={<ChatAssistantPage/>}/>
                   <Route path="/patient/payment" element={<PaymentPage/>}/>
-                  <Route path="/test" element={<MapView />} />
+                  <Route path="/test" element={<AddressPicker />} />
                 </Routes>
               </div>
             </div>
