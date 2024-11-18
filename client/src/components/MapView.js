@@ -25,8 +25,8 @@ const MapView = ({width=600, height=450, mapMode, mapParams}) => {
     return (
         <div>
             <iframe
-                width="600"
-                height="450"
+                width={width}
+                height={height}
                 style={{border: 0}}
                 src={createMapEmberUrl(mapMode, mapParams)}
                 allowFullScreen />

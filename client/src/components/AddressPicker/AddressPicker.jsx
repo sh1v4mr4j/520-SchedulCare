@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {Button, Col, Divider, Form, Input, List, Row} from "antd";
+import {Button, Col, Divider, Form, Input, List, Row, Space, Switch} from "antd";
 import mapService from "../../services/map-view/map-view-service";
 import {Location, Place} from "./models/Location";
 import MapView from "../MapView";
@@ -7,7 +7,6 @@ import MapView from "../MapView";
 const AddressPicker = () => {
 
   const {searchNominatim} = mapService();
-
   const [searchString, setSearchString] = useState(encodeURIComponent('India+Gate'));
   const [mapToggle, setMapToggle] = useState(false);
   const [searchResults, setSearchResults] = useState([]);
@@ -61,9 +60,12 @@ const AddressPicker = () => {
 
               {/* trigger search */}
               <Form.Item label={null}>
-                <Button type="primary" htmlType="submit">
-                  Submit
-                </Button>
+                <Space direction="horizontal" align="center">
+                  <Button type="primary" htmlType="submit">
+                    Submit
+                  </Button>
+                  <Switch defaultChecked checkedChildren="Enable MapView" unCheckedChildren="Disable MapView"/>
+                </Space>
               </Form.Item>
             </Form>
 
@@ -72,7 +74,7 @@ const AddressPicker = () => {
                 <div
                     id="scrollableDiv"
                     style={{
-                      maxHeight: 400,
+                      maxHeight: 300,
                       overflow: 'auto',
                       padding: '0 16px',
                       border: '1px solid rgba(140, 140, 140, 0.35)',
