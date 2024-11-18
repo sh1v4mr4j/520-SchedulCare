@@ -9,7 +9,8 @@ import MapViewPage from './pages/MapViewPage';
 import ChatAssistantPage from './pages/ChatAssistancePage';
 import PatientPage from './pages/PatientPage';
 import MapView from './components/MapView';
-import AddressPicker from "./components/AddressPicker";
+import AddressPicker from "./components/AddressPicker/AddressPicker";
+import 'bootstrap-icons/font/bootstrap-icons.css';
 
 const {Content} = Layout;
 
