@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {Button, Form, Input, List} from "antd";
+import {Button, Col, Divider, Form, Input, List, Row} from "antd";
 import mapService from "../../services/map-view/map-view-service";
 import {Location, Place} from "./models/Location";
 
@@ -29,55 +29,69 @@ const AddressPicker = () => {
 
   return (
       <>
-        <Form
-            name="basic"
-            labelCol={{span: 8}}
-            wrapperCol={{span: 16}}
-            style={{maxWidth: 600}}
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}>
+        <Divider orientation="left"/>
+        <Row justify="center" gutter={[16, 16]}>
+          {/*Spacing on the side*/}
+          <Col span={2}/>
 
-          {/* Search */}
-          <Form.Item
-              label="Search"
-              name="search"
-              rules={[{required: true, message: 'Please input your search term!'}]}>
-            <Input/>
-          </Form.Item>
+          <Col span={10}>
+            <Form
+                name="basic"
+                style={{maxWidth: 600}}
+                onFinish={onFinish}
+                onFinishFailed={onFinishFailed}>
 
-          {/* trigger search */}
-          <Form.Item label={null}>
-            <Button type="primary" htmlType="submit">
-              Submit
-            </Button>
-          </Form.Item>
-        </Form>
+              {/* Search */}
+              <Form.Item
+                  label="Search"
+                  name="search"
+                  style={{maxWidth: 400}}
+                  rules={[{required: true, message: 'Please input your search term!'}]}>
+                <Input/>
+              </Form.Item>
 
-        {/* List of results */}
-        <div>{searchResults?.length === 0 ? <></> : (
-            <div
-                id="scrollableDiv"
-                style={{
-                  maxHeight: 400,
-                  overflow: 'auto',
-                  padding: '0 16px',
-                  border: '1px solid rgba(140, 140, 140, 0.35)',
-                }}
-            >
-              <List
-                  dataSource={searchResults}
-                  renderItem={result => (
-                      <List.Item>
-                        <List.Item.Meta
-                            title={<a href=""><i className="bi bi-geo-alt-fill" style={{marginRight: '5px'}}></i>{result.name}</a>}
-                            description={result.address}
-                        />
-                      </List.Item>
-                  )}>
+              {/* trigger search */}
+              <Form.Item label={null}>
+                <Button type="primary" htmlType="submit">
+                  Submit
+                </Button>
+              </Form.Item>
+            </Form>
 
-              </List>
-            </div>
-        )}</div>
+            {/* List of results */}
+            <div>{searchResults?.length === 0 ? <></> : (
+                <div
+                    id="scrollableDiv"
+                    style={{
+                      maxHeight: 400,
+                      overflow: 'auto',
+                      padding: '0 16px',
+                      border: '1px solid rgba(140, 140, 140, 0.35)',
+                    }}
+                >
+                  <List
+                      dataSource={searchResults}
+                      renderItem={result => (
+                          <List.Item>
+                            <List.Item.Meta
+                                title={<a href=""><i className="bi bi-geo-alt-fill"
+                                                     style={{marginRight: '5px'}}></i>{result.name}</a>}
+                                description={result.address}
+                            />
+                          </List.Item>
+                      )}>
+
+                  </List>
+                </div>
+            )}</div>
+          </Col>
+          <Col span={10}>
+            This is some other thing
+          </Col>
+
+          {/*Spacing on the side*/}
+          <Col span={2}/>
+        </Row>
       </>
   );
 };
