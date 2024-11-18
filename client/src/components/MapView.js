@@ -3,12 +3,7 @@ import mapService from "../services/map-view/map-view-service";
 import PropTypes from "prop-types";
 
 const MapView = ({width=600, height=450, mapMode, mapParams}) => {
-    const {getGoogleApiKey, createMapEmbedUrl} = mapService();
-    const [apiKey, setApiKey] = useState(null);
-
-    useEffect(() => {
-        setApiKey(getGoogleApiKey);
-    }, [getGoogleApiKey]);
+    const {createMapEmbedUrl} = mapService();
 
     return (
         <div>
