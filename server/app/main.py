@@ -23,6 +23,11 @@ load_environment()
 # Create the FastAPI app
 app = FastAPI()
 
+# Health check endpoint
+@app.get("/healthCheck", response_model=Response)
+async def health_check():
+    return Response(status_code=200, body="I'm alive")
+
 # Include the routers
 app.include_router(patient_router.app, prefix="/patients", tags=["patients"])
 app.include_router(doctor_router.app, prefix="/doctors", tags=["Doctor"])

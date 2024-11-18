@@ -8,18 +8,6 @@ app = APIRouter()
 
 patient_service = PatientService()
 
-
-@app.get("/healthCheck", response_model=Response)
-async def health_check():
-    return Response(status_code=200, body="I'm alive")
-
-
-@app.get("/getConfig", response_model=Response)
-async def get_config():
-    config = PatientService.get_config()
-    return Response(status_code=200, body=config)
-
-
 @app.get("/pingMongo", response_model=Response)
 async def ping_mongo():
     response = patient_service.ping_mongo()
