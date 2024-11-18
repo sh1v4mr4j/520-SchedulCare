@@ -1,17 +1,26 @@
 import {useEffect, useState} from "react";
 import mapService from "../services/map-view/map-view-service";
+import PropTypes from "prop-types";
 
-const MapView = () => {
-    const {getGoogleApiKey} = mapService();
+// MapView.propTypes = {
+//     width: PropTypes.number,
+//     height: PropTypes.number,
+//     mapMode: PropTypes.oneOf(['place', 'search', 'directions']).isRequired,
+//     mapParams: PropTypes.any.isRequired
+// }
+//
+// MapView.defaultProps = {
+//     width: 600,
+//     height: 450,
+// }
+
+const MapView = ({width=600, height=450, mapMode, mapParams}) => {
+    const {getGoogleApiKey, createMapEmberUrl} = mapService();
     const [apiKey, setApiKey] = useState(null);
 
     useEffect(() => {
         setApiKey(getGoogleApiKey);
     }, [getGoogleApiKey]);
-
-    const location_query_str = "Amherst, MA";
-    const location_query = encodeURIComponent(location_query_str);
-    console.log(location_query_str, location_query);
 
     return (
         <div>
@@ -19,7 +28,7 @@ const MapView = () => {
                 width="600"
                 height="450"
                 style={{border: 0}}
-                src={`https://www.google.com/maps/embed/v1/place?key=${apiKey}&q=${location_query}`}
+                src={createMapEmberUrl(mapMode, mapParams)}
                 allowFullScreen />
         </div>
     );

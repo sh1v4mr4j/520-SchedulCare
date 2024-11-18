@@ -2,15 +2,23 @@ import React, {useState} from "react";
 import {Button, Col, Divider, Form, Input, List, Row} from "antd";
 import mapService from "../../services/map-view/map-view-service";
 import {Location, Place} from "./models/Location";
+import MapView from "../MapView";
 
 const AddressPicker = () => {
 
   const {searchNominatim} = mapService();
 
+  const [searchString, setSearchString] = useState(encodeURIComponent('India+Gate'));
+  const [mapToggle, setMapToggle] = useState(false);
   const [searchResults, setSearchResults] = useState([]);
 
   const onFinish = (values) => {
     const searchString = values.search;
+
+    // set search string
+    setSearchString(encodeURIComponent(searchString));
+
+    // search for places
     searchNominatim(searchString).then(responses => {
       const resultPlaces = [];
       responses.forEach(response => {
@@ -34,6 +42,7 @@ const AddressPicker = () => {
           {/*Spacing on the side*/}
           <Col span={2}/>
 
+          {/* Search Box */}
           <Col span={10}>
             <Form
                 name="basic"
@@ -85,8 +94,10 @@ const AddressPicker = () => {
                 </div>
             )}</div>
           </Col>
+
+          {/* MapView */}
           <Col span={10}>
-            This is some other thing
+            <MapView mapMode="place" mapParams={{q: searchString}}/>
           </Col>
 
           {/*Spacing on the side*/}
