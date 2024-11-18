@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Button, Col, Divider, Form, Input, List, Row, Space, Switch} from "antd";
 import mapService from "../../services/map-view/map-view-service";
 import {Location, Place} from "./models/Location";
@@ -6,8 +6,10 @@ import MapView from "../MapView";
 
 const AddressPicker = () => {
 
-  const {searchNominatim} = mapService();
-  const [searchString, setSearchString] = useState(encodeURIComponent('India+Gate'));
+  const {searchNominatim, getUserLocation, getPlusCode} = mapService();
+  const [mapLoaded, setMapLoaded] = useState(false);
+  const [mapParams, setMapParams] = useState({});
+  const [mapMode, setMapMode] = useState('');
   const [mapToggle, setMapToggle] = useState(true);
   const [searchResults, setSearchResults] = useState([]);
 
@@ -19,7 +21,7 @@ const AddressPicker = () => {
     const searchString = values.search;
 
     // set search string
-    setSearchString(encodeURIComponent(searchString));
+    setMapParams({q: encodeURIComponent(searchString)});
 
     // search for places
     searchNominatim(searchString).then(responses => {
@@ -37,6 +39,21 @@ const AddressPicker = () => {
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
   }
+
+  useEffect(() => {
+    getUserLocation().getCurrentPosition(
+        (position) => {
+          setMapMode('place');
+          setMapParams({q: encodeURIComponent(getPlusCode(position.coords.latitude, position.coords.longitude))});
+          setMapLoaded(true);
+        },
+        (error) => {
+          console.error(error);
+          setMapMode('view');
+          setMapParams({center: '0, 0'});
+          setMapLoaded(true);
+        });
+  }, []);
 
   return (
       <>
@@ -104,7 +121,8 @@ const AddressPicker = () => {
 
           {/* MapView */}
           <Col span={10}>
-            {mapToggle ? <MapView mapMode="place" mapParams={{q: searchString}}/> : <></>}
+            {mapToggle && mapLoaded ? <MapView mapMode={mapMode}
+                                               mapParams={mapParams}/> : <></>}
           </Col>
 
           {/*Spacing on the side*/}

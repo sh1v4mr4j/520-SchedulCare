@@ -15,12 +15,15 @@ import PropTypes from "prop-types";
 // }
 
 const MapView = ({width=600, height=450, mapMode, mapParams}) => {
-    const {getGoogleApiKey, createMapEmberUrl} = mapService();
+    const {getGoogleApiKey, createMapEmbedUrl} = mapService();
     const [apiKey, setApiKey] = useState(null);
 
     useEffect(() => {
         setApiKey(getGoogleApiKey);
     }, [getGoogleApiKey]);
+
+    console.log('Map Mode', mapMode);
+    console.log('Map Params', mapParams);
 
     return (
         <div>
@@ -28,7 +31,7 @@ const MapView = ({width=600, height=450, mapMode, mapParams}) => {
                 width={width}
                 height={height}
                 style={{border: 0}}
-                src={createMapEmberUrl(mapMode, mapParams)}
+                src={createMapEmbedUrl(mapMode, mapParams)}
                 allowFullScreen />
         </div>
     );

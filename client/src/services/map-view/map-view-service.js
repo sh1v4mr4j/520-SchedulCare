@@ -1,8 +1,10 @@
 import {useMemo} from "react"
+import {OpenLocationCode} from "open-location-code";
 
 const mapConfig = {
   'search': ['q'],
   'place': ['q'],
+  'view': ['center']
 }
 
 const mapService = () => {
@@ -37,7 +39,21 @@ const mapService = () => {
     return `https://www.google.com/maps/embed/v1/${mapMode}?key=${getGoogleApiKey}${paramString}`;
   }
 
-  return {getGoogleApiKey, searchNominatim, createMapEmberUrl: createMapEmbedUrl};
+  const getUserLocation = () => {
+    const userLocation = navigator.geolocation;
+    if (userLocation) {
+      return userLocation;
+    } else {
+      console.error("Geolocation is not supported by this browser.");
+      return null;
+    }
+  }
+
+  const getPlusCode = (latitude, longitude) => {
+    return new OpenLocationCode().encode(latitude, longitude);
+  }
+
+  return {getGoogleApiKey, searchNominatim, createMapEmbedUrl, getUserLocation, getPlusCode};
 }
 
 export default mapService;
