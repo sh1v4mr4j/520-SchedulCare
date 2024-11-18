@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 from datetime import datetime
 
-class Patient(BaseModel):
+class Doctor(BaseModel):
     email: str
     name: str
     specialisation: str
@@ -11,10 +11,12 @@ class Patient(BaseModel):
     password: str
     pincode:int
     type:str
-    availableDates: list[str] | list[datetime] | None
-    appointmentDates: list[str] | list[datetime] | None
+    scheduledApointment: bool = False
 
-
-
+class Availability(BaseModel):
+    doctor_email: str
+    doctor_pincode: str
+    availabilityStart: str
+    availabilityEnd: str
 
 
