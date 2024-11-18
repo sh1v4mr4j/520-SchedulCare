@@ -2,7 +2,7 @@ from dotenv import load_dotenv
 import sys
 from fastapi import FastAPI
 from app.routers import patient_router
-from app.shared.response import Response
+from app.routers import doctor_router
 
 def load_environment():
     """
@@ -30,3 +30,4 @@ async def health_check():
 
 # Include the routers
 app.include_router(patient_router.app, prefix="/patients", tags=["patients"])
+app.include_router(doctor_router.app, prefix="/doctors", tags=["Doctor"])
