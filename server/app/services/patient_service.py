@@ -2,8 +2,9 @@ import os
 
 from motor.motor_asyncio import AsyncIOMotorClient
 
-from app.models.patient import Patient
+from app.models.patient import Patient, Appointment
 from app.shared.mongo_utils import serialize_mongo_object
+
 
 
 class PatientService:
@@ -43,6 +44,33 @@ class PatientService:
         :param patient: Patient object
         :return: Created time of the record
         """
+        print("Jai shree ram")
         resp = await self.patient_collection.insert_one(patient.model_dump())
+        print("JSR")
         created_time = await self.patient_collection.find_one({"id": resp.inserted_id})
         return created_time
+    
+    async def scheduleAppointment(self, email: str, appointmentDetails: Appointment):
+        """
+        Schedule an appointment for Patient
+        """
+        patient = await self.patient_collection.find_one({"email": email})
+        if not patient:
+            return 404, "user not found"
+        updated_appointments = patient.get("currentAppointment", [])
+        updated_appointments.append((appointmentDetails.doctor_name, appointmentDetails.appointment_date, appointmentDetails.doctor_email, appointmentDetails.patient_email))
+
+        result = await self.patient_collection.update_one(
+            {"email": email},
+            {"$set": {"currentAppointment": updated_appointments}}
+        )
+        if result.matched_count == 0:
+            return 404, "Failed to update appointment"
+        response = {"message": "Appointment updated successfully", "currentAppointment": updated_appointments}
+        return 201, response
+
+
+   
+    
+
+

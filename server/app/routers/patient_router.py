@@ -1,24 +1,12 @@
 from fastapi import APIRouter
 
-from app.models.patient import Patient
+from app.models.patient import Patient, Appointment
 from app.services.patient_service import PatientService
 from app.shared.response import Response
 
 app = APIRouter()
 
 patient_service = PatientService()
-
-
-@app.get("/healthCheck", response_model=Response)
-async def health_check():
-    return Response(status_code=200, body="I'm alive")
-
-
-@app.get("/getConfig", response_model=Response)
-async def get_config():
-    config = PatientService.get_config()
-    return Response(status_code=200, body=config)
-
 
 @app.get("/pingMongo", response_model=Response)
 async def ping_mongo():
@@ -37,3 +25,9 @@ async def get_all_patients():
 async def add_patient(patient: Patient):
     created_time = await patient_service.add_patient(patient)
     return Response(status_code=201, body=created_time)
+
+@app.put("/{email}/scheduleAppointment", response_model = Response)
+async def schedule_appointment(email:str, appointment_details: Appointment):
+    status, schedule_appointment = await patient_service.scheduleappointment(email, appointment_details)
+    return Response(status_code = status, body = schedule_appointment)
+
