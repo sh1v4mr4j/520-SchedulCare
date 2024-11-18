@@ -46,3 +46,9 @@ class PatientService:
         resp = await self.patient_collection.insert_one(patient.model_dump())
         created_time = await self.patient_collection.find_one({"id": resp.inserted_id})
         return created_time
+    
+    async def scheduleAppointment(self, Patient: Patient):
+        """
+        Schedule an appointment for Patient
+        """
+        
