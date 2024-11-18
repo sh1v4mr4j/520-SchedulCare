@@ -8,8 +8,12 @@ const AddressPicker = () => {
 
   const {searchNominatim} = mapService();
   const [searchString, setSearchString] = useState(encodeURIComponent('India+Gate'));
-  const [mapToggle, setMapToggle] = useState(false);
+  const [mapToggle, setMapToggle] = useState(true);
   const [searchResults, setSearchResults] = useState([]);
+
+  const toggleMapView = () => {
+    setMapToggle(!mapToggle);
+  }
 
   const onFinish = (values) => {
     const searchString = values.search;
@@ -64,7 +68,8 @@ const AddressPicker = () => {
                   <Button type="primary" htmlType="submit">
                     Submit
                   </Button>
-                  <Switch defaultChecked checkedChildren="Enable MapView" unCheckedChildren="Disable MapView"/>
+                  <Switch checked={mapToggle} onClick={toggleMapView} checkedChildren="Show MapView"
+                          unCheckedChildren="Hide MapView"/>
                 </Space>
               </Form.Item>
             </Form>
@@ -99,7 +104,7 @@ const AddressPicker = () => {
 
           {/* MapView */}
           <Col span={10}>
-            <MapView mapMode="place" mapParams={{q: searchString}}/>
+            {mapToggle ? <MapView mapMode="place" mapParams={{q: searchString}}/> : <></>}
           </Col>
 
           {/*Spacing on the side*/}
