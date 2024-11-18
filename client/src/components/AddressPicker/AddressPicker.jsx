@@ -46,7 +46,7 @@ const AddressPicker = () => {
           const name = String(response.name);
           // Name + 2 for including the ',' and space after
           const address = String(response.display_name).substring(
-            name.length + 2,
+            name.length + 2
           );
           menuResultPlaces.push({
             key: counter++,
@@ -70,7 +70,7 @@ const AddressPicker = () => {
         setMapMode("place");
         setMapParams({
           q: encodeURIComponent(
-            getPlusCode(position.coords.latitude, position.coords.longitude),
+            getPlusCode(position.coords.latitude, position.coords.longitude)
           ),
         });
         setMapLoaded(true);
@@ -80,7 +80,7 @@ const AddressPicker = () => {
         setMapMode("view");
         setMapParams({ center: "0, 0" });
         setMapLoaded(true);
-      },
+      }
     );
   }, []);
 
