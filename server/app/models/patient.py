@@ -1,5 +1,13 @@
 from pydantic import BaseModel
 from typing import Annotated
+from typing import Tuple
+
+
+class Appointment(BaseModel):
+    patient_email: str
+    doctor_email:str
+    doctor_name: str
+    appointment_date: str
 
 class Patient(BaseModel):
     email: str
@@ -10,5 +18,4 @@ class Patient(BaseModel):
     password: str
     pincode:int
     type:str
-    currentAppointment: list[tuple[str,tuple]]
-    patientHistory: Annotated[list[tuple[str,str]] | None, "contains date of appointment and doctor's name"] = None
+    appointments: list[Appointment]  = []
