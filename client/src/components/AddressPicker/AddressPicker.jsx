@@ -1,17 +1,25 @@
 import React, {useEffect, useState} from "react";
-import {Button, Col, Divider, Form, Input, List, Row, Space, Switch} from "antd";
+import {Button, Col, Divider, Form, Input, Menu, Row, Space, Switch} from "antd";
 import mapService from "../../services/map-view/map-view-service";
-import {Location, Place} from "./models/Location";
 import MapView from "../MapView";
 
 const AddressPicker = () => {
 
-  const {searchNominatim, getUserLocation, getPlusCode} = mapService();
+  const {getUserLocation, getPlusCode} = mapService();
+  const {searchNominatim} = mapService();
   const [mapLoaded, setMapLoaded] = useState(false);
   const [mapParams, setMapParams] = useState({});
   const [mapMode, setMapMode] = useState('');
   const [mapToggle, setMapToggle] = useState(true);
-  const [searchResults, setSearchResults] = useState([]);
+
+  const [menuResults, setMenuResults] = useState([]);
+  const [selectedMenuId, setSelectedMenuId] = useState('');
+  const handleMenuClick = (e) => {
+    setSelectedMenuId(e.key);
+    if (mapToggle) {
+      setMapParams({q: encodeURIComponent(menuResults[e.key].label)});
+    }
+  }
 
   const toggleMapView = () => {
     setMapToggle(!mapToggle);
@@ -20,19 +28,22 @@ const AddressPicker = () => {
   const onFinish = (values) => {
     const searchString = values.search;
 
-    // set search string
-    setMapParams({q: encodeURIComponent(searchString)});
-
     // search for places
     searchNominatim(searchString).then(responses => {
-      const resultPlaces = [];
+      const menuResultPlaces = [];
+      let counter = 0;
       responses.forEach(response => {
         const name = String(response.name);
         // Name + 2 for including the ',' and space after
         const address = String(response.display_name).substring(name.length + 2);
-        resultPlaces.push(new Place(name, address, new Location(response.lat, response.lon)));
+        menuResultPlaces.push({
+          key: counter++,
+          label: String(name).trim(),
+          extra: address,
+          location: {lat: response.lat, lon:response.lon}
+        });
       });
-      setSearchResults(resultPlaces);
+      setMenuResults(menuResultPlaces);
     }).catch(error => console.error(error));
   }
 
@@ -60,10 +71,10 @@ const AddressPicker = () => {
         <Divider orientation="left"/>
         <Row justify="center" gutter={[16, 16]}>
           {/*Spacing on the side*/}
-          <Col span={2}/>
+          {/*<Col span={1}/>*/}
 
           {/* Search Box */}
-          <Col span={10}>
+          <Col span={13}>
             <Form
                 name="basic"
                 style={{maxWidth: 600}}
@@ -83,7 +94,7 @@ const AddressPicker = () => {
               <Form.Item label={null}>
                 <Space direction="horizontal" align="center">
                   <Button type="primary" htmlType="submit">
-                    Submit
+                    Search
                   </Button>
                   <Switch checked={mapToggle} onClick={toggleMapView} checkedChildren="Show MapView"
                           unCheckedChildren="Hide MapView"/>
@@ -92,30 +103,21 @@ const AddressPicker = () => {
             </Form>
 
             {/* List of results */}
-            <div>{searchResults?.length === 0 ? <></> : (
-                <div
-                    id="scrollableDiv"
-                    style={{
-                      maxHeight: 300,
-                      overflow: 'auto',
-                      padding: '0 16px',
-                      border: '1px solid rgba(140, 140, 140, 0.35)',
-                    }}
-                >
-                  <List
-                      dataSource={searchResults}
-                      renderItem={result => (
-                          <List.Item>
-                            <List.Item.Meta
-                                title={<a href=""><i className="bi bi-geo-alt-fill"
-                                                     style={{marginRight: '5px'}}></i>{result.name}</a>}
-                                description={result.address}
-                            />
-                          </List.Item>
-                      )}>
-
-                  </List>
-                </div>
+            <div>{menuResults?.length === 0 ? <></> : (
+                <>
+                  {mapToggle ? <p style={{fontSize: 'small'}}>Select a location to view on the list</p> : <></>}
+                  <div
+                      id="scrollableDiv"
+                      style={{
+                        maxHeight: 300,
+                        overflow: 'auto',
+                        padding: '0 0px',
+                        border: '1px solid rgba(140, 140, 140, 0.35)',
+                      }}
+                  >
+                    <Menu mode="inline" onClick={handleMenuClick} selectedKeys={[selectedMenuId]} items={menuResults}/>
+                  </div>
+                </>
             )}</div>
           </Col>
 
@@ -125,8 +127,7 @@ const AddressPicker = () => {
                                                mapParams={mapParams}/> : <></>}
           </Col>
 
-          {/*Spacing on the side*/}
-          <Col span={2}/>
+          <Col span={1}/>
         </Row>
       </>
   );
