@@ -13,7 +13,6 @@
     "babel-loader": "^9.2.1",
     "bootstrap-icons": "^1.11.3",
     "open-location-code": "^1.0.3",
-    "prettier": "^3.3.3",
     "prop-types": "^15.8.1",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
@@ -37,6 +36,7 @@
   },
   "devDependencies": {
     "@types/node": "^22.9.0",
-    "@types/react": "^18.3.12"
+    "@types/react": "^18.3.12",
+    "prettier": "^3.3.3"
   }
 }
