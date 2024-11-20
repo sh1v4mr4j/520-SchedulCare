@@ -133,7 +133,7 @@ const LocationSearch = () => {
                   variant="solid"
                   style={{ fontSize: "small" }}
                 >
-                  Select a location to view on the list
+                  Select a location to view on the map
                 </Divider>
                 <div
                   id="scrollableDiv"
