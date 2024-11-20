@@ -20,7 +20,7 @@ const MapView = ({
   // Alerts and Spinners
   const [mapLoaded, setMapLoaded] = useState(false);
   const [mapSpinner, setMapSpinner] = useState(false);
-  const [showAlert, setShowAlert] = useState(true);
+  const [showAlert, setShowAlert] = useState(false);
 
   // Map source URL
   const [mapSourceUrl, setMapSourceUrl] = useState("");
@@ -131,7 +131,7 @@ const MapView = ({
   useEffect(() => {
     console.log("Use Effect", width, height, mapMode, mapParams);
     createMap(mapMode, mapParams);
-  }, []);
+  }, [mapMode, mapParams]);
 
   return (
     <div>

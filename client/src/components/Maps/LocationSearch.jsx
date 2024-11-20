@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Alert,
   Button,
@@ -11,19 +11,16 @@ import {
   Space,
   Spin,
 } from "antd";
-import mapService from "../../services/map-view/map-view-service";
 import MapView from "./MapView";
 import nominatimService from "../../services/nominatim/nominatim-service";
 
 const LocationSearch = () => {
-  const { getUserLocation, getPlusCode } = mapService();
   const { searchNominatim } = nominatimService();
-  const [mapLoaded, setMapLoaded] = useState(false);
   const [mapParams, setMapParams] = useState({});
-  const [mapMode, setMapMode] = useState("");
+  const [mapMode, setMapMode] = useState("userLoc");
+
   // Spinners
   const [loadingSpinner, setLoadingSpinner] = useState(false);
-  const [mapSpinner, setMapSpinner] = useState(false);
 
   // Alerts
   const [showAlert, setShowAlert] = useState(false);
@@ -32,10 +29,10 @@ const LocationSearch = () => {
   const [selectedMenuId, setSelectedMenuId] = useState("");
 
   const handleMenuClick = (e) => {
-    setMapSpinner(true);
+    console.log("onClick");
     setSelectedMenuId(e.key);
+    setMapMode("place");
     setMapParams({ q: encodeURIComponent(menuResults[e.key].label) });
-    setMapSpinner(false);
   };
 
   const onFinish = (values) => {
@@ -74,29 +71,6 @@ const LocationSearch = () => {
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
-
-  useEffect(() => {
-    setMapSpinner(true);
-    getUserLocation().getCurrentPosition(
-      (position) => {
-        setMapMode("place");
-        setMapParams({
-          q: encodeURIComponent(
-            getPlusCode(position.coords.latitude, position.coords.longitude)
-          ),
-        });
-        setMapLoaded(true);
-        setMapSpinner(false);
-      },
-      (error) => {
-        console.error(error);
-        setMapMode("view");
-        setMapParams({ center: "0, 0" });
-        setMapLoaded(true);
-        setMapSpinner(false);
-      }
-    );
-  }, []);
 
   return (
     <>
@@ -184,20 +158,8 @@ const LocationSearch = () => {
 
         {/* MapView */}
         <Col span={10}>
-          <Spin
-            spinning={mapSpinner}
-            percent="auto"
-            size="large"
-            tip="Teleporting ..."
-          >
-            {mapLoaded ? (
-              <MapView mapMode={mapMode} mapParams={mapParams} />
-            ) : (
-              <></>
-            )}
-          </Spin>
+          <MapView mapMode={mapMode} mapParams={mapParams} />
         </Col>
-
         <Col span={1} />
       </Row>
     </>
