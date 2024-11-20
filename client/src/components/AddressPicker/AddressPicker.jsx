@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
+  Alert,
   Button,
   Col,
   Divider,
@@ -8,56 +9,67 @@ import {
   Menu,
   Row,
   Space,
+  Spin,
   Switch,
 } from "antd";
 import mapService from "../../services/map-view/map-view-service";
 import MapView from "../MapView";
+import nominatimService from "../../services/nominatim/nominatim-service";
 
 const AddressPicker = () => {
   const { getUserLocation, getPlusCode } = mapService();
-  const { searchNominatim } = mapService();
+  const { searchNominatim } = nominatimService();
   const [mapLoaded, setMapLoaded] = useState(false);
   const [mapParams, setMapParams] = useState({});
   const [mapMode, setMapMode] = useState("");
-  const [mapToggle, setMapToggle] = useState(true);
+  // Spinners
+  const [loadingSpinner, setLoadingSpinner] = useState(false);
+  const [mapSpinner, setMapSpinner] = useState(false);
+
+  // Alerts
+  const [showAlert, setShowAlert] = useState(false);
 
   const [menuResults, setMenuResults] = useState([]);
   const [selectedMenuId, setSelectedMenuId] = useState("");
-  const handleMenuClick = (e) => {
-    setSelectedMenuId(e.key);
-    if (mapToggle) {
-      setMapParams({ q: encodeURIComponent(menuResults[e.key].label) });
-    }
-  };
 
-  const toggleMapView = () => {
-    setMapToggle(!mapToggle);
+  const handleMenuClick = (e) => {
+    setMapSpinner(true);
+    setSelectedMenuId(e.key);
+    setMapParams({ q: encodeURIComponent(menuResults[e.key].label) });
+    setMapSpinner(false);
   };
 
   const onFinish = (values) => {
     const searchString = values.search;
+    setLoadingSpinner(true);
 
     // search for places
     searchNominatim(searchString)
       .then((responses) => {
-        const menuResultPlaces = [];
-        let counter = 0;
-        responses.forEach((response) => {
-          const name = String(response.name);
-          // Name + 2 for including the ',' and space after
-          const address = String(response.display_name).substring(
-            name.length + 2
-          );
-          menuResultPlaces.push({
-            key: counter++,
-            label: String(name).trim(),
-            extra: address,
-            location: { lat: response.lat, lon: response.lon },
+        // If no results found, set alert
+        if (responses.length === 0) {
+          setShowAlert(true);
+        } else {
+          const menuResultPlaces = [];
+          let counter = 0;
+          responses.forEach((response) => {
+            const name = String(response.name);
+            // Name + 2 for including the ',' and space after
+            const address = String(response.display_name).substring(
+              name.length + 2
+            );
+            menuResultPlaces.push({
+              key: counter++,
+              label: String(name).trim(),
+              extra: address,
+              location: { lat: response.lat, lon: response.lon },
+            });
           });
-        });
-        setMenuResults(menuResultPlaces);
+          setMenuResults(menuResultPlaces);
+        }
       })
-      .catch((error) => console.error(error));
+      .catch((error) => console.error(error))
+      .finally(() => setLoadingSpinner(false));
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -65,6 +77,7 @@ const AddressPicker = () => {
   };
 
   useEffect(() => {
+    setMapSpinner(true);
     getUserLocation().getCurrentPosition(
       (position) => {
         setMapMode("place");
@@ -74,18 +87,21 @@ const AddressPicker = () => {
           ),
         });
         setMapLoaded(true);
+        setMapSpinner(false);
       },
       (error) => {
         console.error(error);
         setMapMode("view");
         setMapParams({ center: "0, 0" });
         setMapLoaded(true);
+        setMapSpinner(false);
       }
     );
   }, []);
 
   return (
     <>
+      <Spin spinning={loadingSpinner} percent="auto" fullscreen />
       <Divider orientation="left" />
       <Row justify="center" gutter={[16, 16]}>
         {/*Spacing on the side*/}
@@ -117,29 +133,35 @@ const AddressPicker = () => {
                 <Button type="primary" htmlType="submit">
                   Search
                 </Button>
-                <Switch
-                  checked={mapToggle}
-                  onClick={toggleMapView}
-                  checkedChildren="Show MapView"
-                  unCheckedChildren="Hide MapView"
-                />
               </Space>
             </Form.Item>
           </Form>
 
           {/* List of results */}
           <div>
+            {showAlert ? (
+              <Alert
+                message="No results found"
+                type="warning"
+                showIcon
+                closable
+                style={{ margin: "5px" }}
+              />
+            ) : (
+              <></>
+            )}
             {menuResults?.length === 0 ? (
               <></>
             ) : (
               <>
-                {mapToggle ? (
-                  <p style={{ fontSize: "small" }}>
-                    Select a location to view on the list
-                  </p>
-                ) : (
-                  <></>
-                )}
+                <Divider
+                  plain
+                  orientation="left"
+                  variant="solid"
+                  style={{ fontSize: "small" }}
+                >
+                  Select a location to view on the list
+                </Divider>
                 <div
                   id="scrollableDiv"
                   style={{
@@ -163,11 +185,18 @@ const AddressPicker = () => {
 
         {/* MapView */}
         <Col span={10}>
-          {mapToggle && mapLoaded ? (
-            <MapView mapMode={mapMode} mapParams={mapParams} />
-          ) : (
-            <></>
-          )}
+          <Spin
+            spinning={mapSpinner}
+            percent="auto"
+            size="large"
+            tip="Teleporting ..."
+          >
+            {mapLoaded ? (
+              <MapView mapMode={mapMode} mapParams={mapParams} />
+            ) : (
+              <></>
+            )}
+          </Spin>
         </Col>
 
         <Col span={1} />
