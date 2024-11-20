@@ -61,7 +61,8 @@ const App = () => {
                 <Route path="/mapview" element={<MapViewPage />} />
                 <Route path="/chatassist" element={<ChatAssistantPage />} />
                 <Route path="/patient/payment" element={<PaymentPage />} />
-                <Route path="/test" element={<LocationSearch />} />
+                {/* TODO: only to be used by Nikhil for now. Men at work kinda situation */}
+                {/* <Route path="/test" element={<LocationSearch />} /> */}
               </Routes>
             </div>
           </div>
