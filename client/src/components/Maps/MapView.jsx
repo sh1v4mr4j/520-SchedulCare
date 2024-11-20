@@ -1,4 +1,4 @@
-import mapService from "../services/map-view/map-view-service";
+import mapService from "../../services/map-view/map-view-service";
 
 const MapView = ({ width = 600, height = 450, mapMode, mapParams }) => {
   const { createMapEmbedUrl } = mapService();

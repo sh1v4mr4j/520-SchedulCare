@@ -10,13 +10,12 @@ import {
   Row,
   Space,
   Spin,
-  Switch,
 } from "antd";
 import mapService from "../../services/map-view/map-view-service";
-import MapView from "../MapView";
+import MapView from "./MapView";
 import nominatimService from "../../services/nominatim/nominatim-service";
 
-const AddressPicker = () => {
+const LocationSearch = () => {
   const { getUserLocation, getPlusCode } = mapService();
   const { searchNominatim } = nominatimService();
   const [mapLoaded, setMapLoaded] = useState(false);
@@ -205,4 +204,4 @@ const AddressPicker = () => {
   );
 };
 
-export default AddressPicker;
+export default LocationSearch;
