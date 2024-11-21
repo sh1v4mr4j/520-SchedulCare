@@ -1,11 +1,14 @@
-import React, { useState, useEffect } from "react";
-import { Layout } from "antd";
+import React from "react";
 import PatientForm from "../components/patientForm";
-
-const { Content } = Layout;
+import Heading from "../components/Heading";
 
 const PatientPage = () => {
-  return <PatientForm />;
+  return (
+    <>
+      <Heading heading="Patient Form" />
+      <PatientForm />
+    </>
+  );
 };
 
 export default PatientPage;

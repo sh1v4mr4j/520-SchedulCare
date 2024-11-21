@@ -3,18 +3,17 @@ import { Link } from "react-router-dom";
 import { Image, Layout, Menu } from "antd";
 import SchedulCareLogo from "../images/SchedulCareLogo.jpg";
 
-const { Header, Content, Footer } = Layout;
+const { Header } = Layout;
 
 const items1 = [
-  { key: "1", label: "Home", to: "/patient", heading: "Patient Page" },
-  { key: "2", label: "MapView", to: "/MapView", heading: "MapView Page" },
+  { key: "1", label: "Home", to: "/patient" },
+  { key: "2", label: "MapView", to: "/MapView" },
   {
     key: "3",
     label: "Chat",
     to: "/chatassist",
-    heading: "Chat Assistant Page",
   },
-  { key: "4", label: "Doctor", to: "/doctor", heading: "Doctor Page" },
+  { key: "4", label: "Doctor", to: "/doctor" },
 ].map((item) => ({
   key: item.key,
   label: item.label,
@@ -22,13 +21,8 @@ const items1 = [
   heading: item.heading,
 }));
 
-const Navbar = ({ selectedKey, setHeading }) => {
-  const handleClick = (heading) => {
-    setHeading(heading);
-  };
-
+const Navbar = ({ selectedKey }) => {
   const currentItem = items1.find((item) => item.to === location.pathname);
-  setHeading(currentItem ? currentItem.heading : "Patient Page");
   selectedKey = currentItem ? currentItem.key : "1";
 
   return (
@@ -43,9 +37,7 @@ const Navbar = ({ selectedKey, setHeading }) => {
         {items1.map((item) => (
           <Menu.Item key={item.key}>
             {/* Wrap each Menu.Item with Link to navigate to the respective route */}
-            <Link to={item.to} onClick={() => handleClick(item.heading)}>
-              {item.label}
-            </Link>
+            <Link to={item.to}>{item.label}</Link>
           </Menu.Item>
         ))}
       </Menu>

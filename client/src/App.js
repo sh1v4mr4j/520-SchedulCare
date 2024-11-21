@@ -23,16 +23,11 @@ const { Content } = Layout;
 
 const App = () => {
   const [selectedKey, setSelectedKey] = useState("1");
-  const [heading, setHeading] = useState("");
-
-  const handleNavClick = (heading) => {
-    setHeading(heading);
-  };
 
   return (
     <Router>
       <Layout>
-        <Navbar selectedKey={selectedKey} setHeading={handleNavClick} />
+        <Navbar selectedKey={selectedKey} />
         <Content style={{ padding: "0 48 px" }}>
           <div
             style={{
@@ -44,15 +39,6 @@ const App = () => {
               borderRadius: 10,
             }}
           >
-            <div
-              style={{
-                padding: "10px",
-                display: "grid",
-                justifyContent: "center",
-              }}
-            >
-              <h1>{heading}</h1>
-            </div>
             <div style={{ padding: "10px", display: "grid" }}>
               <Routes>
                 <Route path="/" element={<Navigate to="/patient" replace />} />{" "}
