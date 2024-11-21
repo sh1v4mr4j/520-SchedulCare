@@ -93,15 +93,11 @@ const MapView = ({
   };
 
   const createMapForUserLocation = () => {
-    console.log("Getting user location");
     getUserLocation().getCurrentPosition(
       (position) => {
         const locationCode = encodeURIComponent(
           getPlusCode(position.coords.latitude, position.coords.longitude)
         );
-        // setMapLoaded(true);
-        // setMapSpinner(false);
-        console.log("Location Code", locationCode);
         setMapSourceUrl(
           `https://www.google.com/maps/embed/v1/place?key=${getGoogleApiKey}&q=${locationCode}`
         );
@@ -109,7 +105,6 @@ const MapView = ({
         setMapSpinner(false);
       },
       (error) => {
-        console.log("Whoopsie");
         console.error(error);
         setShowAlert(true);
         setMapLoaded(false);

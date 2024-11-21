@@ -1,17 +1,18 @@
+from typing import Optional
 from pydantic import BaseModel
-from datetime import datetime
+
+from app.models.location import Location
 
 class Doctor(BaseModel):
     email: str
     name: str
     specialisation: str
     dob: str
-    age: int
     gender: str
     password: str
     pincode:int
-    type:str
     scheduledApointment: bool = False
+    location: Optional[Location] = {}
 
 class Availability(BaseModel):
     doctor_email: str
