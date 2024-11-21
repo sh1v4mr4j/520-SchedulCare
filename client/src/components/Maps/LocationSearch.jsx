@@ -96,7 +96,7 @@ const LocationSearch = () => {
                 { required: true, message: "Please input your search term!" },
               ]}
             >
-              <Input />
+              <Input placeholder="Challenge me to find something ..." />
             </Form.Item>
 
             {/* trigger search */}
