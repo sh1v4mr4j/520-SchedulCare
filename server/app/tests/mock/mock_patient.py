@@ -9,7 +9,6 @@ mock_patient: list[Patient] = [
     "gender": "Female",
     "password": "hashed_password_1",
     "pincode": 12345,
-    "type": "Patient",
     "appointments": [
       {
         "doctorName": "Dr. John Doe",
@@ -26,7 +25,6 @@ mock_patient: list[Patient] = [
     "gender": "Male",
     "password": "hashed_password_2",
     "pincode": 67890,
-    "type": "Patient",
     "appointments": [
       {
         "doctorName": "Dr. Jane Smith",
@@ -48,7 +46,6 @@ mock_patient: list[Patient] = [
     "gender": "Male",
     "password": "hashed_password_3",
     "pincode": 54321,
-    "type": "Patient",
     "appointments": []
   },
   {
@@ -59,7 +56,6 @@ mock_patient: list[Patient] = [
     "gender": "Female",
     "password": "hashed_password_4",
     "pincode": 12345,
-    "type": "Patient",
     "appointments": [
       {
         "doctorName": "Dr. Emily White",
@@ -76,7 +72,6 @@ mock_patient: list[Patient] = [
     "gender": "Male",
     "password": "hashed_password_5",
     "pincode": 67890,
-    "type": "Patient",
     "appointments": [
       {
         "doctorName": "Dr. Sarah Taylor",
@@ -93,7 +88,6 @@ mock_patient: list[Patient] = [
     "gender": "Female",
     "password": "hashed_password_6",
     "pincode": 54321,
-    "type": "Patient",
     "appointments": []
   },
   {
@@ -104,7 +98,6 @@ mock_patient: list[Patient] = [
     "gender": "Male",
     "password": "hashed_password_7",
     "pincode": 12345,
-    "type": "Patient",
     "appointments": [
       {
         "doctorName": "Dr. Jessica Miller",
@@ -121,7 +114,6 @@ mock_patient: list[Patient] = [
     "gender": "Female",
     "password": "hashed_password_8",
     "pincode": 67890,
-    "type": "Patient",
     "appointments": []
   },
   {
@@ -132,7 +124,6 @@ mock_patient: list[Patient] = [
     "gender": "Male",
     "password": "hashed_password_9",
     "pincode": 54321,
-    "type": "Patient",
     "appointments": [
       {
         "doctorName": "Dr. William Wilson",
@@ -149,7 +140,6 @@ mock_patient: list[Patient] = [
     "gender": "Female",
     "password": "hashed_password_10",
     "pincode": 12345,
-    "type": "Patient",
     "appointments": []
   }
 ]

@@ -2,6 +2,7 @@ from pydantic import BaseModel
 from typing import Annotated
 from typing import Tuple
 
+from server.app.models.location import Location
 
 class Appointment(BaseModel):
     patient_email: str
@@ -17,5 +18,5 @@ class Patient(BaseModel):
     gender: str
     password: str
     pincode:int
-    type:str
     appointments: list[Appointment]  = []
+    address: Location

@@ -10,7 +10,6 @@ mock_doctor: list[Doctor] = [
       "gender": "Male",
       "password": "hashed_password_1",
       "pincode": 11001,
-      "type": "Doctor",
       "availableDates": ["2024-11-18", "2024-11-19"]
     },
     {
@@ -22,7 +21,6 @@ mock_doctor: list[Doctor] = [
       "gender": "Female",
       "password": "hashed_password_2",
       "pincode": 11001,
-      "type": "Doctor",
       "availableDates": ["2024-11-20", "2024-11-21"]
     },
     {
@@ -34,7 +32,6 @@ mock_doctor: list[Doctor] = [
       "gender": "Female",
       "password": "hashed_password_3",
       "pincode": 11001,
-      "type": "Doctor",
       "availableDates": ["2024-11-22"]
     },
     {
@@ -46,7 +43,6 @@ mock_doctor: list[Doctor] = [
       "gender": "Male",
       "password": "hashed_password_4",
       "pincode": 11002,
-      "type": "Doctor",
       "availableDates": ["2024-11-23", "2024-11-24"]
     },
     {
@@ -58,7 +54,6 @@ mock_doctor: list[Doctor] = [
       "gender": "Female",
       "password": "hashed_password_5",
       "pincode": 67890,
-      "type": "Doctor",
       "availableDates": ["2024-11-25"]
     },
     {
@@ -70,7 +65,6 @@ mock_doctor: list[Doctor] = [
       "gender": "Male",
       "password": "hashed_password_6",
       "pincode": 54321,
-      "type": "Doctor",
       "availableDates": ["2024-11-26", "2024-11-27"]
     },
     {
@@ -82,7 +76,6 @@ mock_doctor: list[Doctor] = [
       "gender": "Female",
       "password": "hashed_password_7",
       "pincode": 67890,
-      "type": "Doctor",
       "availableDates": ["2024-11-28", "2024-11-29"]
     },
     {
@@ -94,7 +87,6 @@ mock_doctor: list[Doctor] = [
       "gender": "Male",
       "password": "hashed_password_8",
       "pincode": 12345,
-      "type": "Doctor",
       "availableDates": ["2024-11-30"]
     },
     {
@@ -106,7 +98,6 @@ mock_doctor: list[Doctor] = [
       "gender": "Female",
       "password": "hashed_password_9",
       "pincode": 54321,
-      "type": "Doctor",
       "availableDates": ["2024-12-01", "2024-12-02"]
     },
     {
@@ -118,7 +109,6 @@ mock_doctor: list[Doctor] = [
       "gender": "Male",
       "password": "hashed_password_10",
       "pincode": 67890,
-      "type": "Doctor",
       "availableDates": ["2024-12-03"]
     }
   ]

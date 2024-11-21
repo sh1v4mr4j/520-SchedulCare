@@ -1,6 +1,8 @@
 from pydantic import BaseModel
 from datetime import datetime
 
+from server.app.models.location import Location
+
 class Doctor(BaseModel):
     email: str
     name: str
@@ -10,8 +12,8 @@ class Doctor(BaseModel):
     gender: str
     password: str
     pincode:int
-    type:str
     scheduledApointment: bool = False
+    location: Location
 
 class Availability(BaseModel):
     doctor_email: str
