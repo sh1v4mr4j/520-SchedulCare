@@ -124,7 +124,6 @@ const MapView = ({
   };
 
   useEffect(() => {
-    console.log("Use Effect", width, height, mapMode, mapParams);
     createMap(mapMode, mapParams);
   }, [mapMode, mapParams]);
 
