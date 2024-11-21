@@ -16,6 +16,8 @@ import PatientPage from "./pages/PatientPage";
 import MapView from "./components/Maps/MapView";
 import LocationSearch from "./components/Maps/LocationSearch";
 import "bootstrap-icons/font/bootstrap-icons.css";
+import Directions from "./components/Maps/Directions";
+import GoogleMapsSearch from "./components/Maps/GoogleMapsSearch";
 
 const { Content } = Layout;
 
@@ -58,7 +60,15 @@ const App = () => {
                 <Route path="/login" element={<HomePage />} />
                 <Route path="/patient" element={<PatientPage />} />
                 <Route path="/doctor" element={<DoctorPage />} />
-                <Route path="/mapview" element={<MapViewPage />} />
+                <Route path="/mapview/*" element={<MapViewPage />}>
+                  <Route index element={<LocationSearch />} />
+                  <Route path="location-search" element={<LocationSearch />} />
+                  <Route path="directions" element={<Directions />} />
+                  <Route
+                    path="google-maps-search"
+                    element={<GoogleMapsSearch />}
+                  />
+                </Route>
                 <Route path="/chatassist" element={<ChatAssistantPage />} />
                 <Route path="/patient/payment" element={<PaymentPage />} />
                 {/* TODO: only to be used by Nikhil for now. Men at work kinda situation */}

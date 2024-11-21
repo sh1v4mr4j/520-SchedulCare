@@ -75,7 +75,6 @@ const LocationSearch = () => {
   return (
     <>
       <Spin spinning={loadingSpinner} percent="auto" fullscreen />
-      <Divider orientation="left" />
       <Row justify="center" gutter={[16, 16]}>
         {/*Spacing on the side*/}
         {/*<Col span={1}/>*/}
