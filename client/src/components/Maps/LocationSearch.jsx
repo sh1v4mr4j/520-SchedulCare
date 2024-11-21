@@ -75,7 +75,6 @@ const LocationSearch = () => {
   return (
     <>
       <Spin spinning={loadingSpinner} percent="auto" fullscreen />
-      <Divider orientation="left" />
       <Row justify="center" gutter={[16, 16]}>
         {/*Spacing on the side*/}
         {/*<Col span={1}/>*/}
@@ -97,7 +96,7 @@ const LocationSearch = () => {
                 { required: true, message: "Please input your search term!" },
               ]}
             >
-              <Input />
+              <Input placeholder="Challenge me to find something ..." />
             </Form.Item>
 
             {/* trigger search */}
@@ -133,7 +132,7 @@ const LocationSearch = () => {
                   variant="solid"
                   style={{ fontSize: "small" }}
                 >
-                  Select a location to view on the list
+                  Select a location to view on the map
                 </Divider>
                 <div
                   id="scrollableDiv"

@@ -4,8 +4,7 @@ from motor.motor_asyncio import AsyncIOMotorClient
 
 from app.models.patient import Patient, Appointment
 from app.shared.mongo_utils import serialize_mongo_object
-
-
+from app.models.location import Location
 
 class PatientService:
     def __init__(self):
@@ -52,7 +51,7 @@ class PatientService:
     
     async def scheduleAppointment(self, email: str, appointmentDetails: Appointment):
         """
-        Schedule an appointment for Patient
+      z  Schedule an appointment for Patient
         """
         patient = await self.patient_collection.find_one({"email": email})
         if not patient:
@@ -68,6 +67,23 @@ class PatientService:
             return 404, "Failed to update appointment"
         response = {"message": "Appointment updated successfully", "currentAppointment": updated_appointments}
         return 201, response
+    
+    async def set_address_for_patient(self, patient_email: str, address: Location):
+        """
+        Set the address for a doctor
+        :param doctor_email: Email of the doctor
+        :param address: Address of the doctor
+        :return: Updated time of the record
+        """
+        try:
+            patient_object = await self.patient_collection.find_one({"email": {"$eq": patient_email}})
+            if not patient_object:
+                return 404, "Doctor not found"
+            resp = await self.patient_collection.update_one({"email": patient_email}, {"$set": {"location": address.model_dump()}})
+            print(resp)
+            return 200, "Address updated successfully"
+        except Exception as e:
+            return 500, e
 
 
    
