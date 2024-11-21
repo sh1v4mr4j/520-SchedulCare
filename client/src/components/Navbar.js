@@ -6,15 +6,14 @@ import SchedulCareLogo from "../images/SchedulCareLogo.jpg";
 const { Header } = Layout;
 
 const items1 = [
-  { key: "1", label: "Home", to: "/patient", heading: "Patient Page" },
-  { key: "2", label: "MapView", to: "/MapView", heading: "MapView Page" },
+  { key: "1", label: "Home", to: "/patient" },
+  { key: "2", label: "MapView", to: "/MapView" },
   {
     key: "3",
     label: "Chat",
     to: "/chatassist",
-    heading: "Chat Assistant Page",
   },
-  { key: "4", label: "Doctor", to: "/doctor", heading: "Doctor Page" },
+  { key: "4", label: "Doctor", to: "/doctor" },
 ].map((item) => ({
   key: item.key,
   label: item.label,
