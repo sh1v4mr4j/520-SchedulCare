@@ -1,10 +1,7 @@
-import { useState } from "react";
+import { createElement, useState } from "react";
 import { Layout, Menu, theme } from "antd";
-import { Link, Route, Routes, Outlet } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import { Content, Header } from "antd/es/layout/layout";
-import LocationSearch from "../components/Maps/LocationSearch";
-import Directions from "../components/Maps/Directions";
-import GoogleMapsSearch from "../components/Maps/GoogleMapsSearch";
 
 function MapViewPage() {
   const {
@@ -12,14 +9,31 @@ function MapViewPage() {
   } = theme.useToken();
 
   const menuItems = [
-    { key: "1", label: "Location Search", to: "location-search" },
-    { key: "2", label: "Directions", to: "directions" },
-    { key: "3", label: "Google Maps Search", to: "google-maps-search" },
+    {
+      key: "1",
+      label: "Location Search",
+      to: "location-search",
+      iconClass: "bi bi-geo-alt",
+    },
+    {
+      key: "2",
+      label: "Directions",
+      to: "directions",
+      iconClass: "bi bi-signpost-split",
+    },
+    {
+      key: "3",
+      label: "Google Maps Search",
+      to: "google-maps-search",
+      iconClass: "bi bi-map",
+    },
   ];
 
   const [selectedKey, setSelectedKey] = useState("1");
 
-  const handleMenuSelect = (key) => setSelectedKey(key);
+  const handleMenuSelect = (e) => {
+    setSelectedKey(e.key);
+  };
 
   return (
     <Layout style={{ background: "white" }}>
@@ -35,9 +49,10 @@ function MapViewPage() {
           }}
         >
           {menuItems.map((item) => (
-            <Menu.Item key={item.key}>
+            <Menu.Item id={item.key} key={item.key} onClick={handleMenuSelect}>
               {/* Wrap each Menu.Item with Link to navigate to the respective route */}
-              <Link to={item.to} onClick={handleMenuSelect}>
+              <Link to={item.to}>
+                <i className={item.iconClass} style={{ marginRight: "3px" }} />
                 {item.label}
               </Link>
             </Menu.Item>
@@ -45,9 +60,8 @@ function MapViewPage() {
         </Menu>
       </Header>
       <Content>
-        <div style={{ marginTop: "1em" }}>
-          <Outlet />
-        </div>
+        <div style={{ marginTop: "1em" }} />
+        <Outlet />
       </Content>
     </Layout>
   );
