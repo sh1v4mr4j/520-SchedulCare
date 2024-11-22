@@ -15,6 +15,7 @@ const MapView = ({
     search: ["q"],
     place: ["q"],
     view: ["center"],
+    directions: ["origin", "destination"],
   };
 
   // Alerts and Spinners
