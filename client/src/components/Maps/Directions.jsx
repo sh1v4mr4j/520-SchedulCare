@@ -3,6 +3,7 @@ import { Col, Divider, Layout, Radio, Row, Space, Steps } from "antd";
 import MapView from "./MapView";
 import { Content } from "antd/es/layout/layout";
 import AddressSetter from "./AddressSetter";
+import styles from "./Maps.module.css";
 
 const Directions = () => {
   const [mapParams, setMapParams] = useState({});
@@ -12,12 +13,13 @@ const Directions = () => {
   const [source, setSource] = useState();
   const [destination, setDestination] = useState();
 
-  const derieveMapParams = () => {
+  const derieveMapParams = (mode = "driving") => {
     // If both source and destination are set then get directions
     if (source && destination) {
       setMapParams({
         origin: encodeURIComponent(source.label),
         destination: encodeURIComponent(destination.label),
+        mode,
       });
       setMapMode("directions");
     } else if (source) {
@@ -46,6 +48,11 @@ const Directions = () => {
     derieveMapParams();
   };
 
+  const updateDirections = (e) => {
+    console.log(e.target.value);
+    derieveMapParams(e.target.value);
+  };
+
   return (
     <Layout style={{ backgroundColor: "white" }}>
       <Content>
@@ -70,6 +77,7 @@ const Directions = () => {
               <Col span={12}>
                 <h3>Source</h3>
                 <AddressSetter
+                  formName="source"
                   setSelectedLocation={handleSourceLocationChange}
                 />
               </Col>
@@ -78,6 +86,7 @@ const Directions = () => {
               <Col span={12}>
                 <h3>Destination</h3>
                 <AddressSetter
+                  formName="destination"
                   setSelectedLocation={handleDestinationLocationChange}
                 />
               </Col>
@@ -85,23 +94,28 @@ const Directions = () => {
             <div style={{ marginTop: "1em" }} />
             <Divider orientation="center">Directions</Divider>
             <div style={{ marginTop: "1em" }} />
-            <Row justify="center" gutter={[16, 16]}>
-              <Col>
-                <h3>Mode of Transport</h3>
-                <Radio.Group>
-                  <Space direction="vertical">
-                    <Radio value="driving">Driving</Radio>
-                    <Radio value="walking">Walking</Radio>
-                    <Radio value="bicycling">Bicycling</Radio>
-                    <Radio value="transit">Transit</Radio>
-                    <Radio value="flying">Flying</Radio>
-                  </Space>
+            <Row justify="center" align="center">
+              {mapMode || true === "directions" ? (
+                <Radio.Group
+                  optionType="button"
+                  buttonStyle="solid"
+                  onChange={updateDirections}
+                  defaultValue={"driving"}
+                >
+                  <Radio value="driving">Driving</Radio>
+                  <Radio value="walking">Walking</Radio>
+                  <Radio value="bicycling">Bicycling</Radio>
+                  <Radio value="transit">Transit</Radio>
+                  <Radio value="flying">Flying</Radio>
                 </Radio.Group>
-              </Col>
-              {/* <div style={{ marginRight: "3em" }} /> */}
-              <Col>
-                <MapView mapMode={mapMode} mapParams={mapParams} />
-              </Col>
+              ) : (
+                <></>
+              )}
+            </Row>
+            <div style={{ marginTop: "1em" }} />
+            {/* <div style={{ marginRight: "3em" }} /> */}
+            <Row justify="center" align="center">
+              <MapView mapMode={mapMode} mapParams={mapParams} />
             </Row>
           </Content>
         </Layout>

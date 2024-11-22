@@ -1,65 +1,64 @@
-import React, { useState } from 'react'
-import { OpenLocationCode } from 'open-location-code'
-import { Alert, Button, Divider, Form, Input, Menu, Space } from 'antd'
+import React, { useState } from "react";
+import { OpenLocationCode } from "open-location-code";
+import { Alert, Button, Divider, Form, Input, Menu, Space } from "antd";
 
 const AddressSetter = ({ setSelectedLocation }) => {
-
   // Alerts
-  const [showAlert, setShowAlert] = useState(false)
+  const [showAlert, setShowAlert] = useState(false);
 
-  const [menuResults, setMenuResults] = useState([])
-  const [selectedMenuId, setSelectedMenuId] = useState('')
+  const [menuResults, setMenuResults] = useState([]);
+  const [selectedMenuId, setSelectedMenuId] = useState("");
 
   const onSubmit = (values) => {
-    setShowAlert(false)
+    setShowAlert(false);
     // search for places
     const url = `https://nominatim.openstreetmap.org/search?addressdetails=1&q=${encodeURIComponent(
-      values.search)}&format=jsonv2&limit=30`
-    fetch(url).
-      then((response) => response.json()).
-      then((responses) => {
+      values.search
+    )}&format=jsonv2&limit=30`;
+    fetch(url)
+      .then((response) => response.json())
+      .then((responses) => {
         // If no results found, set alert
         if (responses.length === 0) {
-          setShowAlert(true)
+          setShowAlert(true);
         } else {
-          const menuResultPlaces = []
-          let counter = 0
+          const menuResultPlaces = [];
+          let counter = 0;
           responses.forEach((response) => {
-            const name = String(response.name)
+            const name = String(response.name);
             // Name + 2 for including the ',' and space after
             const address = String(response.display_name).substring(
               name.length + 2
-            )
-            const lat = response.lat
-            const lon = response.lon
+            );
+            const lat = response.lat;
+            const lon = response.lon;
             menuResultPlaces.push({
               key: counter++,
               label: String(name).trim(),
               extra: address,
               location: { lat, lon },
-              plus_code: new OpenLocationCode().encode(lat, lon)
-            })
-          })
-          setMenuResults(menuResultPlaces)
+              plus_code: new OpenLocationCode().encode(lat, lon),
+            });
+          });
+          setMenuResults(menuResultPlaces);
         }
-      }).
-      catch((error) => console.error(error))
-  }
+      })
+      .catch((error) => console.error(error));
+  };
 
   const onSubmitFailed = (errorInfo) => {
-    console.log('Failed:', errorInfo)
-    setShowAlert(true)
-  }
+    console.log("Failed:", errorInfo);
+    setShowAlert(true);
+  };
 
   const handleMenuClick = (e) => {
-    setSelectedMenuId(e.key)
-    setSelectedLocation(menuResults[e.key])
-  }
+    setSelectedMenuId(e.key);
+    setSelectedLocation(menuResults[e.key]);
+  };
 
   return (
     <>
       <Form
-        name="basic"
         style={{ maxWidth: 600 }}
         onFinish={onSubmit}
         onFinishFailed={onSubmitFailed}
@@ -70,10 +69,10 @@ const AddressSetter = ({ setSelectedLocation }) => {
           name="search"
           style={{ maxWidth: 400 }}
           rules={[
-            { required: true, message: 'Please input your search term!' }
+            { required: true, message: "Please input your search term!" },
           ]}
         >
-          <Input placeholder="Challenge me to find something ..."/>
+          <Input placeholder="Challenge me to find something ..." />
         </Form.Item>
 
         {/* trigger search */}
@@ -94,7 +93,7 @@ const AddressSetter = ({ setSelectedLocation }) => {
             type="warning"
             showIcon
             closable
-            style={{ margin: '5px' }}
+            style={{ margin: "5px" }}
           />
         ) : (
           <></>
@@ -107,7 +106,7 @@ const AddressSetter = ({ setSelectedLocation }) => {
               plain
               orientation="left"
               variant="solid"
-              style={{ fontSize: 'small' }}
+              style={{ fontSize: "small" }}
             >
               Select a location to view on the map
             </Divider>
@@ -115,9 +114,9 @@ const AddressSetter = ({ setSelectedLocation }) => {
               id="scrollableDiv"
               style={{
                 maxHeight: 300,
-                overflow: 'auto',
-                padding: '0 0px',
-                border: '1px solid rgba(140, 140, 140, 0.35)'
+                overflow: "auto",
+                padding: "0 0px",
+                border: "1px solid rgba(140, 140, 140, 0.35)",
               }}
             >
               <Menu
@@ -131,7 +130,7 @@ const AddressSetter = ({ setSelectedLocation }) => {
         )}
       </div>
     </>
-  )
-}
+  );
+};
 
-export default AddressSetter
+export default AddressSetter;
