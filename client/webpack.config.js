@@ -1,41 +1,54 @@
 const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
+console.log(path.resolve(__dirname, 'build'));
 module.exports = {
-  // Entry point for your React app (starting point for bundling)
-  entry: './src/index.js', // 'src/index.js' is the entry file
-
-  // Output configuration for Webpack (where to store the bundled file)
+  entry: './src/index.js', // Entry point for your app
   output: {
-    filename: 'bundle.js', // The name of the bundled file
-    path: path.resolve(__dirname, 'build'), // The 'public' folder to serve from
+    filename: 'bundle.js', // Output file
+    path: path.resolve(__dirname, 'build'), // Output directory
+    clean: true, // Clean the build folder before each build
   },
-
-  // Module configuration: how to handle different file types
   module: {
     rules: [
       {
         test: /\.jsx?$/, // Match JavaScript/JSX files
-        exclude: /node_modules/, // Exclude node_modules from being transpiled
+        exclude: /node_modules/,
         use: {
-          loader: 'babel-loader', // Use Babel to transpile the code
+          loader: 'babel-loader',
           options: {
-            presets: ['@babel/preset-env', '@babel/preset-react'], // Babel presets
+            presets: ['@babel/preset-env', '@babel/preset-react'], // Transpile modern JS and React
           },
         },
       },
+      {
+        test: /\.css$/, // Match CSS files
+        use: ['style-loader', 'css-loader'], // Load and bundle CSS
+      },
+      {
+        test: /\.(png|jpe?g|gif|svg|ico)$/, // Image files
+        type: 'asset/resource', // Uses Webpack's asset modules to handle static files
+      },
+      {
+        test: /\.(woff|woff2|eot|ttf|otf)$/,
+        type: 'asset/resource',
+      },      
     ],
   },
-
   resolve: {
-    extensions: ['.js', '.jsx'], // Resolve both .js and .jsx extensions
+    extensions: ['.js', '.jsx'], // Resolve JS and JSX extensions
   },
-
-  // Dev server configuration for local development
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: './public/index.html', // Use the HTML template in public
+    }),
+  ],
   devServer: {
-    contentBase: path.join(__dirname, 'public'), // Serve files from 'public' folder
-    port: 3000, // The port to run the dev server on
+    static: {
+      directory: path.join(__dirname, 'build'), // Serve files from build folder
+    },
+    port: 3000, // Port for the dev server
+    historyApiFallback: true, // Enable routing for React Router
   },
-
-  // Mode for Webpack (either 'development' or 'production')
-  mode: 'development',
+  mode: 'production', // Use development mode
 };
