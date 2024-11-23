@@ -1,19 +1,25 @@
 import React, { useState } from "react";
 import { OpenLocationCode } from "open-location-code";
-import { Alert, Button, Divider, Form, Input, Menu, Space } from "antd";
+import { Alert, Button, Divider, Form, Input, Menu, Space, Tag } from "antd";
 
-const AddressSetter = ({ setSelectedLocation }) => {
+const AddressSetter = ({
+  label = "Search",
+  disabled = false,
+  setSelectedLocation,
+}) => {
   // Alerts
   const [showAlert, setShowAlert] = useState(false);
+  const [searching, setSearching] = useState(false);
 
   const [menuResults, setMenuResults] = useState([]);
   const [selectedMenuId, setSelectedMenuId] = useState("");
 
-  const onSubmit = (values) => {
+  const onSubmit = (value) => {
+    setSearching(true);
     setShowAlert(false);
     // search for places
     const url = `https://nominatim.openstreetmap.org/search?addressdetails=1&q=${encodeURIComponent(
-      values.search
+      value
     )}&format=jsonv2&limit=30`;
     fetch(url)
       .then((response) => response.json())
@@ -43,7 +49,8 @@ const AddressSetter = ({ setSelectedLocation }) => {
           setMenuResults(menuResultPlaces);
         }
       })
-      .catch((error) => console.error(error));
+      .catch((error) => console.error(error))
+      .finally(() => setSearching(false));
   };
 
   const onSubmitFailed = (errorInfo) => {
@@ -58,32 +65,32 @@ const AddressSetter = ({ setSelectedLocation }) => {
 
   return (
     <>
-      <Form
-        style={{ maxWidth: 600 }}
-        onFinish={onSubmit}
-        onFinishFailed={onSubmitFailed}
-      >
-        {/* Search */}
-        <Form.Item
-          label="Search"
-          name="search"
-          style={{ maxWidth: 400 }}
-          rules={[
-            { required: true, message: "Please input your search term!" },
-          ]}
+      <div>
+        <Form
+          style={{ maxWidth: 600 }}
+          onFinish={onSubmit}
+          onFinishFailed={onSubmitFailed}
         >
-          <Input placeholder="Challenge me to find something ..." />
-        </Form.Item>
-
-        {/* trigger search */}
-        <Form.Item label={null}>
-          <Space direction="horizontal" align="center">
-            <Button type="primary" htmlType="submit">
-              Search
-            </Button>
-          </Space>
-        </Form.Item>
-      </Form>
+          {/* Search */}
+          <Form.Item
+            label={label}
+            layout="horizontal"
+            name="search"
+            style={{ maxWidth: 400 }}
+            rules={[
+              { required: true, message: "Please input your search term!" },
+            ]}
+          >
+            <Input.Search
+              placeholder="Challenge me to find something ..."
+              enterButton
+              loading={searching}
+              onSearch={onSubmit}
+              disabled={disabled}
+            />
+          </Form.Item>
+        </Form>
+      </div>
 
       {/* List of results */}
       <div>

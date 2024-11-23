@@ -68,30 +68,30 @@ const Directions = () => {
               { title: "Get Directions" },
             ]}
           />
+          <div style={{ marginTop: "1em" }} />
           <Content>
-            <Row justify="center" gutter={[16, 16]}>
+            <Row justify="center" gutter={[32, 16]}>
               {/*Spacing on the side*/}
               {/*<Col span={1}/>*/}
 
               {/* Source */}
               <Col span={12}>
-                <h3>Source</h3>
                 <AddressSetter
-                  formName="source"
+                  label="Source"
                   setSelectedLocation={handleSourceLocationChange}
                 />
               </Col>
 
               {/* Destination */}
               <Col span={12}>
-                <h3>Destination</h3>
                 <AddressSetter
-                  formName="destination"
+                  disabled={!source}
+                  label="Destination"
                   setSelectedLocation={handleDestinationLocationChange}
                 />
               </Col>
             </Row>
-            <div style={{ marginTop: "1em" }} />
+            <div style={{ marginTop: "2em" }} />
             <Divider orientation="center">Directions</Divider>
             <div style={{ marginTop: "1em" }} />
             <Row justify="center" align="center">
