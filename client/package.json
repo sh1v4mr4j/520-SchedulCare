@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build"
+    "build": "react-scripts build",
+    "cypress": "npx cypress open"
   },
   "dependencies": {
     "@babel/core": "^7.26.0",
