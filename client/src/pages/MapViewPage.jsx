@@ -21,12 +21,6 @@ function MapViewPage() {
       to: "directions",
       iconClass: "bi bi-signpost-split",
     },
-    {
-      key: "3",
-      label: "Google Maps Search",
-      to: "google-maps-search",
-      iconClass: "bi bi-map",
-    },
   ];
 
   const [selectedKey, setSelectedKey] = useState("1");
