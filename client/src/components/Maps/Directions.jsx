@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import { Col, Divider, Layout, Radio, Row, Space, Steps } from "antd";
+import { Col, Divider, Layout, Radio, Row, Steps } from "antd";
 import MapView from "./MapView";
 import { Content } from "antd/es/layout/layout";
 import AddressSetter from "./AddressSetter";
-import styles from "./Maps.module.css";
 
 const Directions = () => {
   const [mapParams, setMapParams] = useState({});
