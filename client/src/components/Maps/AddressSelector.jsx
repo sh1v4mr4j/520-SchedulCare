@@ -31,7 +31,6 @@ const AddressSelector = () => {
           setOpen(false);
         })
         .catch((error) => {
-          console.error("Error updating location:", error.message);
           locationUpdateError();
           setConfirmLoading(false);
           setOpen(true);
@@ -44,7 +43,6 @@ const AddressSelector = () => {
           setOpen(false);
         })
         .catch((error) => {
-          console.error("Error updating location:", error.message);
           locationUpdateError();
           setConfirmLoading(false);
           setOpen(true);

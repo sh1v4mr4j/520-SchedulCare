@@ -88,7 +88,6 @@ const MapView = ({
     if (userLocation) {
       return userLocation;
     } else {
-      console.error("Geolocation is not supported by this browser.");
       return null;
     }
   };
@@ -106,7 +105,6 @@ const MapView = ({
         setMapSpinner(false);
       },
       (error) => {
-        console.error(error);
         setShowAlert(true);
         setMapLoaded(false);
         setMapSpinner(false);

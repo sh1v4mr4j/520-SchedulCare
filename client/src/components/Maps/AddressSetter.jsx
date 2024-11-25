@@ -49,7 +49,6 @@ const AddressSetter = ({
           setMenuResults(menuResultPlaces);
         }
       })
-      .catch((error) => console.error(error))
       .finally(() => setSearching(false));
   };
 
