@@ -68,7 +68,7 @@ class PatientService:
         response = {"message": "Appointment updated successfully", "currentAppointment": updated_appointments}
         return 201, response
     
-    async def set_address_for_patient(self, patient_email: str, address: Location):
+    async def set_location_for_patient(self, patient_email: str, address: Location):
         """
         Set the address for a doctor
         :param doctor_email: Email of the doctor

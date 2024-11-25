@@ -6,7 +6,6 @@ const AddressSetter = ({
   label = "Search",
   disabled = false,
   setSelectedLocation,
-  googleMapSearch = false,
 }) => {
   // Alerts
   const [showAlert, setShowAlert] = useState(false);
@@ -106,7 +105,7 @@ const AddressSetter = ({
         ) : (
           <></>
         )}
-        {googleMapSearch || menuResults?.length === 0 ? (
+        {menuResults?.length === 0 ? (
           <></>
         ) : (
           <>

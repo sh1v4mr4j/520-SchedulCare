@@ -1,16 +1,25 @@
 import fetchClient from "../client";
 import { ENDPOINTS } from "../endpoint";
 
-const updateLocation = async (url, email, location) => {
+const updateLocation = async (url, email, location_obj) => {
+  const request = {
+    email,
+    location: {
+      name: location_obj.label,
+      lat: location_obj.location.lat,
+      lon: location_obj.location.lon,
+      plus_code: location_obj.plus_code,
+    },
+  };
   return fetchClient(url, {
     method: "POST",
-    body: JSON.stringify({ email, location }),
+    body: JSON.stringify(request),
   });
 };
 
 export const updatePatientLocation = async (email, location) => {
   try {
-    const url = ENDPOINTS.setPatientLocation;
+    const url = ENDPOINTS.setPatientLocation();
     return updateLocation(url, email, location);
   } catch (error) {
     console.error("Error updating location:", error.message);
@@ -20,7 +29,7 @@ export const updatePatientLocation = async (email, location) => {
 
 export const updateDoctorLocation = async (email, location) => {
   try {
-    const url = ENDPOINTS.setDoctorLocation;
+    const url = ENDPOINTS.setDoctorLocation();
     return updateLocation(url, email, location);
   } catch (error) {
     console.error("Error updating location:", error.message);

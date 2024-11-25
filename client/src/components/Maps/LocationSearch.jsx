@@ -1,17 +1,21 @@
-import React, { useState } from 'react'
-import { Col, Row } from 'antd'
-import MapView from './MapView'
-import AddressSetter from './AddressSetter'
+import React, { useState } from "react";
+import { Col, Row } from "antd";
+import MapView from "./MapView";
+import AddressSetter from "./AddressSetter";
 
-const LocationSearch = () => {
-  const [mapParams, setMapParams] = useState({})
-  const [mapMode, setMapMode] = useState('userLoc')
+const LocationSearch = ({ customHandleLocation = undefined }) => {
+  const [mapParams, setMapParams] = useState({});
+  const [mapMode, setMapMode] = useState("userLoc");
 
   // Use this with child component
   const handleLocationChange = (location) => {
-    setMapParams({q: encodeURIComponent(location.label)})
-    setMapMode('place')
-  }
+    if (customHandleLocation) {
+      customHandleLocation(location);
+    } else {
+      setMapParams({ q: encodeURIComponent(location.label) });
+      setMapMode("place");
+    }
+  };
 
   return (
     <>
@@ -21,17 +25,17 @@ const LocationSearch = () => {
 
         {/* Search Box */}
         <Col span={13}>
-          <AddressSetter setSelectedLocation={handleLocationChange}/>
+          <AddressSetter setSelectedLocation={handleLocationChange} />
         </Col>
 
         {/* MapView */}
         <Col span={10}>
-          <MapView mapMode={mapMode} mapParams={mapParams}/>
+          <MapView mapMode={mapMode} mapParams={mapParams} />
         </Col>
-        <Col span={1}/>
+        <Col span={1} />
       </Row>
     </>
-  )
-}
+  );
+};
 
-export default LocationSearch
+export default LocationSearch;

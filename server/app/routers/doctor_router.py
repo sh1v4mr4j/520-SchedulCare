@@ -51,7 +51,7 @@ async def add_doctor(pincode: int):
         return Response(status_code=500, body=f"An error occurred: {str(e)}")
     
 @app.post("/setAddress", response_model = Response)
-async def set_address_for_doctor(doctor_email: Annotated[str, Body()], address: Annotated[Location, Body(embed=True)]):
+async def set_location_for_doctor(email: Annotated[str, Body()], location: Annotated[Location, Body(embed=True)]):
     """
     Endpoint to set the address for a doctor.
 
@@ -63,7 +63,7 @@ async def set_address_for_doctor(doctor_email: Annotated[str, Body()], address: 
         JSON response indicating success or failure.
     """
     try:
-        status_code, response = await doctor_service.set_address_for_doctor(doctor_email, address)
+        status_code, response = await doctor_service.set_location_for_doctor(email, location)
         return Response(status_code=status_code, body={"message": response})
     except Exception as e:
         return Response(status_code=500, body=f"An error occurred: {str(e)}")
