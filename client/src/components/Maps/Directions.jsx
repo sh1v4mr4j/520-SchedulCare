@@ -34,21 +34,18 @@ const Directions = () => {
   };
 
   const handleSourceLocationChange = (location) => {
-    console.log(location);
     setSource(location);
     setCurrentStep(1);
     derieveMapParams();
   };
 
   const handleDestinationLocationChange = (location) => {
-    console.log(location);
     setDestination(location);
     setCurrentStep(2);
     derieveMapParams();
   };
 
   const updateDirections = (e) => {
-    console.log(e.target.value);
     derieveMapParams(e.target.value);
   };
 

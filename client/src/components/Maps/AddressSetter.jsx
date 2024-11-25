@@ -54,7 +54,6 @@ const AddressSetter = ({
   };
 
   const onSubmitFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
     setShowAlert(true);
   };
 

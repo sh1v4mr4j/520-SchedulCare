@@ -22,7 +22,6 @@ export const updatePatientLocation = async (email, location) => {
     const url = ENDPOINTS.setPatientLocation();
     return updateLocation(url, email, location);
   } catch (error) {
-    console.error("Error updating location:", error.message);
     throw error;
   }
 };
@@ -32,7 +31,6 @@ export const updateDoctorLocation = async (email, location) => {
     const url = ENDPOINTS.setDoctorLocation();
     return updateLocation(url, email, location);
   } catch (error) {
-    console.error("Error updating location:", error.message);
     throw error;
   }
 };

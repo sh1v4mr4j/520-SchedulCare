@@ -57,14 +57,12 @@ const AddressSelector = () => {
   };
 
   const handleCancel = () => {
-    console.log("Clicked cancel button");
     setOpen(false);
   };
 
   const [location, setLocation] = useState();
 
   const handleLocationChange = (location) => {
-    console.log(location);
     setLocation(location);
   };
 
