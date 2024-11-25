@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Image, Layout, Menu } from "antd";
-import SchedulCareLogo from "../images/SchedulCareLogo.jpg";
+import SchedulCareLogo from "../images/SchedulCareLogo.png";
 
 const { Header } = Layout;
 

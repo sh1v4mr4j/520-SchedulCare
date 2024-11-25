@@ -28,3 +28,7 @@
 2. Create a variable in the said file `MONGO_URI=<your_mongo_url>`
    - When getting the Mongo URL, select the language to be Python.
    - **DO NOT COMMIT** this file. (thanks!)
+
+## Using cypress testing
+
+1. Once done creating an end-to-end test in client/cypress/e2e, view the test work using `npx cypress open`. Make sure the application is already running.
