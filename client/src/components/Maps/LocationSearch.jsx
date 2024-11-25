@@ -11,10 +11,9 @@ const LocationSearch = ({ customHandleLocation = undefined }) => {
   const handleLocationChange = (location) => {
     if (customHandleLocation) {
       customHandleLocation(location);
-    } else {
-      setMapParams({ q: encodeURIComponent(location.label) });
-      setMapMode("place");
     }
+    setMapParams({ q: encodeURIComponent(location.label) });
+    setMapMode("place");
   };
 
   return (
