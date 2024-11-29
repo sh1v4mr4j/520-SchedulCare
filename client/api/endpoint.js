@@ -5,4 +5,6 @@ export const ENDPOINTS = {
     addDoctor: `${API_BASE_URL}/doctors/add`,
     scheduleAppointment: (email) =>  `${API_BASE_URL}/patients/${email}/scheduleAppointment`,
     getPatientByEmail: (email) => `${API_BASE_URL}/patients/${email}/patient`,
+    createOrder: `${API_BASE_URL}/payments/orders`,
+    capturePayment : (order_id) => `${API_BASE_URL}/payments/orders/${order_id}/capture`,
   };
