@@ -1,5 +1,25 @@
 # 520-SchedulCare
 
+## Client setup
+
+Pre-Requisites :
+Node (22.9.0 or higher) and npm
+
+1. Navigate to `client\` dir
+
+2. Install all the client libraries using the command 
+   ```bash
+   npm install
+   ```
+
+3. To start the client application, run
+   ```bash
+   npm start
+   ```
+   The application runs on localhost:3000
+
+
+
 ## Server setup
 
 1. Install fastapi. Run from `server` dir
