@@ -36,6 +36,7 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],  # Allows all methods
     allow_headers=["*"],  # Allows all headers
+)
 
 # Add CORS middleware to the FastAPI app
 # app.add_middleware(
