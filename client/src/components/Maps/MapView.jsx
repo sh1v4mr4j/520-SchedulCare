@@ -15,6 +15,7 @@ const MapView = ({
     search: ["q"],
     place: ["q"],
     view: ["center"],
+    directions: ["origin", "destination"],
   };
 
   // Alerts and Spinners
@@ -87,7 +88,6 @@ const MapView = ({
     if (userLocation) {
       return userLocation;
     } else {
-      console.error("Geolocation is not supported by this browser.");
       return null;
     }
   };
@@ -105,7 +105,6 @@ const MapView = ({
         setMapSpinner(false);
       },
       (error) => {
-        console.error(error);
         setShowAlert(true);
         setMapLoaded(false);
         setMapSpinner(false);
@@ -124,7 +123,6 @@ const MapView = ({
   };
 
   useEffect(() => {
-    console.log("Use Effect", width, height, mapMode, mapParams);
     createMap(mapMode, mapParams);
   }, [mapMode, mapParams]);
 

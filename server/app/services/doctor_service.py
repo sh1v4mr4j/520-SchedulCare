@@ -59,7 +59,7 @@ class DoctorService:
             get_doctor_by_pincode = [doctor for doctor in mock_doctor if doctor["pincode"] == pincode]
             return 200, get_doctor_by_pincode
     
-    async def set_address_for_doctor(self, doctor_email: str, address: Location):
+    async def set_location_for_doctor(self, doctor_email: str, address: Location):
         """
         Set the address for a doctor
         :param doctor_email: Email of the doctor
