@@ -4,6 +4,7 @@ from fastapi import FastAPI
 from app.routers import patient_router
 from app.routers import doctor_router
 from app.shared.response import Response
+from app.routers import chat_router 
 
 
 def load_environment():
@@ -21,9 +22,19 @@ def load_environment():
 
 # Load the environment variables
 load_environment()
-
 # Create the FastAPI app
+from fastapi.middleware.cors import CORSMiddleware
+
 app = FastAPI()
+
+# Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allows all origins
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows all methods
+    allow_headers=["*"],  # Allows all headers
+)
 
 # Health check endpoint
 @app.get("/healthCheck", response_model=Response)
@@ -33,3 +44,4 @@ async def health_check():
 # Include the routers
 app.include_router(patient_router.app, prefix="/patients", tags=["patients"])
 app.include_router(doctor_router.app, prefix="/doctors", tags=["Doctor"])
+app.include_router(chat_router.router, prefix="/chat", tags=["chat"])
