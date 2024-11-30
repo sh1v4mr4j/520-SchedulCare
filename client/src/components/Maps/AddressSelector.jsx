@@ -11,7 +11,7 @@ const AddressSelector = () => {
   const { user } = useUserContext();
   const [messageApi, contextHolder] = message.useMessage();
 
-  const [open, setOpen] = useState(true); // fixme Change to false
+  const [open, setOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const showModal = () => {
     setOpen(true);
