@@ -1,0 +1,74 @@
+from fastapi import APIRouter, HTTPException
+from pydantic import BaseModel
+import google.generativeai as genai
+from typing import List, Optional
+
+# Initialize router
+router = APIRouter(
+    # prefix="/chat",
+    # tags=["chat"]
+)
+
+# Pydantic models for request/response
+class ChatMessage(BaseModel):
+    role: str
+    content: str
+
+class ChatRequest(BaseModel):
+    messages: List[ChatMessage]
+    temperature: Optional[float] = 0.7
+
+class ChatResponse(BaseModel):
+    response: str
+
+# Configure Gemini (you'll need to set this with your API key)
+GOOGLE_API_KEY = "AIzaSyDiFc8i8q20kHjppWfETtwe_5wMuPXFfHI"
+genai.configure(api_key=GOOGLE_API_KEY)
+
+# Initialize Gemini model
+model = genai.GenerativeModel('gemini-pro')
+
+HEALTHCARE_PROMPT = """You are a knowledgeable healthcare assistant. Your role is to:
+1. Listen carefully to patients' health concerns
+2. Provide general health guidance and suggestions
+3. Always remind patients to consult healthcare professionals for specific medical advice
+4. Be empathetic and professional in your responses
+5. Focus on general wellness and preventive care
+6. You can provide suggestions on basic medications the patient can take at home
+
+Please provide helpful information while maintaining appropriate medical disclaimers."""
+
+
+@router.post("/generate", response_model=ChatResponse)
+async def generate_chat_response(request: ChatRequest):
+    try:
+        # Convert messages to format Gemini expects
+        chat = model.start_chat(history=[])
+        chat.send_message(HEALTHCARE_PROMPT)
+        # Add all messages to chat history
+        for message in request.messages:
+            if message.role == "user":
+                chat.send_message(message.content)
+            elif message.role == "assistant":
+                
+                continue
+
+        # Generate response
+        response = chat.send_message(request.messages[-1].content)
+        
+        # Add healthcare disclaimer to response
+        full_response = (
+            response.text + 
+            "\n\nNote: This information is for general guidance only and should not "
+            "replace professional medical advice. Please consult with a healthcare "
+            "provider for specific medical concerns."
+        )
+
+        return ChatResponse(response=full_response)
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@router.get("/health")
+async def health_check():
+    return {"status": "healthy"}
