@@ -8,4 +8,7 @@ export const ENDPOINTS = {
   getPatientByEmail: (email) => `${API_BASE_URL}/patients/${email}/patient`,
   setPatientLocation: () => `${API_BASE_URL}/patients/setAddress`,
   setDoctorLocation: () => `${API_BASE_URL}/doctors/setAddress`,
+  createOrder: `${API_BASE_URL}/payments/orders`,
+  capturePayment: (order_id) =>
+    `${API_BASE_URL}/payments/orders/${order_id}/capture`,
 };

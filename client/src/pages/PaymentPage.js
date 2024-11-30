@@ -1,12 +1,16 @@
-import React from 'react';
+import React from "react";
+import Heading from "../components/Heading";
+import { PaymentForm } from "../components/PaymentForm";
 
-function PaymentPage() {
+const PaymentPage = () => {
   return (
-    <div>
-      <h1>Welcome to the payment Page</h1>
-      <p>This is the main page of your application.</p>
-    </div>
+    <>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '100vh' }}>
+      <Heading heading="Welcome to the payment Page" />
+      <PaymentForm />
+      </div>
+    </>
   );
-}
+};
 
 export default PaymentPage;
