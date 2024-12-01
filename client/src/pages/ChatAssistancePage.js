@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import ReactMarkdown from 'react-markdown';
 import { Layout, Input, Button, Card, Typography, Space } from 'antd';
 import { SendOutlined, RobotOutlined, UserOutlined } from '@ant-design/icons';
 import 'antd/dist/reset.css';
@@ -13,7 +14,7 @@ const ChatAssistancePage = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const sendMessage = async (userInput) => {
-    const prompt = "You are a medical health assistant. Given the patients problems, provide them with suggestions and home remedies and medical advice. Ask them to always consult a professional doctor for their problem.";
+    const prompt = "You are a helpful assistant.";
     const newMessage = { role: 'user', content: userInput };
     setMessages(prev => [...prev, newMessage]);
     setIsLoading(true);
@@ -25,6 +26,9 @@ const ChatAssistancePage = () => {
           newMessage
         ]
       });
+
+      console.log('Received response:', response);
+
       setMessages(prev => [...prev, { role: 'assistant', content: response.response }]);
     } catch (error) {
       console.error('Error generating chat response:', error);
@@ -44,7 +48,7 @@ const ChatAssistancePage = () => {
     <Layout style={{ minHeight: '100vh', backgroundColor: '#f0f2f5' }}>
       <Header style={{ backgroundColor: '#fff', padding: '0 24px', display: 'flex', justifyContent: 'center' }}>
         <Typography.Title level={3} style={{ margin: '16px 0', textAlign: 'center' }}>
-          AI Chat Assistant
+          AI Health Assistant
         </Typography.Title>
       </Header>
       
@@ -87,12 +91,16 @@ const ChatAssistancePage = () => {
                   bodyStyle={{ padding: '12px' }}
                 >
                   <Space>
-                    {message.role === 'user' ? (
+                    {/* {message.role === 'user' ? (
                       <UserOutlined style={{ color: '#1890ff' }} />
                     ) : (
                       <RobotOutlined style={{ color: '#52c41a' }} />
+                    )} */}
+                    {message.role === 'assistant' ? (
+                      <ReactMarkdown>{message.content}</ReactMarkdown>
+                    ) : (
+                      <Text>{message.content}</Text>
                     )}
-                    <Text>{message.content}</Text>
                   </Space>
                 </Card>
               ))}

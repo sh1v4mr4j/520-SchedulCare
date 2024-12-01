@@ -1,6 +1,6 @@
-
+// from app.models.chat import ChatRequest, ChatResponse
 export const generateChatResponse = async (chatRequest) => {
-    const url = "http://127.0.0.1:8000//chat/generate"
+    const url = "http://127.0.0.1:8000/chat/generate"
 
     const response = await fetch(url, {
     method: 'POST',
@@ -11,6 +11,6 @@ export const generateChatResponse = async (chatRequest) => {
   if (!response.ok) {
     throw new Error('Failed to generate chat response');
   }
-
+//   response ="hello"
   return response.json();
 };

@@ -10,7 +10,7 @@ import os
 router = APIRouter()
 
 # Configure Gemini (you'll need to set this with your API key)
-GOOGLE_API_KEY= os.getenv("MONGO_URI")
+GOOGLE_API_KEY= os.getenv("GEMINI_API_KEY")
 genai.configure(api_key=GOOGLE_API_KEY)
 
 # Initialize Gemini model
