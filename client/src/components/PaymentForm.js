@@ -1,14 +1,23 @@
 import React, { useState } from "react";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+import { ENDPOINTS } from "../api/endpoint";
+import "./styles/Modal.css";
 
 // Renders errors or successful transactions on the screen.
 const Message = ({ content }) => <p>{content}</p>;
 
-// TO DO : MOve out from here
-const API_BASE_URL = "http://127.0.0.1:8000/";
-const ENDPOINTS = {
-  createOrder: `${API_BASE_URL}payments/orders`,
-  capturePayment : (order_id) => `${API_BASE_URL}payments/orders/${order_id}/capture`,
+const Modal = ({ isOpen, onClose, title, content }) => {
+  if (!isOpen) return null;
+
+  return (
+    <div className="modal-overlay">
+      <div className="modal-content">
+        <h2 className> {title}</h2>
+        <p>{content}</p>
+        <button onClick={onClose}>Close</button>
+      </div>
+    </div>
+  );
 };
 
 
@@ -25,6 +34,16 @@ export const PaymentForm = () => {
   };
 
   const [message, setMessage] = useState("");
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalTitle, setModalTitle] = useState("");
+  const [modalContent, setModalContent] = useState("");
+
+  const updateModal = (title, content) => {
+    setModalTitle(title);
+    setModalContent(content);
+    setIsModalOpen(true);
+  };
 
   return (
     <div className="App">
@@ -72,6 +91,10 @@ export const PaymentForm = () => {
             } catch (error) {
               console.error(error);
               setMessage(`Could not initiate PayPal Checkout...${error}`);
+              updateModal(
+                "Transaction Failed",
+                `Could not initiate PayPal Checkout: ${error.message}`
+              );
             }
           }}
           onApprove={async (data, actions) => {
@@ -103,7 +126,11 @@ export const PaymentForm = () => {
                 const transaction =
                   orderData.purchase_units[0].payments.captures[0];
                 setMessage(
-                  `Transaction ${transaction.status}: ${transaction.id}. See console for all available details`
+                  `Transaction ${transaction.status}: ${transaction.id}.`
+                );
+                updateModal(
+                  "Transaction Successful",
+                  `Transaction ${transaction.status}: ${transaction.id}. Amount: $${transaction.amount.value}`
                 );
                 console.log("Capture result", orderData);
               }
@@ -112,10 +139,21 @@ export const PaymentForm = () => {
               setMessage(
                 `Sorry, your transaction could not be processed...${error}`
               );
+              updateModal(
+                "Transaction Failed",
+                `Sorry, your transaction could not be processed: ${error.message}`,
+                "error"
+              );
             }
           }}
         />
       </PayPalScriptProvider>
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        title={modalTitle}
+        content={modalContent}
+      />
       <Message content={message} />
     </div>
   );
