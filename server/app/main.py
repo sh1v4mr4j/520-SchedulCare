@@ -8,8 +8,6 @@ from app.shared.response import Response
 from app.routers import chat_router 
 from app.routers import payment_router
 
-
-
 def load_environment():
     """
     Load environment variables from .env file

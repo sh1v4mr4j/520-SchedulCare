@@ -11,7 +11,7 @@ import Navbar from "./components/Navbar";
 import PaymentPage from "./pages/PaymentPage";
 import DoctorPage from "./pages/Doctorpage";
 import MapViewPage from "./pages/MapViewPage";
-import ChatAssistantPage from "./pages/ChatAssistancePage";
+import ChatAssistancePage from "./pages/ChatAssistancePage";
 import PatientPage from "./pages/PatientPage";
 import MapView from "./components/Maps/MapView";
 import LocationSearch from "./components/Maps/LocationSearch";
@@ -55,7 +55,7 @@ const App = () => {
                     element={<GoogleMapsSearch />}
                   />
                 </Route>
-                <Route path="/chatassist" element={<ChatAssistantPage />} />
+                <Route path="/chatassist" element={<ChatAssistancePage />} />
                 {/* TODO: only to be used by Nikhil for now. Men at work kinda situation */}
                 <Route path="/test" element={<LocationSearch />} />
                 <Route path="/mapTest" element={<MapView />} />

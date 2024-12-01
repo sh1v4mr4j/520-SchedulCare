@@ -2,28 +2,41 @@ import React, { useState } from 'react';
 import { Layout, Input, Button, Card, Typography, Space } from 'antd';
 import { SendOutlined, RobotOutlined, UserOutlined } from '@ant-design/icons';
 import 'antd/dist/reset.css';
-import { generateChatResponse } from '../../api/services/chatService';
+import { generateChatResponse } from '../services/chatService';
 
 const { Header, Content } = Layout;
 const { Text } = Typography;
 
 const ChatAssistancePage = () => {
-  const [messages, setMessages] = useState([]);
   const [userInput, setUserInput] = useState('');
+  const [messages, setMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSendMessage = async () => {
+  const sendMessage = async (userInput) => {
+    const prompt = "You are a medical health assistant. Given the patients problems, provide them with suggestions and home remedies and medical advice. Ask them to always consult a professional doctor for their problem.";
     const newMessage = { role: 'user', content: userInput };
     setMessages(prev => [...prev, newMessage]);
     setIsLoading(true);
 
     try {
-      const response = await generateChatResponse(userInput);
+      const response = await generateChatResponse({
+        messages: [
+          { role: 'system', content: prompt },
+          newMessage
+        ]
+      });
       setMessages(prev => [...prev, { role: 'assistant', content: response.response }]);
     } catch (error) {
       console.error('Error generating chat response:', error);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleSendMessage = () => {
+    if (userInput.trim()) {
+      sendMessage(userInput);
+      setUserInput('');
     }
   };
 
@@ -105,13 +118,13 @@ const ChatAssistancePage = () => {
                 onChange={(e) => setUserInput(e.target.value)}
                 placeholder="Type your message..."
                 disabled={isLoading}
-                onPressEnter={handleSubmit}
+                onPressEnter={handleSendMessage}
               />
               <Button
                 size="large"
                 type="primary"
                 icon={<SendOutlined />}
-                onClick={handleSubmit}
+                onClick={handleSendMessage}
                 disabled={isLoading}
               >
                 Send
