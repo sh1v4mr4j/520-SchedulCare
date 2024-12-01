@@ -56,7 +56,3 @@ async def generate_chat_response(request: ChatRequest):
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-
-# @router.get("/health")
-# async def health_check():
-#     return {"status": "healthy"}
