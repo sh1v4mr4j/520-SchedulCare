@@ -2,45 +2,35 @@ import React, { useState } from 'react';
 import { Layout, Input, Button, Card, Typography, Space } from 'antd';
 import { SendOutlined, RobotOutlined, UserOutlined } from '@ant-design/icons';
 import 'antd/dist/reset.css';
+import { generateChatResponse } from '../../api/services/chatService';
 
 const { Header, Content } = Layout;
 const { Text } = Typography;
 
-function ChatAssistantPage() {
+const ChatAssistancePage = () => {
   const [messages, setMessages] = useState([]);
   const [userInput, setUserInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!userInput.trim()) return;
-
+  const handleSendMessage = async () => {
     const newMessage = { role: 'user', content: userInput };
     setMessages(prev => [...prev, newMessage]);
     setIsLoading(true);
 
     try {
-      const response = await fetch('http://localhost:8000/chat/generate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: [{role: "user",
-          content: userInput }]}),
-      });
-      
-      const data = await response.json();
-      setMessages(prev => [...prev, { role: 'assistant', content: data.response }]);
+      const response = await generateChatResponse(userInput);
+      setMessages(prev => [...prev, { role: 'assistant', content: response.response }]);
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Error generating chat response:', error);
     } finally {
       setIsLoading(false);
-      setUserInput('');
     }
   };
 
   return (
     <Layout style={{ minHeight: '100vh', backgroundColor: '#f0f2f5' }}>
-      <Header style={{ backgroundColor: '#fff', padding: '0 24px' }}>
-        <Typography.Title level={3} style={{ margin: '16px 0' }}>
+      <Header style={{ backgroundColor: '#fff', padding: '0 24px', display: 'flex', justifyContent: 'center' }}>
+        <Typography.Title level={3} style={{ margin: '16px 0', textAlign: 'center' }}>
           AI Chat Assistant
         </Typography.Title>
       </Header>
@@ -51,6 +41,8 @@ function ChatAssistantPage() {
             height: 'calc(100vh - 200px)',
             display: 'flex',
             flexDirection: 'column',
+            border: '1px solid #d9d9d9',
+            borderRadius: '4px',
           }}
           bodyStyle={{
             flex: 1,
@@ -132,4 +124,4 @@ function ChatAssistantPage() {
   );
 }
 
-export default ChatAssistantPage;
+export default ChatAssistancePage;

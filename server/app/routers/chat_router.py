@@ -2,27 +2,15 @@ from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 import google.generativeai as genai
 from typing import List, Optional
+from app.models.chat import ChatRequest, ChatResponse
+
+import os
 
 # Initialize router
-router = APIRouter(
-    # prefix="/chat",
-    # tags=["chat"]
-)
-
-# Pydantic models for request/response
-class ChatMessage(BaseModel):
-    role: str
-    content: str
-
-class ChatRequest(BaseModel):
-    messages: List[ChatMessage]
-    temperature: Optional[float] = 0.7
-
-class ChatResponse(BaseModel):
-    response: str
+router = APIRouter()
 
 # Configure Gemini (you'll need to set this with your API key)
-GOOGLE_API_KEY = "AIzaSyDiFc8i8q20kHjppWfETtwe_5wMuPXFfHI"
+GOOGLE_API_KEY= os.getenv("MONGO_URI")
 genai.configure(api_key=GOOGLE_API_KEY)
 
 # Initialize Gemini model
@@ -69,6 +57,6 @@ async def generate_chat_response(request: ChatRequest):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-@router.get("/health")
-async def health_check():
-    return {"status": "healthy"}
+# @router.get("/health")
+# async def health_check():
+#     return {"status": "healthy"}

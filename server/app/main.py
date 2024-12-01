@@ -28,24 +28,14 @@ load_environment()
 
 app = FastAPI()
 
-
-# Add CORS middleware
+# Add CORS middleware to the FastAPI app
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Allows all origins
+    allow_origins=["http://localhost:3000"],  # Adjust the origin to match your frontend
     allow_credentials=True,
-    allow_methods=["*"],  # Allows all methods
-    allow_headers=["*"],  # Allows all headers
+    allow_methods=["*"],  # Allow all HTTP methods
+    allow_headers=["*"],  # Allow all HTTP headers
 )
-
-# Add CORS middleware to the FastAPI app
-# app.add_middleware(
-#     CORSMiddleware,
-#     allow_origins=["http://localhost:3000"],  # Adjust the origin to match your frontend
-#     allow_credentials=True,
-#     allow_methods=["*"],  # Allow all HTTP methods
-#     allow_headers=["*"],  # Allow all HTTP headers
-# )
 
 # Health check endpoint
 @app.get("/healthCheck", response_model=Response)
