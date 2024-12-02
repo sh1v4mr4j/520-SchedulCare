@@ -27,7 +27,7 @@ const ChatAssistancePage = () => {
         ]
       });
 
-      console.log('Received response:', response);
+      console.log('Received response:', response); // removed
 
       setMessages(prev => [...prev, { role: 'assistant', content: response.response }]);
     } catch (error) {
@@ -91,11 +91,6 @@ const ChatAssistancePage = () => {
                   bodyStyle={{ padding: '12px' }}
                 >
                   <Space>
-                    {/* {message.role === 'user' ? (
-                      <UserOutlined style={{ color: '#1890ff' }} />
-                    ) : (
-                      <RobotOutlined style={{ color: '#52c41a' }} />
-                    )} */}
                     {message.role === 'assistant' ? (
                       <ReactMarkdown>{message.content}</ReactMarkdown>
                     ) : (
