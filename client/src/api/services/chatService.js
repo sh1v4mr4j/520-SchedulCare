@@ -1,7 +1,8 @@
-export const generateChatResponse = async (chatRequest) => {
-    const url = "http://127.0.0.1:8000/chat/generate"
+import { ENDPOINTS } from "../endpoint";
 
-    const response = await fetch(url, {
+export const generateChatResponse = async (chatRequest) => {
+
+    const response = await fetch(ENDPOINTS.cahtAssistant, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(chatRequest),

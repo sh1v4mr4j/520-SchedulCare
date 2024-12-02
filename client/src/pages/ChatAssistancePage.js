@@ -3,7 +3,7 @@ import ReactMarkdown from 'react-markdown';
 import { Layout, Input, Button, Card, Typography, Space } from 'antd';
 import { SendOutlined, RobotOutlined, UserOutlined } from '@ant-design/icons';
 import 'antd/dist/reset.css';
-import { generateChatResponse } from '../services/chatService';
+import { generateChatResponse } from '../api/services/chatService';
 
 const { Header, Content } = Layout;
 const { Text } = Typography;
