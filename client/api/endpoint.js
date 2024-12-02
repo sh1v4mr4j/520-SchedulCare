@@ -7,5 +7,5 @@ export const ENDPOINTS = {
     getPatientByEmail: (email) => `${API_BASE_URL}/patients/${email}/patient`,
     createOrder: `${API_BASE_URL}/payments/orders`,
     capturePayment : (order_id) => `${API_BASE_URL}/payments/orders/${order_id}/capture`,
-    chatassistant : `${API_BASE_URL}/chat/generate`
+    chatAssistant : `${API_BASE_URL}/chat/generate`
   };
