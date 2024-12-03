@@ -6,6 +6,7 @@ from app.routers import patient_router
 from app.routers import doctor_router
 from app.shared.response import Response
 from app.routers import payment_router
+from app.routers import chat_router
 
 
 def load_environment():
@@ -44,3 +45,4 @@ async def health_check():
 app.include_router(patient_router.app, prefix="/patients", tags=["patients"])
 app.include_router(doctor_router.app, prefix="/doctors", tags=["Doctor"])
 app.include_router(payment_router.app, prefix="/payments", tags=["Payments"])
+app.include_router(chat_router.router, prefix="/chat", tags=["chat"])
