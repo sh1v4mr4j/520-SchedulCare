@@ -27,7 +27,7 @@ const ChatAssistancePage = () => {
         ]
       });
 
-      console.log('Received response:', response); // removed
+      console.log('Received response:', response); // remove
 
       setMessages(prev => [...prev, { role: 'assistant', content: response.response }]);
     } catch (error) {

@@ -3,3 +3,4 @@ python-dotenv~=0.21.0
 fastapi~=0.115.5
 motor~=3.6.0
 paypal-server-sdk~=0.5.1
+google-generativeai=~0.8.3

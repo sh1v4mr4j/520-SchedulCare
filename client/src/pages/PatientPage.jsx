@@ -1,5 +1,5 @@
 import React from "react";
-import PatientForm from "../components/patientForm";
+import PatientForm from "../components/PatientForm";
 import Heading from "../components/Heading";
 
 const PatientPage = () => {

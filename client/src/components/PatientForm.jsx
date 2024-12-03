@@ -32,12 +32,6 @@ const PatientForm = () => {
         layout="horizontal"
         style={{ maxWidth: 600 }}
       >
-        <Form.Item label="Type">
-          <Radio.Group>
-            <Radio value="apple"> Patient </Radio>
-            <Radio value="pear"> Doctor </Radio>
-          </Radio.Group>
-        </Form.Item>
         <Form.Item label="Patient Name">
           <Input />
         </Form.Item>
