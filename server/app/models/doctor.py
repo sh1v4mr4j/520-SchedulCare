@@ -16,7 +16,7 @@ class Doctor(BaseModel):
 
 class Availability(BaseModel):
     doctor_email: str
-    doctor_pincode: str
+    doctor_pincode: int
     availabilityStart: str
     availabilityEnd: str
 

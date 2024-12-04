@@ -6,6 +6,7 @@ from app.models.doctor import Doctor
 from app.shared.mongo_utils import serialize_mongo_object
 from app.models.location import Location
 from app.tests.mock import mock_doctor
+from app.models.doctor import Availability
 
 class DoctorService:
     def __init__(self):
@@ -17,6 +18,9 @@ class DoctorService:
 
         # Patients collection
         self.doctor_collection = self.database["doctors"]
+
+        # Availability collection
+        self.availability_collection = self.database["availability"]
 
     def ping_mongo(self):
         """
@@ -75,3 +79,58 @@ class DoctorService:
             return 200, "Address updated successfully"
         except Exception as e:
             return 500, e
+
+
+    async def get_doctor_by_email(self, email: str):
+        """
+        Fetch a doctor's details by email.
+
+        Args:
+            email (str): The email of the doctor.
+
+        Returns:
+            dict: A dictionary containing the doctor's details or None if not found.
+        """
+        try:
+            doctor = await self.doctor_collection.find_one({"email": {"$eq": email}})
+            if doctor:
+                return {
+                    "name": doctor["name"],
+                    "email": doctor["email"],
+                    "specialisation": doctor.get("specialisation"),
+                    "pincode": doctor.get("pincode")
+                }
+            return None
+        except Exception as e:
+            print(f"An error occurred while fetching doctor by email: {e}")
+            return None
+    
+    async def save_availability(self, availability: Availability):
+        """
+        Save a doctor's availability to the database.
+
+        Args:
+            availability (Availability): The availability object to save.
+
+        Returns:
+            The saved availability object or an error message.
+        """
+        try:
+            # Check if availability already exists for the doctor
+            existing_availability = await self.availability_collection.find_one({"doctor_email": availability.doctor_email})
+            print(f"Existing availability for {availability.doctor_email}: {existing_availability}")  # Debugging line
+
+            if existing_availability:
+                # Update the existing availability 
+                await self.availability_collection.update_one(
+                    {"doctor_email": availability.doctor_email},
+                    {"$set": availability.dict()}
+                )
+                return availability  # Return updated availability
+            else:
+                # Logic to save new availability in the database
+                await self.availability_collection.insert_one(availability.dict())
+                return availability  # Return newly created availability
+        except Exception as e:
+            print(f"An error occurred while saving availability: {e}")
+            return None
