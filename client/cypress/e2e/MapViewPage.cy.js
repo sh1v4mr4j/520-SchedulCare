@@ -1,3 +1,5 @@
+const enterKey = { keyCode: 13 };
+
 describe("Map view page", () => {
   beforeEach(() => {
     cy.visit("/mapview");
@@ -21,7 +23,7 @@ describe("Map view page", () => {
       cy.get("#search").type("New York");
 
       // Press enter to search
-      cy.get("#search").type("{enter}");
+      cy.get("#search").trigger("keydown", enterKey);
     });
   });
 
