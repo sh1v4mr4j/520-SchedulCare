@@ -6,11 +6,14 @@ from app.models.patient import Patient, Appointment
 from app.shared.mongo_utils import serialize_mongo_object
 from app.models.location import Location
 from app.models.login import Login
+from app.services import otp_service
 from passlib.context import CryptContext
 
 import bcrypt
+import pyotp
 
 class PatientService:
+
     def __init__(self):
         self.uri = os.getenv("MONGO_URI")
         self.client = AsyncIOMotorClient(self.uri)
@@ -22,6 +25,7 @@ class PatientService:
         self.patient_collection = self.database["patients"]
 
         self.pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+        self.otp_service = otp_service.OTPService()
 
     def ping_mongo(self):
         """
@@ -59,11 +63,7 @@ class PatientService:
         patient.password = hashed_password.decode('utf-8')
 
         # Generate OTP secret and QR code
-        # otp_secret = otp_service.generate_otp_secret(patient.email)
-
-        # # Generate QR code for OTP
-        # img_byte_arr = otp_service.generate_qr_code(otp_secret, patient.email)
-        # qr_code_base64 = base64.b64encode(img_byte_arr.getvalue()).decode('utf-8')
+        otp_secret = otp_service.generate_otp_secret(patient.email)
 
         # Add the patient to the database
         created_time = await self.patient_collection.insert_one(patient.model_dump())
@@ -120,8 +120,28 @@ class PatientService:
         if not self.pwd_context.verify(login.password, patient["password"]):
             return 401, "Invalid Credentials"
         
+        # Generate an OTP secret for the patient
+        otp_secret= self.otp_service.generate_otp_secret(patient["otp_secret"])
+
+        # Update the patient's OTP secret in the database
+        await self.patient_collection.update_one({"email":login.email}, {"$set": {"otp_secret": otp_service}})
+        
         # If authentication is successful, return a success response
-        return 200, "Login successful"
+        return 200, {"message":"Login successful","otp_secret":otp_secret}
+
+#Discuss placement
+    async def verify_patient_otp(self, email: str, otp: str):
+        """
+        Verify the OTP for a patient.
+        """
+        patient = await self.patient_collection.find_one({"email": email})
+        if not patient:
+            return 401, "Invalid Credentials"
+        
+        if self.otp_service.verify_otp(patient["otp_secret"], otp):
+            return 200, "OTP Verified"
+        else:
+            return 403, "Invalid OTP"
     
 
 

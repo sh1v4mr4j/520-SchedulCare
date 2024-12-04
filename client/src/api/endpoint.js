@@ -13,4 +13,6 @@ export const ENDPOINTS = {
     `${API_BASE_URL}/payments/orders/${order_id}/capture`,
   sendEmail: `${API_BASE_URL}/email/send-email`,
   chatAssistant: `${API_BASE_URL}/chat/generate`,
+  patientLogin: `${API_BASE_URL}/patients/patientLogin`,
+  doctorLogin: `${API_BASE_URL}/doctors/doctorLogin`,
 };

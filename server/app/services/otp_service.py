@@ -1,29 +1,35 @@
-# app/services/otp_service.py
 import pyotp
-import qrcode
+import base64
 from io import BytesIO
+import qrcode
 
 class OTPService:
-    def generate_otp_secret(self, email: str) -> str:
-        """
-        Generate a new OTP secret for a given email.
-        """
-        return pyotp.random_base32()
+    def __init__(self):
+        self.otp = pyotp.TOTP(pyotp.random_base32())  # Generate a random secret key for OTP
 
-    def generate_qr_code(self, otp_secret: str, email: str) -> BytesIO:
+    def generate_otp(self, secret: str) -> str:
         """
-        Generate a QR code image for the OTP secret.
+        Generates OTP using the secret key for the user.
         """
-        otp_uri = pyotp.totp.TOTP(otp_secret).provisioning_uri(name=email, issuer_name="YourAppName")
-        qr = qrcode.make(otp_uri)
+        totp = pyotp.TOTP(secret)
+        return totp.now()
+
+    def verify_otp(self, secret: str, otp: str) -> bool:
+        """
+        Verifies the OTP entered by the user against the stored secret.
+        """
+        totp = pyotp.TOTP(secret)
+        return totp.verify(otp)
+
+    def generate_qr_code(self, secret: str, user_email: str) -> BytesIO:
+        """
+        Generates a QR code image for OTP configuration.
+        """
+        totp_uri = self.otp.provisioning_uri(user_email, issuer_name="Schedulcare")
+        img = qrcode.make(totp_uri)
         img_byte_arr = BytesIO()
-        qr.save(img_byte_arr, format='PNG')
+        img.save(img_byte_arr)
         img_byte_arr.seek(0)
         return img_byte_arr
 
-    def verify_otp(self, otp_secret: str, otp_code: str) -> bool:
-        """
-        Verify the provided OTP code against the stored OTP secret.
-        """
-        totp = pyotp.TOTP(otp_secret)
-        return totp.verify(otp_code)
+

@@ -1,8 +1,9 @@
 from typing import Annotated
-from fastapi import APIRouter, Body,HTTPException
+from fastapi import APIRouter, Body,HTTPException,Depends
 
 from app.models.patient import Patient, Appointment
 from app.models.login import Login
+from app.models.otp import OTPVerifyRequest
 from app.services.patient_service import PatientService
 from app.services.otp_service import OTPService
 from app.services.email_service import EmailService
@@ -70,3 +71,6 @@ async def login_patient(data: Login):
     """
     status_code, response = await patient_service.login_patient(data)
     return Response(status_code=status_code, body=response)
+
+
+

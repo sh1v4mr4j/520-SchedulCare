@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Form, Input, Button, Checkbox, Select, notification } from 'antd';
 import { UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
+import { ENDPOINTS } from '../api/endpoint';
 
 const LoginPage = () => {
   const [role, setRole] = useState('');  // State to track the selected role
@@ -19,8 +20,8 @@ const LoginPage = () => {
 
     // Define the login URL based on the selected role
     const loginUrl = role === 'patient'
-      ? 'http://127.0.0.1:8000/patients/patientLogin'
-      : 'http://127.0.0.1:8000/doctors/doctorLogin';
+      ? ENDPOINTS.patientLogin
+      : ENDPOINTS.doctorLogin;
 
     // Post the username, password, and email to the respective API endpoint
     fetch(loginUrl, {
@@ -46,7 +47,9 @@ const LoginPage = () => {
             description: `Welcome, ${role.charAt(0).toUpperCase() + role.slice(1)}!`,
             duration: 3,
           });
-          navigate(`/${role.charAt(0).toUpperCase()+role.slice(1)}Page`);
+          // navigate(`/${role.charAt(0).toUpperCase()+role.slice(1)}Page`);
+          navigate('/otp', { state: { otpSecret: data.otpSecret } });
+
         }
       })
       .catch((error) => {
