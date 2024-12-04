@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { ENDPOINTS } from "../api/endpoint";
 import "./styles/Modal.css";
+import { useUserContext } from "../context/UserContext";
 
 // Renders errors or successful transactions on the screen.
 const Message = ({ content }) => <p>{content}</p>;
@@ -37,6 +38,7 @@ export const PaymentForm = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
   const [modalContent, setModalContent] = useState("");
+  const { user } = useUserContext();
 
   const updateModal = (title, content) => {
     setModalTitle(title);
@@ -53,7 +55,7 @@ export const PaymentForm = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          email: "nkparikh@umass.edu",
+          email: user.email,
           subject: "Payment Confirmation",
           message: `Thank you for your purchase! Your transaction ID is ${transaction.id}. Amount: $${transaction.amount.value}.`,
         }),
@@ -93,7 +95,7 @@ export const PaymentForm = () => {
                     {
                       id: "YOUR_PRODUCT_ID",
                       name: "YOUR_PRODUCT_ID",
-                      price: 100.0,
+                      price: 1100.0,
                       quantity: 1,
                     },
                   ],
