@@ -74,6 +74,7 @@ const Directions = () => {
               <Col span={12}>
                 <AddressSetter
                   label="Source"
+                  id="source"
                   setSelectedLocation={handleSourceLocationChange}
                 />
               </Col>
@@ -83,6 +84,7 @@ const Directions = () => {
                 <AddressSetter
                   disabled={!source}
                   label="Destination"
+                  id="destination"
                   setSelectedLocation={handleDestinationLocationChange}
                 />
               </Col>
