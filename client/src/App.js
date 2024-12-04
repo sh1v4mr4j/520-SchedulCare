@@ -9,7 +9,7 @@ import { Layout } from "antd";
 import HomePage from "./pages/HomePage";
 import Navbar from "./components/Navbar";
 import PaymentPage from "./pages/PaymentPage";
-import DoctorPage from "./pages/Doctorpage";
+import DoctorPage from "./pages/DoctorPage";
 import MapViewPage from "./pages/MapViewPage";
 import ChatAssistancePage from "./pages/ChatAssistancePage";
 import PatientPage from "./pages/PatientPage";
