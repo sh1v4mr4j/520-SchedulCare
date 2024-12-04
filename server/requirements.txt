@@ -8,3 +8,4 @@ pyotp ~= 2.9.0
 qrcode~=8.0
 pillow~=10.4.0
 passlib
+fastapi-mail~=1.4.2
