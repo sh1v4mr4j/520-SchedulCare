@@ -84,10 +84,8 @@ async def get_doctor(email: str):
     """
     try:
         
-        doctor_details = await doctor_service.get_doctor_by_email(email)
-        if not doctor_details:
-            raise HTTPException(status_code=404, detail="Doctor not found")
-        return Response(status_code=200, body=doctor_details)
+        status_code, doctor_details = await doctor_service.get_doctor_by_email(email)
+        return Response(status_code=status_code, body=doctor_details)
     except Exception as e:
         return Response(status_code=500, body=f"An error occurred: {str(e)}")
     
@@ -106,9 +104,8 @@ async def save_availability(availability: DoctorSchedule):
         # Logic to save availability in the database
         # You can create a new service method to handle this
         # For example:
-        await doctor_service.save_availability(availability)
-        
-        return Response(status_code=201, body={"message": "Availability saved successfully"})
+        status_code, response = await doctor_service.save_availability(availability)
+        return Response(status_code=status_code, body={"message": response})
     except Exception as e:
         return Response(status_code=500, body=f"An error occurred: {str(e)}")
     

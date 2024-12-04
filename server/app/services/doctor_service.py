@@ -94,16 +94,15 @@ class DoctorService:
         try:
             doctor = await self.doctor_collection.find_one({"email": {"$eq": email}})
             if doctor:
-                return {
+                return 200, {
                     "name": doctor["name"],
                     "email": doctor["email"],
                     "specialisation": doctor.get("specialisation"),
                     "pincode": doctor.get("pincode")
                 }
-            return None
+            
         except Exception as e:
-            print(f"An error occurred while fetching doctor by email: {e}")
-            return None
+            return 500, e
     
     async def save_availability(self, availability: DoctorSchedule):
         """
@@ -126,11 +125,10 @@ class DoctorService:
                     {"doctor_email": availability.doctor_email},
                     {"$set": availability.dict()}
                 )
-                return availability  # Return updated availability
+                return 200, "Availability saved successfully"  # Return updated availability
             else:
                 # Logic to save new availability in the database
                 await self.availability_collection.insert_one(availability.dict())
-                return availability  # Return newly created availability
+                return 200, "Availability saved successfully"  # Return newly created availability
         except Exception as e:
-            print(f"An error occurred while saving availability: {e}")
-            return None
+            return 500, e
