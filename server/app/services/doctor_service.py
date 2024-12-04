@@ -6,7 +6,7 @@ from app.models.doctor import Doctor
 from app.shared.mongo_utils import serialize_mongo_object
 from app.models.location import Location
 from app.tests.mock import mock_doctor
-from app.models.doctor import Availability
+from app.models.doctor import DoctorSchedule
 
 class DoctorService:
     def __init__(self):
@@ -20,7 +20,7 @@ class DoctorService:
         self.doctor_collection = self.database["doctors"]
 
         # Availability collection
-        self.availability_collection = self.database["availability"]
+        self.availability_collection = self.database["doctorschedule"]
 
     def ping_mongo(self):
         """
@@ -105,12 +105,12 @@ class DoctorService:
             print(f"An error occurred while fetching doctor by email: {e}")
             return None
     
-    async def save_availability(self, availability: Availability):
+    async def save_availability(self, availability: DoctorSchedule):
         """
         Save a doctor's availability to the database.
 
         Args:
-            availability (Availability): The availability object to save.
+            availability (DoctorSchedule): The availability object to save.
 
         Returns:
             The saved availability object or an error message.

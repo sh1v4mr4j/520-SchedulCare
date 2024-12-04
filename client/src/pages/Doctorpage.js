@@ -18,7 +18,7 @@ const DoctorPage = () => {
     const fetchDoctorDetails = async () => {
       try {
         const email = "edsnowden@mbbs.com";
-        const response = await fetch(ENDPOINTS.getDoctorByEmail(email)); // Correct if your route is /doctors/doctor/:email        
+        const response = await fetch(ENDPOINTS.getDoctorByEmail(email)); 
 
         if (!response.ok) {
           throw new Error('Failed to fetch doctor details');
@@ -58,8 +58,8 @@ const DoctorPage = () => {
     const availability = {
       doctor_email: doctorDetails.email, 
       doctor_pincode: doctorDetails.pincode, 
-      availabilityStart: availabilityStartDate.toISOString().split('T')[0], 
-      availabilityEnd: availabilityEndDate.toISOString().split('T')[0]   
+      startDate: availabilityStartDate.toISOString().split('T')[0], 
+      endDate: availabilityEndDate.toISOString().split('T')[0]   
      
     };
 

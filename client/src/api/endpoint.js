@@ -13,6 +13,6 @@ export const ENDPOINTS = {
     `${API_BASE_URL}/payments/orders/${order_id}/capture`,
   chatAssistant: `${API_BASE_URL}/chat/generate`,
   getDoctorByEmail: (email) => `${API_BASE_URL}/doctors/doctor/${email}`,
-  setDoctorAvailability: `${API_BASE_URL}/doctors/doctor/availability`
+  setDoctorAvailability: `${API_BASE_URL}/doctors/doctor/doctorSchedule`
 
 };

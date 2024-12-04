@@ -6,7 +6,7 @@ from app.models.doctor import Doctor
 
 from app.shared.response import Response
 from app.models.location import Location
-from app.models.doctor import Availability  # Import the Availability model
+from app.models.doctor import DoctorSchedule  
 
 
 app = APIRouter()
@@ -91,13 +91,13 @@ async def get_doctor(email: str):
     except Exception as e:
         return Response(status_code=500, body=f"An error occurred: {str(e)}")
     
-@app.post("/doctor/availability", response_model=Response)
-async def save_availability(availability: Availability):
+@app.post("/doctor/doctorSchedule", response_model=Response)
+async def save_availability(availability: DoctorSchedule):
     """
     Endpoint to save a doctor's availability.
 
     Args:
-        availability (Availability): An Availability object containing availability details.
+        availability (DoctorSchedule): An DoctorSchedule object containing availability details.
 
     Returns:
         JSON response indicating success or failure.
