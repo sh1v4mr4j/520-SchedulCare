@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from typing import Optional
+from datetime import date
 
 from app.models.location import Location
 
@@ -18,3 +19,4 @@ class Patient(BaseModel):
     pincode:int
     appointments: list[Appointment]  = []
     address: Optional[Location] = {}
+    otp_secret:str=""

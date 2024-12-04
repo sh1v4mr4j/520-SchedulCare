@@ -5,6 +5,10 @@ from motor.motor_asyncio import AsyncIOMotorClient
 from app.models.patient import Patient, Appointment
 from app.shared.mongo_utils import serialize_mongo_object
 from app.models.location import Location
+from app.models.login import Login
+from passlib.context import CryptContext
+
+import bcrypt
 
 class PatientService:
     def __init__(self):
@@ -16,6 +20,8 @@ class PatientService:
 
         # Patients collection
         self.patient_collection = self.database["patients"]
+
+        self.pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
     def ping_mongo(self):
         """
@@ -43,11 +49,25 @@ class PatientService:
         :param patient: Patient object
         :return: Created time of the record
         """
-        print("Jai shree ram")
-        resp = await self.patient_collection.insert_one(patient.model_dump())
-        print("JSR")
-        created_time = await self.patient_collection.find_one({"id": resp.inserted_id})
-        return created_time
+        # Check if the patient already exists in the database
+        existing_patient = await self.patient_collection.find_one({"email": patient.email})
+        if existing_patient:
+            return 400, "Patient already registered"
+
+        # Hash the password before storing it
+        hashed_password = bcrypt.hashpw(patient.password.encode('utf-8'), bcrypt.gensalt())
+        patient.password = hashed_password.decode('utf-8')
+
+        # Generate OTP secret and QR code
+        # otp_secret = otp_service.generate_otp_secret(patient.email)
+
+        # # Generate QR code for OTP
+        # img_byte_arr = otp_service.generate_qr_code(otp_secret, patient.email)
+        # qr_code_base64 = base64.b64encode(img_byte_arr.getvalue()).decode('utf-8')
+
+        # Add the patient to the database
+        created_time = await self.patient_collection.insert_one(patient.model_dump())
+        return 200, created_time
     
     async def scheduleAppointment(self, email: str, appointmentDetails: Appointment):
         """
@@ -85,8 +105,23 @@ class PatientService:
         except Exception as e:
             return 500, e
 
-
-   
+    async def login_patient(self, login: Login):
+        """
+        Login a patient with email and password.
+        """
+        # Retrieve the patient data based on the provided email
+        patient = await self.patient_collection.find_one({"email": login.email})
+        
+        # If the patient does not exist, raise an exception to prompt the user to register
+        if not patient:
+            return 401, "Invalid Credentials"
+        
+        # Verify if the provided password matches the stored hashed password
+        if not self.pwd_context.verify(login.password, patient["password"]):
+            return 401, "Invalid Credentials"
+        
+        # If authentication is successful, return a success response
+        return 200, "Login successful"
     
 
 
