@@ -20,7 +20,6 @@ const Modal = ({ isOpen, onClose, title, content }) => {
   );
 };
 
-
 export const PaymentForm = () => {
   const initialOptions = {
     "client-id": "test",
@@ -43,6 +42,32 @@ export const PaymentForm = () => {
     setModalTitle(title);
     setModalContent(content);
     setIsModalOpen(true);
+  };
+
+  const sendEmail = async (transaction) => {
+    try {
+      const url = ENDPOINTS.sendEmail;
+      const emailResponse = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: "nkparikh@umass.edu",
+          subject: "Payment Confirmation",
+          message: `Thank you for your purchase! Your transaction ID is ${transaction.id}. Amount: $${transaction.amount.value}.`,
+        }),
+      });
+
+      if (!emailResponse.ok) {
+        throw new Error("Failed to send email");
+      }
+      const emailData = await emailResponse.json();
+      console.log("Email sent successfully:", emailData);
+    } catch (error) {
+      console.error("Error sending email:", error);
+      setMessage(`Error sending email: ${error.message}`);
+    }
   };
 
   return (
@@ -75,12 +100,12 @@ export const PaymentForm = () => {
                 }),
               });
 
-              const responseOrderData= await response.json();
+              const responseOrderData = await response.json();
               const orderData = JSON.parse(responseOrderData);
 
               if (orderData && orderData.id) {
                 return orderData.id;
-            } else {
+              } else {
                 const errorDetail = orderData?.details?.[0];
                 const errorMessage = errorDetail
                   ? `${errorDetail.issue} ${errorDetail.description} (${orderData.debug_id})`
@@ -100,15 +125,12 @@ export const PaymentForm = () => {
           onApprove={async (data, actions) => {
             try {
               const url = ENDPOINTS.capturePayment(data?.orderID);
-              const response = await fetch(
-                url,
-                {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                }
-              );
+              const response = await fetch(url, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              });
 
               const responseOrderData = await response.json();
               const orderData = JSON.parse(responseOrderData);
@@ -125,6 +147,11 @@ export const PaymentForm = () => {
               } else {
                 const transaction =
                   orderData.purchase_units[0].payments.captures[0];
+
+                if (transaction.status === "COMPLETED") {
+                  await sendEmail(transaction);
+                }
+
                 setMessage(
                   `Transaction ${transaction.status}: ${transaction.id}.`
                 );
