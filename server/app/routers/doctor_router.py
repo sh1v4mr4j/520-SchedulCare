@@ -1,4 +1,3 @@
-from http.client import HTTPException
 from typing import Annotated
 from fastapi import APIRouter, Body
 from app.services.doctor_service import DoctorService
