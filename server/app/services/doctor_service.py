@@ -54,7 +54,6 @@ class DoctorService:
         Gets all doctor in the given area (pincode)
         """
         try:
-            # doctors = await self.doctor_collection.find_one({"pincode": pincode})
             doctors = []
             async for doctor in self.doctor_collection.find({"pincode": pincode}):
                 doctors.append(doctor)
