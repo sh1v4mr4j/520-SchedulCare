@@ -11,12 +11,12 @@ from app.routers import payment_router
 from app.routers import email_router
 from app.routers import chat_router
 from app.routers import appointment_router
+from app.routers import mfa_router
 
 def load_environment():
     """
     Load environment variables from .env file
     """
-    print(sys.argv)
     run_mode = sys.argv[1] if len(sys.argv) > 1 else "prod"
     print(f"Running in {run_mode} mode")
     if run_mode == "dev":
@@ -51,3 +51,4 @@ app.include_router(payment_router.app, prefix="/payments", tags=["Payments"])
 app.include_router(email_router.app, prefix="/email", tags=["EmailNotification"])
 app.include_router(chat_router.app, prefix="/chat", tags=["Chat"])
 app.include_router(appointment_router.app, prefix="/appointment", tags=["Appointment"])
+app.include_router(mfa_router.router, prefix="/mfa", tags=["otp"])
