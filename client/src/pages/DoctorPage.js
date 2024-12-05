@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Button, message, Typography } from 'antd';
-// import Calendar from 'react-calendar';
-// import 'react-calendar/dist/Calendar.css';
 import 'antd/dist/reset.css';
 import { fetchDoctorDetails, saveDoctorAvailability } from '../api/services/doctorService';
 import DoctorLayout from '../components/DoctorForm';
@@ -14,7 +12,7 @@ const { Text } = Typography;
 const DoctorPage = () => {
   const [doctorDetails, setDoctorDetails] = useState(null);
   const [availabilityStartDate, setAvailabilityStartDate] = useState(dayjs());
-  const [availabilityEndDate, setAvailabilityEndDate] = useState(dayjs);
+  const [availabilityEndDate, setAvailabilityEndDate] = useState(dayjs());
 
   useEffect(() => {
     const fetchDetails = async () => {
@@ -60,7 +58,7 @@ const DoctorPage = () => {
     };
 
     try {
-      await saveDoctorAvailability(availability); // Use the new service function
+      await saveDoctorAvailability(availability);
       message.success('Availability saved successfully!');
     } catch (error) {
       console.error('Error saving availability:', error);
