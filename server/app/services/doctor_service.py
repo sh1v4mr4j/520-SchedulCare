@@ -118,7 +118,8 @@ class DoctorService:
             return 401, "Invalid Credentials"
         
         # If authentication is successful, return a success response
-        return 200, "Login successful"
+        return 200, serialize_mongo_object(doctor)
+    
     async def get_doctor_by_email(self, email: str):
         """
         Fetch a doctor's details by email.
