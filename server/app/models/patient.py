@@ -16,8 +16,6 @@ class Patient(BaseModel):
     dob: str
     gender: str
     password: str
-    pincode:int
     appointments: list[Appointment]  = []
     address: Optional[Location] = {}
-    otp_secret:str=""
-    otp_expiry_time: Optional[datetime] = None
+    secret: Optional[str] = None

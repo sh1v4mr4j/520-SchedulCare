@@ -64,7 +64,6 @@ const RegistrationPage = () => {
         dob: values.dob,
         gender: values.gender,
         password: values.password,
-        pincode: "1234",
       };
       fetch("http://127.0.0.1:8000/patients/addPatient", {
         method: "POST",
@@ -373,9 +372,7 @@ const RegistrationPage = () => {
             <Form.Item
               name="gender"
               label="Gender"
-              rules={[
-                { required: true, message: "Please select your gender" },
-              ]}
+              rules={[{ required: true, message: "Please select your gender" }]}
               className="form-item"
             >
               <Radio.Group>
@@ -388,9 +385,7 @@ const RegistrationPage = () => {
             <Form.Item
               name="address"
               label="Address"
-              rules={[
-                { required: true, message: "Please input your address" },
-              ]}
+              rules={[{ required: true, message: "Please input your address" }]}
               className="form-item"
             >
               <Input placeholder="Pincode" />
@@ -399,9 +394,7 @@ const RegistrationPage = () => {
             <Form.Item
               name="pincode"
               label="Pincode"
-              rules={[
-                { required: true, message: "Please input your pincode" },
-              ]}
+              rules={[{ required: true, message: "Please input your pincode" }]}
               className="form-item"
             >
               <Input type="number" placeholder="Pincode" />
@@ -428,9 +421,7 @@ const RegistrationPage = () => {
             <Form.Item
               name="gender"
               label="Gender"
-              rules={[
-                { required: true, message: "Please select your gender" },
-              ]}
+              rules={[{ required: true, message: "Please select your gender" }]}
               className="form-item"
             >
               <Radio.Group>

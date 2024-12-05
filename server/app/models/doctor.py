@@ -13,6 +13,7 @@ class Doctor(BaseModel):
     pincode:int
     scheduledApointment: bool = False
     location: Optional[Location] = {}
+    secret: Optional[str] = None
 
 class Availability(BaseModel):
     doctor_email: str

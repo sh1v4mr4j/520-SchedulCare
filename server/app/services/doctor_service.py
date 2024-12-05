@@ -7,8 +7,11 @@ from app.shared.mongo_utils import serialize_mongo_object
 from app.models.location import Location
 from app.tests.mock import mock_doctor
 from app.models.login import Login
-from passlib.context import CryptContext
 import bcrypt
+
+from app.services.mfa_service import MFAService
+
+mfa_service = MFAService()
 
 class DoctorService:
     def __init__(self):
@@ -55,6 +58,9 @@ class DoctorService:
         # Hash the password before storing it
         hashed_password = bcrypt.hashpw(doctor.password.encode('utf-8'), bcrypt.gensalt())
         doctor.password = hashed_password
+
+        secret = mfa_service.generate_mfa_secret()
+        doctor.secret = secret
 
         # Return the response with a success message and QR code
         resp = await self.doctor_collection.insert_one(doctor.model_dump())

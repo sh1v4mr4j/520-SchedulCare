@@ -19,4 +19,6 @@ export const ENDPOINTS = {
   doctorLogin: `${API_BASE_URL}/doctors/doctorLogin`,
   getRegistrationQrCode: `${API_BASE_URL}/mfa/generateQrCode`,
   verifyOtp: `${API_BASE_URL}/mfa/verifyOtp`,
+  addPatient: `${API_BASE_URL}/patients/addPatient`,
+  addDoctor: `${API_BASE_URL}/doctors/addDoctor`,
 };

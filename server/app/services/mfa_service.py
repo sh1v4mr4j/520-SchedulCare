@@ -7,6 +7,12 @@ class MFAService:
     def __init__(self):
         self.otp = pyotp.TOTP(pyotp.random_base32())  # Generate a random secret key for OTP
 
+    def generate_mfa_secret(self):
+        """
+        Generate a random secret key for OTP.
+        """
+        return pyotp.random_base32()
+
     def generate_otp(self, secret: str) -> str:
         """
         Generates OTP using the secret key for the user.

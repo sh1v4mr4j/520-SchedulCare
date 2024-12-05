@@ -1,8 +1,7 @@
 # otp_router.py
 from typing import Annotated
-from fastapi import APIRouter, Body, HTTPException
+from fastapi import APIRouter, Body
 from pydantic import BaseModel
-from app.services.otp_service import OTPService
 from app.services.mfa_service import MFAService
 from app.shared.response import Response
 
@@ -14,19 +13,8 @@ class OTPVerifyRequest(BaseModel):
 # Initialize the router
 router = APIRouter()
 
-# Initialize the OTP service
-otp_service = OTPService()
+# Initialize the MFA service
 mfa_service = MFAService()
-
-@router.post("/verify_otp")
-async def verify_otp(data: OTPVerifyRequest):
-    otp = data.otp
-    otp_secret = data.secret
-
-    if otp_service.verify_otp(otp_secret, otp):
-        return {"status": "success"}
-    else:
-        raise HTTPException(status_code=401, detail="Invalid OTP")
 
 @router.post("/generateQrCode", response_model=Response)
 async def generate_qr_code(email: Annotated[str, Body(embed=True)]):

@@ -19,7 +19,7 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 async def health_check():
     return Response(status_code=200, body="I will make sure you're alive.")
 
-@app.post("/add", response_model = Response)
+@app.post("/addDoctor", response_model = Response)
 async def add_doctor(doctor: Annotated[Doctor, Body()]):
     """
     Endpoint to add a new doctor to the database.

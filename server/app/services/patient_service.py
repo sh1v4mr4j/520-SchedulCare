@@ -6,16 +6,18 @@ from app.models.patient import Patient, Appointment
 from app.shared.mongo_utils import serialize_mongo_object
 from app.models.location import Location
 from app.models.login import Login
-from app.services import otp_service
 from passlib.context import CryptContext
+from app.services.mfa_service import MFAService
 
 import bcrypt
-import pyotp
+
+mfa_service = MFAService()
 
 class PatientService:
 
     def __init__(self):
         self.uri = os.getenv("MONGO_URI")
+        print('uri', self.uri)
         self.client = AsyncIOMotorClient(self.uri)
 
         # Keep the database and collection as instance variables
@@ -25,7 +27,6 @@ class PatientService:
         self.patient_collection = self.database["patients"]
 
         self.pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-        self.otp_service = otp_service.OTPService()
 
     def ping_mongo(self):
         """
@@ -62,12 +63,12 @@ class PatientService:
         hashed_password = bcrypt.hashpw(patient.password.encode('utf-8'), bcrypt.gensalt())
         patient.password = hashed_password.decode('utf-8')
 
-        # Generate OTP secret and QR code
-        otp_secret = otp_service.generate_otp_secret(patient.email)
+        secret = mfa_service.generate_mfa_secret()
+        patient.secret = secret
 
         # Add the patient to the database
         created_time = await self.patient_collection.insert_one(patient.model_dump())
-        return 200, created_time
+        return 200, 'Patient added successfully'
     
     async def scheduleAppointment(self, email: str, appointmentDetails: Appointment):
         """
@@ -120,14 +121,8 @@ class PatientService:
         if not self.pwd_context.verify(login.password, patient["password"]):
             return 401, "Invalid Credentials"
         
-        # Generate an OTP secret for the patient
-        otp_secret= self.otp_service.generate_otp_secret(patient["otp_secret"])
-
-        # Update the patient's OTP secret in the database
-        await self.patient_collection.update_one({"email":login.email}, {"$set": {"otp_secret": otp_service}})
-        
         # If authentication is successful, return a success response
-        return 200, {"message":"Login successful","otp_secret":otp_secret}
+        return 200, {"message":"Login successful"}
 
 #Discuss placement
     async def verify_patient_otp(self, email: str, otp: str):
