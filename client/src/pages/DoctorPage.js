@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Button, message, Typography } from 'antd';
-import Calendar from 'react-calendar';
-import 'react-calendar/dist/Calendar.css';
 import 'antd/dist/reset.css';
 import { fetchDoctorDetails, saveDoctorAvailability } from '../api/services/doctorService';
 import DoctorLayout from '../components/DoctorForm';
+import { DatePicker } from 'antd';
+import dayjs from 'dayjs';
+
 
 const { Text } = Typography;
 
 const DoctorPage = () => {
   const [doctorDetails, setDoctorDetails] = useState(null);
-  const [availabilityStartDate, setAvailabilityStartDate] = useState(new Date());
-  const [availabilityEndDate, setAvailabilityEndDate] = useState(new Date());
+  const [availabilityStartDate, setAvailabilityStartDate] = useState(dayjs());
+  const [availabilityEndDate, setAvailabilityEndDate] = useState(dayjs());
 
   useEffect(() => {
     const fetchDetails = async () => {
@@ -27,12 +28,14 @@ const DoctorPage = () => {
     fetchDetails();
   }, []);
 
-  const handleStartDateChange = (selectedDate) => {
-    setAvailabilityStartDate(selectedDate);
-  };
-
-  const handleEndDateChange = (selectedDate) => {
-    setAvailabilityEndDate(selectedDate);
+  const handleDateRangeChange = (dates) => {
+    if (dates) {
+      setAvailabilityStartDate(dates[0]);
+      setAvailabilityEndDate(dates[1]);
+    } else {
+      setAvailabilityStartDate(null);
+      setAvailabilityEndDate(null);
+    }
   };
 
   const handleSaveAvailability = async () => {
@@ -50,12 +53,12 @@ const DoctorPage = () => {
     const availability = {
       doctor_email: doctorDetails.email, 
       doctor_pincode: doctorDetails.pincode, 
-      startDate: availabilityStartDate.toISOString().split('T')[0], 
-      endDate: availabilityEndDate.toISOString().split('T')[0]   
+      startDate: availabilityStartDate.format('YYYY-MM-DD'), 
+      endDate: availabilityEndDate.format('YYYY-MM-DD')  
     };
 
     try {
-      await saveDoctorAvailability(availability); // Use the new service function
+      await saveDoctorAvailability(availability);
       message.success('Availability saved successfully!');
     } catch (error) {
       console.error('Error saving availability:', error);
@@ -65,27 +68,28 @@ const DoctorPage = () => {
 
   return (
     <DoctorLayout>
-      <Card title="Doctor Details" style={{ width: 500, marginBottom: '20px' }}>
+      <Card title="Doctor Details" style={{ width: 600, marginBottom: '20px', padding: '20px', fontSize: '18px' }}>
         {doctorDetails ? (
           <>
-            <Text><strong>Name:</strong> {doctorDetails.name}</Text><br />
-            <Text><strong>Email:</strong> {doctorDetails.email}</Text><br />
-            <Text><strong>Specialisation:</strong> {doctorDetails.specialisation}</Text><br />
-            <Text><strong>Pincode:</strong> {doctorDetails.pincode}</Text><br />
+            <Text style={{ fontSize: '18px' }}><strong>Name:</strong> {doctorDetails.name}</Text><br />
+            <Text style={{ fontSize: '18px' }}><strong>Email:</strong> {doctorDetails.email}</Text><br />
+            <Text style={{ fontSize: '18px' }}><strong>Specialisation:</strong> {doctorDetails.specialisation}</Text><br />
+            <Text style={{ fontSize: '18px' }}><strong>Pincode:</strong> {doctorDetails.pincode}</Text><br />
           </>
         ) : (
-          <Text>Loading doctor details...</Text>
+          <Text style={{ fontSize: '18px' }}>Loading doctor details...</Text>
         )}
       </Card>
    
-      <Card title="Select Your Availability" style={{ width: 500 }}>
+      <Card title="Select Your Availability" style={{ width: 600, padding: '20px', fontSize: '18px' }}>
         <div>
-          <Text>Select Availability Start Date:</Text>
-          <Calendar onChange={handleStartDateChange} value={availabilityStartDate} />
-        </div>
-        <div style={{ marginTop: '20px' }}>
-          <Text>Select Availability End Date:</Text>
-          <Calendar onChange={handleEndDateChange} value={availabilityEndDate} />
+          <Text style={{ fontSize: '18px' }}>Select Availability Date Range:</Text>
+          <DatePicker.RangePicker 
+            onChange={handleDateRangeChange} 
+            value={[availabilityStartDate, availabilityEndDate]} // Pass the dayjs objects directly
+            format="YYYY-MM-DD" // Optional: to control the date format
+            style={{ width: '100%' }} // Optional: to make it full width
+          />
         </div>
         <Button type="primary" onClick={handleSaveAvailability} style={{ marginTop: '20px' }}>
           Save Availability

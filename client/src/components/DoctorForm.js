@@ -2,7 +2,6 @@ import React from 'react';
 import { Layout, Typography } from 'antd';
 
 const { Header, Content } = Layout;
-// const { Title } = Typography;
 
 const DoctorLayout = ({ children }) => {
   return (
@@ -12,7 +11,14 @@ const DoctorLayout = ({ children }) => {
           Schedule Your Availability
         </Typography.Title>
       </Header>
-      <Content style={{ padding: '20px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+      <Content style={{ 
+        display: 'flex', 
+        flexDirection: 'column', 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        height: 'calc(100vh - 64px)', 
+        textAlign: 'center' 
+      }}>
         {children}
       </Content>
     </Layout>
