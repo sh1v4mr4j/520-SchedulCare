@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Form, Input, Button, Checkbox, Select, notification } from "antd";
-import { UserOutlined, LockOutlined, MailOutlined } from "@ant-design/icons";
+import { LockOutlined, MailOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { ENDPOINTS } from "../api/endpoint";
 import { useUserContext } from "../context/UserContext";
@@ -50,7 +50,7 @@ const LoginPage = () => {
             }!`,
             duration: 3,
           });
-          setUser(data.body);
+          setUser({ ...data.body, type: role });
           navigate("/mfa/register");
         }
       })

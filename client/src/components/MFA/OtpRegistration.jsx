@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Form, Input, Button, notification, Layout, Row, Col } from "antd";
 import { LockOutlined } from "@ant-design/icons";
-import { useLocation, useNavigate } from "react-router-dom";
-import { QRCodeCanvas, QRCodeSVG } from "qrcode.react";
+import { useNavigate } from "react-router-dom";
+import { QRCodeSVG } from "qrcode.react";
 import { Content } from "antd/es/layout/layout";
 import { getRegisterUrl, verifyOtp } from "../../api/services/mfaService";
 import { useUserContext } from "../../context/UserContext";
@@ -12,10 +12,12 @@ const OtpRegistration = () => {
   const [mfaRegisterUrl, setMfaRegisterUrl] = useState("");
   const [showQRCode, setShowQRCode] = useState(false);
   const { user } = useUserContext();
+  const navigate = useNavigate();
 
   const getMfaRegisterUrl = () => {
     const email = user.email;
-    getRegisterUrl(email)
+    const secret = user.secret;
+    getRegisterUrl(secret, email)
       .then((response) => {
         console.log(response);
         if (response.status_code === 200) {
@@ -34,12 +36,12 @@ const OtpRegistration = () => {
   const handleMfaRegistration = (values) => {
     const { otp } = values;
     verifyOtp(user.secret, otp).then((response) => {
-      if (response.status === 200) {
+      if (response.status_code === 200) {
         notification.success({
           message: "Success",
           description: response.message,
         });
-        navigate("/login");
+        navigate(user.type === "doctor" ? "/doctor" : "/patient");
       } else {
         notification.error({
           message: "Error",

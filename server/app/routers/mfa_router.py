@@ -17,8 +17,8 @@ router = APIRouter()
 mfa_service = MFAService()
 
 @router.post("/generateQrCode", response_model=Response)
-async def generate_qr_code(email: Annotated[str, Body(embed=True)]):
-    status_code, response = await mfa_service.generate_register_url(email)
+async def generate_qr_code(secret: Annotated[str, Body(embed=True)], email: Annotated[str, Body(embed=True)]):
+    status_code, response = await mfa_service.generate_register_url(secret, email)
     return Response(status_code=status_code, body=response)
 
 @router.post("/verifyOtp", response_model=Response)

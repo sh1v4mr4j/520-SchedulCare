@@ -20,13 +20,13 @@ class MFAService:
         totp = pyotp.TOTP(secret)
         return totp.now()
 
-    def verify_otp(self, secret: str, otp: str) -> bool:
+    def verify_otp(self, secret: str, otp: int) -> bool:
         """
         Verifies the OTP entered by the user against the stored secret.
         """
         totp = pyotp.TOTP(secret)
         current_otp = totp.now()
-        if current_otp == otp:
+        if int(current_otp) == int(otp):
             return 200, "OTP verified successfully"
         else:
             return 401, "Invalid OTP"
@@ -42,11 +42,10 @@ class MFAService:
         img_byte_arr.seek(0)
         return img_byte_arr
     
-    async def generate_register_url(self, email: str):
+    async def generate_register_url(self, secret: str, email: str):
         """
         Generates a registration URL for the user to configure OTP.
         """
-        secret = pyotp.random_base32()
         register_url = pyotp.totp.TOTP(secret).provisioning_uri(name=email, issuer_name="Schedulcare")
         print(register_url)
         return 200, register_url

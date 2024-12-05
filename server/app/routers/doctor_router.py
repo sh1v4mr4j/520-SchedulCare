@@ -9,7 +9,6 @@ from app.models.location import Location
 from passlib.context import CryptContext
 import bcrypt
 
-
 app = APIRouter()
 
 doctor_service = DoctorService()
