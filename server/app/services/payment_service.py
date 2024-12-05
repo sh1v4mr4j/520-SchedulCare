@@ -15,17 +15,13 @@ from paypalserversdk.models.checkout_payment_intent import CheckoutPaymentIntent
 from paypalserversdk.models.order_request import OrderRequest
 from paypalserversdk.models.purchase_unit_request import PurchaseUnitRequest
 
-
-PAYPAL_CLIENT_ID="Ae0un-DoDrq5t04GFrfseWIbZY6VXZGF1GWD6Hmbna7YUyqVqGtt04r8glYrjKVPESJ3chLP2XuA5_Vm"
-PAYPAL_CLIENT_SECRET="EAKo8FBusfK88qUrTq7xreX7q9K9NSizOY5zw4jaYzh8D2qFq3-IH3iPP0mn98LDTq3dJTKZlrS5sI3e"
-
 class PaymentService:
     def __init__(self):
         # PayPal client configuration
         self.paypal_client = PaypalserversdkClient(
             client_credentials_auth_credentials=ClientCredentialsAuthCredentials(
-                o_auth_client_id=PAYPAL_CLIENT_ID,
-                o_auth_client_secret=PAYPAL_CLIENT_SECRET
+                o_auth_client_id=os.getenv("PAYPAL_CLIENT_ID"),
+                o_auth_client_secret=os.getenv("PAYPAL_CLIENT_SECRET")
             ),
             logging_configuration=LoggingConfiguration(
                 log_level=logging.INFO,

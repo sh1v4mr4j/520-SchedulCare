@@ -78,7 +78,6 @@ async def get_schedule_by_email(email: str):
         JSON response of the schedule
 
     """
-    print("hiii")
     try:
         status_code, response = await doctor_service.get_schedule_by_email(email)
         return Response(status_code=status_code, body=response)

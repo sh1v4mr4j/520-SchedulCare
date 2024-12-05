@@ -45,7 +45,6 @@ class DoctorService:
         :param patient: Patient object
         :return: Created time of the record
         """
-        print(doctor.model_dump())
         resp = await self.doctor_collection.insert_one(doctor.model_dump())
         created_time = await self.doctor_collection.find_one({"id": resp.inserted_id})
         return created_time
@@ -55,7 +54,6 @@ class DoctorService:
         Gets all doctor in the given area (pincode)
         """
         try:
-            print("print")
             # doctors = await self.doctor_collection.find_one({"pincode": pincode})
             doctors = []
             async for doctor in self.doctor_collection.find({"pincode": pincode}):
