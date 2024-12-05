@@ -1,28 +1,17 @@
 import React, { useState, useEffect } from "react";
-import {
-  Form,
-  Input,
-  Button,
-  Select,
-  DatePicker,
-  Radio,
-  Typography,
-  notification,
-} from "antd";
-import {
-  UserOutlined,
-  LockOutlined,
-  EyeInvisibleOutlined,
-  EyeOutlined,
-} from "@ant-design/icons";
+import {Form,Input,Button,Select,DatePicker,Radio,Typography,notification} from "antd";
+import {UserOutlined,LockOutlined,EyeInvisibleOutlined,EyeOutlined} from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
+import {useUserContext} from "../context/UserContext";
 
 // Import the CSS file with the correct path
 import "../components/styles/RegistrationPage.css";
+import { ENDPOINTS } from "../api/endpoint";
 
 const { Text } = Typography;
 
 const RegistrationPage = () => {
+  const { user, setUser } = useUserContext();
   const [form] = Form.useForm();
   const [userType, setUserType] = useState(null);
   const [password, setPassword] = useState("");
@@ -64,9 +53,9 @@ const RegistrationPage = () => {
         dob: values.dob,
         gender: values.gender,
         password: values.password,
-        pincode: "1234",
+        pincode: "1234",  
       };
-      fetch("http://127.0.0.1:8000/patients/addPatient", {
+      fetch(ENDPOINTS.addPatient, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -84,6 +73,7 @@ const RegistrationPage = () => {
           } else {
             console.log("Success:", data);
             navigate("/login");
+            setUser({ ...user, email: values.email, type: "patient" }); // Update the user context
           }
         })
         .catch((error) => {
@@ -105,7 +95,7 @@ const RegistrationPage = () => {
         specialisation: values.specialisation,
         pincode: values.pincode,
       };
-      fetch("http://127.0.0.1:8000/doctors/add", {
+      fetch("ENDPOINTS.addDoctor, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -124,6 +114,7 @@ const RegistrationPage = () => {
           } else {
             console.log("Success:", data);
             navigate("/login");
+            setUser({ ...user, email: values.email, type: "doctor" }); // Update the user context
           }
         })
         .catch((error) => {

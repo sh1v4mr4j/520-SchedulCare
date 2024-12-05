@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { Form, Input, Button, Checkbox, Select, notification } from 'antd';
 import { UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
+import { ENDPOINTS } from '../api/endpoint';
 
 const LoginPage = () => {
+  const {user, setUser} = useUserContext();
   const [role, setRole] = useState('');  // State to track the selected role
   const navigate = useNavigate();
 
@@ -19,8 +21,8 @@ const LoginPage = () => {
 
     // Define the login URL based on the selected role
     const loginUrl = role === 'patient'
-      ? 'http://127.0.0.1:8000/patients/patientLogin'
-      : 'http://127.0.0.1:8000/doctors/doctorLogin';
+      ? ENDPOINTS.patientLogin
+      : ENDPOINTS.doctorLogin;
 
     // Post the username, password, and email to the respective API endpoint
     fetch(loginUrl, {
@@ -33,13 +35,11 @@ const LoginPage = () => {
       .then((response) => response.json())
       .then((data) => {
         if (data.status_code === 401) {
-          // If an error is returned (like wrong credentials)
-          notification.error({
-            message: 'Login Failed',
-            description: data.detail || 'Invalid credentials',
-            duration: 3,
-          });
+          throw new Error(data.detail || 'Invalid credentials');
         } else {
+          // Update the user context with the logged-in user's details
+          user.type = role;
+          setUser(user);
           // On successful login, navigate to the respective dashboard
           notification.success({
             message: 'Login Successful',
@@ -103,11 +103,7 @@ const LoginPage = () => {
         >
           <Input.Password prefix={<LockOutlined />} placeholder="Password" />
         </Form.Item>
-
-        <Form.Item>
-          <Checkbox>Remember me</Checkbox>
-        </Form.Item>
-
+ÍÏ
         <Form.Item>
           <Button type="primary" htmlType="submit" style={{ width: '100%' }}>
             Log In
