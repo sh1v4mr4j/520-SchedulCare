@@ -7,7 +7,7 @@ from app.models.chat import ChatRequest, ChatResponse
 import os
 
 # Initialize router
-router = APIRouter()
+app = APIRouter()
 
 # Configure Gemini (you'll need to set this with your API key)
 GOOGLE_API_KEY= os.getenv("GEMINI_API_KEY")
@@ -27,7 +27,7 @@ HEALTHCARE_PROMPT = """You are a knowledgeable healthcare assistant. Your role i
 Please provide helpful information while maintaining appropriate medical disclaimers."""
 
 
-@router.post("/generate", response_model=ChatResponse)
+@app.post("/generate", response_model=ChatResponse)
 async def generate_chat_response(request: ChatRequest):
     try:
         # Convert messages to format Gemini expects
