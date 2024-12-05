@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { ENDPOINTS } from "../api/endpoint";
 import "./styles/Modal.css";
 import { useUserContext } from "../context/UserContext";
+import { useLocation } from "react-router";
+import { useNavigate } from "react-router-dom";
+import { addAppointmentDetail } from "../api/services/appointmentService";
 
 // Renders errors or successful transactions on the screen.
 const Message = ({ content }) => <p>{content}</p>;
@@ -33,6 +36,24 @@ export const PaymentForm = () => {
     "data-sdk-integration-source": "developer-studio",
   };
 
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [doctorEmail, setDoctorEmail] = useState("");
+  const [day, setDay] = useState("");
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    // Get the individual query parameters
+    const doctorEmailParam = decodeURIComponent(
+      searchParams.get("doctorEmail")
+    );
+    const dayParam = decodeURIComponent(searchParams.get("day"));
+
+    // Set state values
+    setDoctorEmail(doctorEmailParam);
+    setDay(dayParam);
+  }, [location.search]);
+
   const [message, setMessage] = useState("");
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -44,6 +65,11 @@ export const PaymentForm = () => {
     setModalTitle(title);
     setModalContent(content);
     setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    navigate(`/patient`, { replace: true });
+    setIsModalOpen(false);
   };
 
   const sendEmail = async (transaction) => {
@@ -71,11 +97,11 @@ export const PaymentForm = () => {
       setMessage(`Error sending email: ${error.message}`);
     }
   };
-
   return (
     <div className="App">
       <PayPalScriptProvider options={initialOptions}>
         <PayPalButtons
+          id="paypal-buttons"
           style={{
             shape: "rect",
             layout: "vertical",
@@ -151,6 +177,7 @@ export const PaymentForm = () => {
 
                 if (transaction.status === "COMPLETED") {
                   await sendEmail(transaction);
+                  await addAppointmentDetail(user.email, doctorEmail, day);
                 }
 
                 setMessage(
@@ -177,7 +204,7 @@ export const PaymentForm = () => {
       </PayPalScriptProvider>
       <Modal
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        onClose={closeModal}
         title={modalTitle}
         content={modalContent}
       />

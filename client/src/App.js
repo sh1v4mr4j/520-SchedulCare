@@ -60,7 +60,7 @@ const App = () => {
                     <Route path="directions" element={<Directions />} />
                   </Route>
                   <Route path="/chatassist" element={<ChatAssistancePage />} />
-                  <Route path="/patient/payment" element={<PaymentPage />} />
+                  <Route path="/payment" element={<PaymentPage />} />
                   {/* TODO: only to be used by Nikhil for now. Men at work kinda situation */}
                   <Route path="/test" element={<LocationSearch />} />
                   <Route path="/location" element={<AddressSelector />} />
