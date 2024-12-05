@@ -20,6 +20,7 @@ class DoctorService:
 
         # Patients collection
         self.doctor_collection = self.database["doctors"]
+        self.schedule_collection = self.database["doctorschedule"]
 
     def ping_mongo(self):
         """
@@ -66,11 +67,12 @@ class DoctorService:
         Gets all doctor in the given area (pincode)
         """
         try:
-            doctors = await self.doctor_collection.find({"pincode": {"$eq": pincode}}).to_list(length=10)
-            return 200, doctors
-        except:
-            get_doctor_by_pincode = [doctor for doctor in mock_doctor if doctor["pincode"] == pincode]
-            return 200, get_doctor_by_pincode
+            doctors = []
+            async for doctor in self.doctor_collection.find({"pincode": pincode}):
+                doctors.append(doctor)
+            return 200, [serialize_mongo_object(doctor_doc) for doctor_doc in doctors]
+        except Exception as e:
+            return 404, "Doctor not found" 
     
     async def set_location_for_doctor(self, doctor_email: str, address: Location):
         """
@@ -106,3 +108,18 @@ class DoctorService:
         
         # If authentication is successful, return a success response
         return 200, "Login successful"
+        
+    async def get_schedule_by_email(self,email:str):
+        """
+        Send the doctor schedule
+        """
+        try:
+            doctor_schedule = await self.schedule_collection.find_one({"doctor_email": email})
+            if not doctor_schedule:
+                return 404, "No schedule available"
+            
+            if doctor_schedule and "_id" in doctor_schedule:
+                doctor_schedule["_id"] = str(doctor_schedule["_id"])
+            return 200, doctor_schedule
+        except Exception as e:
+            return 500, {"error": f"An error occurred: {str(e)}"}

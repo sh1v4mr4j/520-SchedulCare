@@ -49,18 +49,10 @@ class PatientService:
         :param patient: Patient object
         :return: Created time of the record
         """
-        # Check if the patient already exists in the database
-        existing_patient = await self.patient_collection.find_one({"email": patient.email})
-        if existing_patient:
-            return 400, "Patient already registered"
+        resp = await self.patient_collection.insert_one(patient.model_dump())
 
-        # Hash the password before storing it
-        hashed_password = bcrypt.hashpw(patient.password.encode('utf-8'), bcrypt.gensalt())
-        patient.password = hashed_password.decode('utf-8')
-
-        # Add the patient to the database
-        created_time = await self.patient_collection.insert_one(patient.model_dump())
-        return 200, created_time
+        created_time = await self.patient_collection.find_one({"id": resp.inserted_id})
+        return created_time
     
     async def scheduleAppointment(self, email: str, appointmentDetails: Appointment):
         """
@@ -95,6 +87,20 @@ class PatientService:
             resp = await self.patient_collection.update_one({"email": patient_email}, {"$set": {"location": address.model_dump()}})
             print(resp)
             return 200, "Address updated successfully"
+        except Exception as e:
+            return 500, e
+        
+    async def get_patient_by_email(self, email:str):
+        """
+        Gets the patient data from DB
+
+        email: email of the patient
+        """
+        try:
+            patient_data = await self.patient_collection.find_one({"email": email})
+            if not patient_data:
+                return 404, "Patient not found"
+            return 200, serialize_mongo_object(patient_data)
         except Exception as e:
             return 500, e
 

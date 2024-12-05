@@ -1,5 +1,5 @@
 import fetchClient from "../client";
-import { ENDPOINTS } from "../endpoints";
+import { ENDPOINTS } from "../endpoint";
 
 export const getDoctorsByPincode = async (pincode) => {
   const url = ENDPOINTS.getDoctorsByPincode(pincode);
@@ -13,3 +13,8 @@ export const addDoctor = async (doctorData) => {
     body: JSON.stringify(doctorData),
   });
 };
+
+export const getScheduleByEmail = async (email) => {
+  const url = ENDPOINTS.getDoctorByEmail(email);
+  return fetchClient(url);
+}

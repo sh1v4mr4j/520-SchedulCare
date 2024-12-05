@@ -24,8 +24,8 @@ async def ping_mongo():
 
 @app.get("/{email}/patient", response_model=Response)
 async def get_patient_by_email(email: str):
-    patient_data = [patient for patient in mock_patient if patient["email"] == email]
-    return Response(status_code=200, body=patient_data)
+    status_code, patient_data = await patient_service.get_patient_by_email(email)
+    return Response(status_code=status_code, body=patient_data)
 
 
 @app.get("/getAllPatients", response_model=Response)

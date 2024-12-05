@@ -1,7 +1,8 @@
 export const API_BASE_URL = "http://127.0.0.1:8000";
 
 export const ENDPOINTS = {
-  getDoctorsByPincode: (pincode) => `${API_BASE_URL}/doctors/${pincode}`,
+  getDoctorsByPincode: (pincode) =>
+    `${API_BASE_URL}/doctors/${pincode}/allDoctors`,
   addDoctor: `${API_BASE_URL}/doctors/add`,
   scheduleAppointment: (email) =>
     `${API_BASE_URL}/patients/${email}/scheduleAppointment`,
@@ -17,4 +18,5 @@ export const ENDPOINTS = {
   doctorLogin: `${API_BASE_URL}/doctors/doctorLogin`,
   addPatient: `${API_BASE_URL}/patients/addPatient`,
   addDoctor: `${API_BASE_URL}/doctors/addDoctor`
+  getDoctorByEmail: (email) => `${API_BASE_URL}/doctors/${email}/schedule`,
 };
