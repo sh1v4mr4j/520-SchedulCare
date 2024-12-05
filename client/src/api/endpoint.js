@@ -1,3 +1,5 @@
+import { verifyTimeOtp } from "./services/mfaService";
+
 export const API_BASE_URL = "http://127.0.0.1:8000";
 
 export const ENDPOINTS = {
@@ -15,4 +17,6 @@ export const ENDPOINTS = {
   chatAssistant: `${API_BASE_URL}/chat/generate`,
   patientLogin: `${API_BASE_URL}/patients/patientLogin`,
   doctorLogin: `${API_BASE_URL}/doctors/doctorLogin`,
+  getRegistrationQrCode: `${API_BASE_URL}/mfa/generateQrCode`,
+  verifyOtp: `${API_BASE_URL}/mfa/verifyOtp`,
 };

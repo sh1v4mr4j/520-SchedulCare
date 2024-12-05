@@ -8,6 +8,7 @@ from app.shared.response import Response
 from app.routers import payment_router
 from app.routers import email_router
 from app.routers import chat_router
+from app.routers import otp_router
 
 
 def load_environment():
@@ -48,3 +49,4 @@ app.include_router(doctor_router.app, prefix="/doctors", tags=["Doctor"])
 # app.include_router(payment_router.app, prefix="/payments", tags=["Payments"])
 # app.include_router(email_router.app, prefix="/email", tags=["EmailNotification"])
 app.include_router(chat_router.router, prefix="/chat", tags=["chat"])
+app.include_router(otp_router.router, prefix="/mfa", tags=["otp"])

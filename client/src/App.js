@@ -22,7 +22,7 @@ import AddressSelector from "./components/Maps/AddressSelector";
 import { UserProvider } from "./context/UserContext";
 import RegistrationPage from "./pages/Registration";
 import OTPPage from "./pages/OtpPage";
-
+import OtpRegistration from "./components/MFA/OtpRegistration";
 
 const { Content } = Layout;
 
@@ -47,10 +47,7 @@ const App = () => {
             >
               <div style={{ padding: "10px", display: "grid" }}>
                 <Routes>
-                  <Route
-                    path="/"
-                    element={<Navigate to="/login" replace />}
-                  />{" "}
+                  <Route path="/" element={<Navigate to="/login" replace />} />{" "}
                   {/* FIXME: Change this to login*/}
                   <Route path="/register" element={<RegistrationPage />} />
                   <Route path="/login" element={<LoginPage />} />
@@ -70,6 +67,7 @@ const App = () => {
                   <Route path="/test" element={<LocationSearch />} />
                   <Route path="/location" element={<AddressSelector />} />
                   <Route path="/otp" element={<OTPPage />} />
+                  <Route path="/mfa/register" element={<OtpRegistration />} />
                 </Routes>
               </div>
             </div>
