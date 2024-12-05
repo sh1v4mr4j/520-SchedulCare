@@ -5,7 +5,7 @@ import { fetchDoctorDetails, saveDoctorAvailability } from '../api/services/doct
 import DoctorLayout from '../components/DoctorForm';
 import { DatePicker } from 'antd';
 import dayjs from 'dayjs';
-
+import { useUserContext } from "../context/UserContext";
 
 const { Text } = Typography;
 
@@ -13,11 +13,13 @@ const DoctorPage = () => {
   const [doctorDetails, setDoctorDetails] = useState(null);
   const [availabilityStartDate, setAvailabilityStartDate] = useState(dayjs());
   const [availabilityEndDate, setAvailabilityEndDate] = useState(dayjs());
+  const { user } = useUserContext();
 
   useEffect(() => {
     const fetchDetails = async () => {
       try {
-        const email = "edsnowden@mbbs.com";
+        // const email = "edsnowden@mbbs.com";
+        const email= user.email;
         const details = await fetchDoctorDetails(email);
         setDoctorDetails(details);
       } catch (error) {
