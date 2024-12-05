@@ -19,6 +19,10 @@ import { useNavigate } from "react-router-dom";
 
 // Import the CSS file with the correct path
 import "../components/styles/RegistrationPage.css";
+import {
+  registerDoctor,
+  registerPatient,
+} from "../api/services/registrationService";
 
 const { Text } = Typography;
 
@@ -65,14 +69,7 @@ const RegistrationPage = () => {
         gender: values.gender,
         password: values.password,
       };
-      fetch("http://127.0.0.1:8000/patients/addPatient", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      })
-        .then((response) => response.json())
+      registerPatient(data)
         .then((data) => {
           if (data.body === "Patient already registered") {
             notification.error({
@@ -104,16 +101,8 @@ const RegistrationPage = () => {
         specialisation: values.specialisation,
         pincode: values.pincode,
       };
-      fetch("http://127.0.0.1:8000/doctors/add", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      })
-        .then((response) => response.json())
+      registerDoctor(data)
         .then((data) => {
-          console.log("my data", data);
           if (data.status_code === 400) {
             notification.error({
               message: "Registration Failed",

@@ -64,8 +64,7 @@ class DoctorService:
 
         # Return the response with a success message and QR code
         resp = await self.doctor_collection.insert_one(doctor.model_dump())
-        created_time = await self.doctor_collection.find_one({"id": resp.inserted_id})
-        return 200, created_time
+        return 200, 'Doctor added successfully'
     
     async def get_doctor_by_pincode(self, pincode: int):
         """

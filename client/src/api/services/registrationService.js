@@ -35,4 +35,26 @@ export const updateDoctorLocation = async (email, location) => {
   }
 };
 
-export const registerPatient = async (patient) => {};
+export const registerPatient = async (patient) => {
+  try {
+    const url = ENDPOINTS.addPatient;
+    return fetchClient(url, {
+      method: "POST",
+      body: JSON.stringify(patient),
+    });
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const registerDoctor = async (doctor) => {
+  try {
+    const url = ENDPOINTS.addDoctor;
+    return fetchClient(url, {
+      method: "POST",
+      body: JSON.stringify(doctor),
+    });
+  } catch (error) {
+    throw error;
+  }
+};
