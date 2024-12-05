@@ -19,7 +19,7 @@ const DoctorPage = () => {
     const fetchDetails = async () => {
       try {
         // const email = "edsnowden@mbbs.com";
-        const email= user.email,
+        const email= user.email;
         const details = await fetchDoctorDetails(email);
         setDoctorDetails(details);
       } catch (error) {
