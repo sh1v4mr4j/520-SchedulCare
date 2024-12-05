@@ -1,8 +1,21 @@
 import React, { useState, useEffect } from "react";
-import {Form,Input,Button,Select,DatePicker,Radio,Typography,notification} from "antd";
-import {UserOutlined,LockOutlined,EyeInvisibleOutlined,EyeOutlined} from "@ant-design/icons";
+import {
+  Form,
+  Input,
+  Button,
+  DatePicker,
+  Radio,
+  Typography,
+  notification,
+} from "antd";
+import {
+  UserOutlined,
+  LockOutlined,
+  EyeInvisibleOutlined,
+  EyeOutlined,
+} from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
-import {useUserContext} from "../context/UserContext";
+import { useUserContext } from "../context/UserContext";
 
 // Import the CSS file with the correct path
 import "../components/styles/RegistrationPage.css";
@@ -53,7 +66,7 @@ const RegistrationPage = () => {
         dob: values.dob,
         gender: values.gender,
         password: values.password,
-        pincode: "1234",  
+        pincode: "1234",
       };
       fetch(ENDPOINTS.addPatient, {
         method: "POST",
@@ -95,7 +108,7 @@ const RegistrationPage = () => {
         specialisation: values.specialisation,
         pincode: values.pincode,
       };
-      fetch("ENDPOINTS.addDoctor, {
+      fetch(ENDPOINTS.addDoctor, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -364,9 +377,7 @@ const RegistrationPage = () => {
             <Form.Item
               name="gender"
               label="Gender"
-              rules={[
-                { required: true, message: "Please select your gender" },
-              ]}
+              rules={[{ required: true, message: "Please select your gender" }]}
               className="form-item"
             >
               <Radio.Group>
@@ -379,20 +390,16 @@ const RegistrationPage = () => {
             <Form.Item
               name="address"
               label="Address"
-              rules={[
-                { required: true, message: "Please input your address" },
-              ]}
+              rules={[{ required: true, message: "Please input your address" }]}
               className="form-item"
             >
-              <Input placeholder="Pincode" />
+              <Input placeholder="Tell us where you live.." />
             </Form.Item>
 
             <Form.Item
               name="pincode"
               label="Pincode"
-              rules={[
-                { required: true, message: "Please input your pincode" },
-              ]}
+              rules={[{ required: true, message: "Please input your pincode" }]}
               className="form-item"
             >
               <Input type="number" placeholder="Pincode" />
@@ -419,9 +426,7 @@ const RegistrationPage = () => {
             <Form.Item
               name="gender"
               label="Gender"
-              rules={[
-                { required: true, message: "Please select your gender" },
-              ]}
+              rules={[{ required: true, message: "Please select your gender" }]}
               className="form-item"
             >
               <Radio.Group>
@@ -432,14 +437,6 @@ const RegistrationPage = () => {
             </Form.Item>
           </>
         )}
-
-        {/* {userType && (
-        <Form.Item>
-          <Button type="primary" htmlType="submit" style={{ width: '100%' }} disabled={!isFormValid()} block>
-            Register
-          </Button>
-        </Form.Item>
-        )} */}
 
         {userType && (
           <Form.Item className="form-item">
