@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from typing import Optional
+from datetime import datetime
 
 from app.models.location import Location
 
@@ -15,6 +16,6 @@ class Patient(BaseModel):
     dob: str
     gender: str
     password: str
-    pincode:int
     appointments: list[Appointment]  = []
     address: Optional[Location] = {}
+    secret: Optional[str] = None
