@@ -13,12 +13,14 @@ import DoctorPage from "./pages/DoctorPage";
 import MapViewPage from "./pages/MapViewPage";
 import ChatAssistancePage from "./pages/ChatAssistancePage";
 import PatientPage from "./pages/PatientPage";
-import MapView from "./components/Maps/MapView";
 import LocationSearch from "./components/Maps/LocationSearch";
+import LoginPage from "./pages/LoginPage";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import Directions from "./components/Maps/Directions";
 import AddressSelector from "./components/Maps/AddressSelector";
 import { UserProvider } from "./context/UserContext";
+import RegistrationPage from "./pages/Registration";
+import OtpRegistration from "./components/MFA/OtpRegistration";
 
 const { Content } = Layout;
 
@@ -43,12 +45,10 @@ const App = () => {
             >
               <div style={{ padding: "10px", display: "grid" }}>
                 <Routes>
-                  <Route
-                    path="/"
-                    element={<Navigate to="/patient" replace />}
-                  />{" "}
+                  <Route path="/" element={<Navigate to="/login" replace />} />{" "}
                   {/* FIXME: Change this to login*/}
-                  <Route path="/login" element={<HomePage />} />
+                  <Route path="/register" element={<RegistrationPage />} />
+                  <Route path="/login" element={<LoginPage />} />
                   <Route path="/patient" element={<PatientPage />} />
                   <Route path="/doctor" element={<DoctorPage />} />
                   <Route path="/mapview/*" element={<MapViewPage />}>
@@ -64,6 +64,7 @@ const App = () => {
                   {/* TODO: only to be used by Nikhil for now. Men at work kinda situation */}
                   <Route path="/test" element={<LocationSearch />} />
                   <Route path="/location" element={<AddressSelector />} />
+                  <Route path="/mfa/register" element={<OtpRegistration />} />
                 </Routes>
               </div>
             </div>
