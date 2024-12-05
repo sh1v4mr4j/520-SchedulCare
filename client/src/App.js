@@ -20,7 +20,6 @@ import Directions from "./components/Maps/Directions";
 import AddressSelector from "./components/Maps/AddressSelector";
 import { UserProvider } from "./context/UserContext";
 import RegistrationPage from "./pages/Registration";
-import OTPPage from "./pages/OtpPage";
 import OtpRegistration from "./components/MFA/OtpRegistration";
 
 const { Content } = Layout;
@@ -65,7 +64,6 @@ const App = () => {
                   {/* TODO: only to be used by Nikhil for now. Men at work kinda situation */}
                   <Route path="/test" element={<LocationSearch />} />
                   <Route path="/location" element={<AddressSelector />} />
-                  <Route path="/otp" element={<OTPPage />} />
                   <Route path="/mfa/register" element={<OtpRegistration />} />
                 </Routes>
               </div>

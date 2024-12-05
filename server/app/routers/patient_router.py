@@ -4,7 +4,6 @@ from fastapi import APIRouter, Body,HTTPException,Depends
 from app.models.patient import Patient, Appointment
 from app.models.login import Login
 from app.services.patient_service import PatientService
-from app.services.email_service import EmailService
 from app.shared.response import Response
 from app.tests.mock.mock_patient import mock_patient
 from app.models.location import Location
@@ -12,7 +11,6 @@ from app.models.location import Location
 app = APIRouter()
 
 patient_service = PatientService()
-email_service = EmailService()
 
 
 @app.get("/pingMongo", response_model=Response)

@@ -7,7 +7,6 @@ from app.models.login import Login
 from app.shared.response import Response
 from app.models.location import Location
 from passlib.context import CryptContext
-import bcrypt
 from app.models.doctor import DoctorSchedule  
 
 app = APIRouter()
