@@ -16,7 +16,7 @@ export const addDoctor = async (doctorData) => {
 
 export const fetchDoctorDetails = async (email) => {
   try {
-    const response = await fetch(ENDPOINTS.getDoctorByEmail(email)); 
+    const response = await fetch(ENDPOINTS.doctorByEmail(email)); 
 
     if (!response.ok) {
       throw new Error('Failed to fetch doctor details');

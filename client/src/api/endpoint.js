@@ -15,5 +15,6 @@ export const ENDPOINTS = {
   chatAssistant: `${API_BASE_URL}/chat/generate`,
   setDoctorAvailability: `${API_BASE_URL}/doctors/doctor/doctorSchedule`,
   sendEmail: `${API_BASE_URL}/email/send-email`,
+  doctorByEmail: (email) => `${API_BASE_URL}/doctors/doctor/${email}`,
   getDoctorByEmail: (email) => `${API_BASE_URL}/doctors/${email}/schedule`,
 };
