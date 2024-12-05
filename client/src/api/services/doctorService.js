@@ -42,3 +42,8 @@ export const saveDoctorAvailability = async (availability) => {
 
   return response;
 };
+
+export const getScheduleByEmail = async (email) => {
+  const url = ENDPOINTS.getDoctorByEmail(email);
+  return fetchClient(url);
+}
