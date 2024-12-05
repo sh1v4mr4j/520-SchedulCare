@@ -15,7 +15,6 @@ def load_environment():
     """
     Load environment variables from .env file
     """
-    print(sys.argv)
     run_mode = sys.argv[1] if len(sys.argv) > 1 else "prod"
     print(f"Running in {run_mode} mode")
     if run_mode == "dev":
