@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button, Modal } from "antd";
 import { DoctorCalendar } from "./Calendars";
 import { useGetSchedule } from "../hooks/useGetSchedule";
@@ -13,6 +14,8 @@ export const DoctorCheckAvailabilityModal = ({ open, onClose, email }) => {
   } = useGetSchedule(email);
   const [selectedDate, setSelectedDate] = useState(dayjs());
 
+  const navigate = useNavigate();
+
   const onSelect = (date) => {
     setSelectedDate(date);
   };
@@ -23,9 +26,23 @@ export const DoctorCheckAvailabilityModal = ({ open, onClose, email }) => {
     }
   }, [email, open]);
 
+  // const onClick = () => {
+  //   console.log("data", email, " ", selectedDate);
+  //   // navigate(`/payment?doctorEmail=${email}&day=${selectedDate}`, {
+  //   navigate(`/patient/payment`, {
+  //     replace: true,
+  //   });
+  //   onClose();
+  // };
+
   const handleOk = () => {
+    navigate(`/patient/payment`, {
+      replace: true,
+    });
     onClose();
   };
+
+
   return (
     <>
       <Modal
@@ -34,7 +51,7 @@ export const DoctorCheckAvailabilityModal = ({ open, onClose, email }) => {
         centered
         title="Doctor's availability"
         onOk={handleOk}
-        onCancel={handleOk}
+        onCancel={onClose}
         footer={[
           <Button key="back" onClick={onClose}>
             Close
@@ -49,33 +66,6 @@ export const DoctorCheckAvailabilityModal = ({ open, onClose, email }) => {
           schedule={scheduleData}
           onSelect={onSelect}
         />
-      </Modal>
-    </>
-  );
-};
-
-export const PatientScheduleModal = ({ open, onClose }) => {
-  const handleOk = () => {
-    onClose();
-  };
-  return (
-    <>
-      <Modal
-        loading={scheduleLoading}
-        open={open}
-        title="Schedule an appointment"
-        onOk={handleOk}
-        onCancel={handleOk}
-        footer={[
-          <Button key="back" onClick={onClose}>
-            Close
-          </Button>,
-          <Button key="submit" type="primary" onClick={handleOk}>
-            Schedule Appointment
-          </Button>,
-        ]}
-      >
-        <PatientCalendar />
       </Modal>
     </>
   );

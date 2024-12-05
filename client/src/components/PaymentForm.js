@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { ENDPOINTS } from "../api/endpoint";
 import "./styles/Modal.css";
 import { useUserContext } from "../context/UserContext";
+// import { addAppointmentDetail } from "../api/services/appointmentService";
+import { useNavigate } from "react-router-dom";
 
 // Renders errors or successful transactions on the screen.
 const Message = ({ content }) => <p>{content}</p>;
@@ -21,7 +23,25 @@ const Modal = ({ isOpen, onClose, title, content }) => {
   );
 };
 
-export const PaymentForm = () => {
+export const PaymentForm = async () => {
+  // const location = useLocation();
+  // const navigate = useNavigate();
+  // const [doctorEmail, setDoctorEmail] = useState("");
+  // const [day, setDay] = useState("");
+
+  // useEffect(() => {
+  //   const searchParams = new URLSearchParams(location.search);
+  //   // Get the individual query parameters
+  //   const doctorEmailParam = decodeURIComponent(
+  //     searchParams.get("doctorEmail")
+  //   );
+  //   const dayParam = decodeURIComponent(searchParams.get("day"));
+
+  //   // Set state values
+  //   setDoctorEmail(doctorEmailParam);
+  //   setDay(dayParam);
+  // }, [location.search]);
+
   const initialOptions = {
     "client-id": "test",
     "enable-funding": "venmo",
@@ -44,6 +64,11 @@ export const PaymentForm = () => {
     setModalTitle(title);
     setModalContent(content);
     setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    // navigate(`/patient`, { replace: true });
+    setIsModalOpen(false);
   };
 
   const sendEmail = async (transaction) => {
@@ -71,11 +96,12 @@ export const PaymentForm = () => {
       setMessage(`Error sending email: ${error.message}`);
     }
   };
-
+  console.log("hiiii");
   return (
     <div className="App">
       <PayPalScriptProvider options={initialOptions}>
         <PayPalButtons
+          id="paypal-buttons"
           style={{
             shape: "rect",
             layout: "vertical",
@@ -149,8 +175,15 @@ export const PaymentForm = () => {
                 const transaction =
                   orderData.purchase_units[0].payments.captures[0];
 
+                console.log("user email", user.email);
+
                 if (transaction.status === "COMPLETED") {
                   await sendEmail(transaction);
+                  // await addAppointmentDetail(
+                  //   user.email,
+                  //   doctorEmail,
+                  //   day,
+                  // );
                 }
 
                 setMessage(
@@ -175,12 +208,14 @@ export const PaymentForm = () => {
           }}
         />
       </PayPalScriptProvider>
-      <Modal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        title={modalTitle}
-        content={modalContent}
-      />
+      {isModalOpen && (
+        <Modal
+          isOpen={isModalOpen}
+          onClose={closeModal}
+          title={modalTitle}
+          content={modalContent}
+        />
+      )}
       <Message content={message} />
     </div>
   );
