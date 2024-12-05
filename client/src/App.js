@@ -13,7 +13,6 @@ import DoctorPage from "./pages/Doctorpage";
 import MapViewPage from "./pages/MapViewPage";
 import ChatAssistancePage from "./pages/ChatAssistancePage";
 import PatientPage from "./pages/PatientPage";
-import MapView from "./components/Maps/MapView";
 import LocationSearch from "./components/Maps/LocationSearch";
 import LoginPage from "./pages/LoginPage";
 import "bootstrap-icons/font/bootstrap-icons.css";
