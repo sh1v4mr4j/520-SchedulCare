@@ -1,23 +1,27 @@
 import React, { useState, useEffect } from "react";
-import { Button, Modal, Layout } from "antd";
-import { PatientCalendar, DoctorCalendar } from "./Calendars";
+import { Button, Modal } from "antd";
+import { DoctorCalendar } from "./Calendars";
 import { useGetSchedule } from "../hooks/useGetSchedule";
-import dayjs from 'dayjs';
+import dayjs from "dayjs";
 
 export const DoctorCheckAvailabilityModal = ({ open, onClose, email }) => {
   const [isModalOpen, setIsModalOpen] = useState(open);
-  const { data: scheduleData, loading: scheduleLoading, error: scheduleError } = useGetSchedule(email);
+  const {
+    data: scheduleData,
+    loading: scheduleLoading,
+    error: scheduleError,
+  } = useGetSchedule(email);
   const [selectedDate, setSelectedDate] = useState(dayjs());
 
   const onSelect = (date) => {
     setSelectedDate(date);
   };
 
-  useEffect(()=>{
-    if(open){
+  useEffect(() => {
+    if (open) {
       setIsModalOpen(true);
     }
-  },[email,open])
+  }, [email, open]);
 
   const handleOk = () => {
     onClose();
@@ -40,7 +44,11 @@ export const DoctorCheckAvailabilityModal = ({ open, onClose, email }) => {
           </Button>,
         ]}
       >
-        <DoctorCalendar loading={scheduleLoading} schedule={scheduleData} onSelect={onSelect}/>
+        <DoctorCalendar
+          loading={scheduleLoading}
+          schedule={scheduleData}
+          onSelect={onSelect}
+        />
       </Modal>
     </>
   );
