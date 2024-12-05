@@ -43,9 +43,8 @@ class PatientService:
         :param patient: Patient object
         :return: Created time of the record
         """
-        print("Jai shree ram")
         resp = await self.patient_collection.insert_one(patient.model_dump())
-        print("JSR")
+
         created_time = await self.patient_collection.find_one({"id": resp.inserted_id})
         return created_time
     
@@ -82,6 +81,20 @@ class PatientService:
             resp = await self.patient_collection.update_one({"email": patient_email}, {"$set": {"location": address.model_dump()}})
             print(resp)
             return 200, "Address updated successfully"
+        except Exception as e:
+            return 500, e
+        
+    async def get_patient_by_email(self, email:str):
+        """
+        Gets the patient data from DB
+
+        email: email of the patient
+        """
+        try:
+            patient_data = await self.patient_collection.find_one({"email": email})
+            if not patient_data:
+                return 404, "Patient not found"
+            return 200, serialize_mongo_object(patient_data)
         except Exception as e:
             return 500, e
 

@@ -15,7 +15,6 @@ from paypalserversdk.models.checkout_payment_intent import CheckoutPaymentIntent
 from paypalserversdk.models.order_request import OrderRequest
 from paypalserversdk.models.purchase_unit_request import PurchaseUnitRequest
 
-
 class PaymentService:
     def __init__(self):
         # PayPal client configuration
