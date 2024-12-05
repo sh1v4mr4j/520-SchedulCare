@@ -12,7 +12,15 @@ const DoctorLayout = ({ children }) => {
           Schedule Your Availability
         </Typography.Title>
       </Header>
-      <Content style={{ padding: '20px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+      <Content style={{ 
+        //padding: '20px', 
+        display: 'flex', 
+        flexDirection: 'column', 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        height: 'calc(100vh - 64px)', 
+        textAlign: 'center' 
+      }}>
         {children}
       </Content>
     </Layout>
