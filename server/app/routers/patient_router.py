@@ -1,8 +1,11 @@
 from typing import Annotated
-from fastapi import APIRouter, Body
+from fastapi import APIRouter, Body,HTTPException
 
 from app.models.patient import Patient, Appointment
+from app.models.login import Login
 from app.services.patient_service import PatientService
+from app.services.otp_service import OTPService
+from app.services.email_service import EmailService
 from app.shared.response import Response
 from app.tests.mock.mock_patient import mock_patient
 from app.models.location import Location
@@ -10,6 +13,9 @@ from app.models.location import Location
 app = APIRouter()
 
 patient_service = PatientService()
+otp_service = OTPService()
+email_service = EmailService()
+
 
 @app.get("/pingMongo", response_model=Response)
 async def ping_mongo():
@@ -30,9 +36,9 @@ async def get_all_patients():
 
 
 @app.post("/addPatient", response_model=Response)
-async def add_patient(patient: Patient):
-    created_time = await patient_service.add_patient(patient)
-    return Response(status_code=201, body=created_time)
+async def add_patient(patient: Annotated[Patient, Body()]):
+    status_code, body = await patient_service.add_patient(patient)
+    return Response(status_code=status_code, body=body)
 
 @app.put("/{email}/scheduleAppointment", response_model = Response)
 async def schedule_appointment(email:str, appointment_details: Appointment):
@@ -56,3 +62,11 @@ async def set_location_for_patient(email: Annotated[str, Body()], location: Anno
         return Response(status_code=status_code, body={"message": response})
     except Exception as e:
         return Response(status_code=500, body=f"An error occurred: {str(e)}")
+
+@app.post("/patientLogin", response_model=Response)
+async def login_patient(data: Login):
+    """
+    Login a patient with email and password.
+    """
+    status_code, response = await patient_service.login_patient(data)
+    return Response(status_code=status_code, body=response)

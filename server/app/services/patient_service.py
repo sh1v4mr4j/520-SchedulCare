@@ -5,6 +5,10 @@ from motor.motor_asyncio import AsyncIOMotorClient
 from app.models.patient import Patient, Appointment
 from app.shared.mongo_utils import serialize_mongo_object
 from app.models.location import Location
+from app.models.login import Login
+from passlib.context import CryptContext
+
+import bcrypt
 
 class PatientService:
     def __init__(self):
@@ -16,6 +20,8 @@ class PatientService:
 
         # Patients collection
         self.patient_collection = self.database["patients"]
+
+        self.pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
     def ping_mongo(self):
         """
@@ -98,8 +104,23 @@ class PatientService:
         except Exception as e:
             return 500, e
 
-
-   
+    async def login_patient(self, login: Login):
+        """
+        Login a patient with email and password.
+        """
+        # Retrieve the patient data based on the provided email
+        patient = await self.patient_collection.find_one({"email": login.email})
+        
+        # If the patient does not exist, raise an exception to prompt the user to register
+        if not patient:
+            return 401, "Invalid Credentials"
+        
+        # Verify if the provided password matches the stored hashed password
+        if not self.pwd_context.verify(login.password, patient["password"]):
+            return 401, "Invalid Credentials"
+        
+        # If authentication is successful, return a success response
+        return 200, "Login successful"
     
 
 

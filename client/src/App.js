@@ -15,10 +15,13 @@ import ChatAssistancePage from "./pages/ChatAssistancePage";
 import PatientPage from "./pages/PatientPage";
 import MapView from "./components/Maps/MapView";
 import LocationSearch from "./components/Maps/LocationSearch";
+import LoginPage from "./pages/LoginPage";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import Directions from "./components/Maps/Directions";
 import AddressSelector from "./components/Maps/AddressSelector";
 import { UserProvider } from "./context/UserContext";
+import RegistrationPage from "./pages/Registration";
+
 
 const { Content } = Layout;
 
@@ -45,10 +48,11 @@ const App = () => {
                 <Routes>
                   <Route
                     path="/"
-                    element={<Navigate to="/patient" replace />}
+                    element={<Navigate to="/login" replace />}
                   />{" "}
                   {/* FIXME: Change this to login*/}
-                  <Route path="/login" element={<HomePage />} />
+                  <Route path="/register" element={<RegistrationPage />} />
+                  <Route path="/login" element={<LoginPage />} />
                   <Route path="/patient" element={<PatientPage />} />
                   <Route path="/doctor" element={<DoctorPage />} />
                   <Route path="/mapview/*" element={<MapViewPage />}>

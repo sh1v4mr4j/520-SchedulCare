@@ -1,14 +1,17 @@
 from typing import Annotated
-from fastapi import APIRouter, Body
+from fastapi import APIRouter, Body,HTTPException
 from app.services.doctor_service import DoctorService
 from app.models.doctor import Doctor
+from app.models.login import Login
 
 from app.shared.response import Response
 from app.models.location import Location
+from passlib.context import CryptContext
 
 app = APIRouter()
 
 doctor_service = DoctorService()
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 @app.get("/", response_model=Response)
 async def health_check():
@@ -87,3 +90,11 @@ async def get_schedule_by_email(email: str):
 
     
 
+@app.post("/doctorLogin", response_model=Response)
+async def login_doctor(data: Login):
+    """
+    Login a doctor with email and password.
+    """
+
+    status_code, response = await doctor_service.login_doctor(data)
+    return Response(status_code=status_code, body=response)
