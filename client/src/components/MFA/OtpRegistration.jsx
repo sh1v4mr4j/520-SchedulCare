@@ -17,7 +17,6 @@ const OtpRegistration = () => {
   const getMfaRegisterUrl = () => {
     const email = user.email;
     const secret = user.secret;
-    console.log('user', user)
     getRegisterUrl(secret, email)
       .then((response) => {
         if (response.status_code === 200) {
