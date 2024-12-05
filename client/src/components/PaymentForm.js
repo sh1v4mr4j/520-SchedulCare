@@ -137,7 +137,6 @@ export const PaymentForm = () => {
               const responseOrderData = await response.json();
               const orderData = JSON.parse(responseOrderData);
 
-              console.log("Order Data Response:", orderData);
               const errorDetail = orderData?.details?.[0];
 
               if (errorDetail?.issue === "INSTRUMENT_DECLINED") {
@@ -161,7 +160,6 @@ export const PaymentForm = () => {
                   "Transaction Successful",
                   `Transaction ${transaction.status}: ${transaction.id}. Amount: $${transaction.amount.value}`
                 );
-                console.log("Capture result", orderData);
               }
             } catch (error) {
               console.error(error);

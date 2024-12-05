@@ -15,28 +15,27 @@
 # from paypalserversdk.models.order_request import OrderRequest
 # from paypalserversdk.models.purchase_unit_request import PurchaseUnitRequest
 
-
-# class PaymentService:
-#     def __init__(self):
-#         # PayPal client configuration
-#         self.paypal_client = PaypalserversdkClient(
-#             client_credentials_auth_credentials=ClientCredentialsAuthCredentials(
-#                 o_auth_client_id=os.getenv("PAYPAL_CLIENT_ID"),
-#                 o_auth_client_secret=os.getenv("PAYPAL_CLIENT_SECRET")
-#             ),
-#             logging_configuration=LoggingConfiguration(
-#                 log_level=logging.INFO,
-#                 mask_sensitive_headers=False,
-#                 request_logging_config=RequestLoggingConfiguration(
-#                     log_headers=True, log_body=True
-#                 ),
-#                 response_logging_config=ResponseLoggingConfiguration(
-#                     log_headers=True, log_body=True
-#                 ),
-#             ),
-#         )
-#         # Controllers
-#         self.orders_controller = self.paypal_client.orders
+class PaymentService:
+    def __init__(self):
+        # PayPal client configuration
+        self.paypal_client = PaypalserversdkClient(
+            client_credentials_auth_credentials=ClientCredentialsAuthCredentials(
+                o_auth_client_id=os.getenv("PAYPAL_CLIENT_ID"),
+                o_auth_client_secret=os.getenv("PAYPAL_CLIENT_SECRET")
+            ),
+            logging_configuration=LoggingConfiguration(
+                log_level=logging.INFO,
+                mask_sensitive_headers=False,
+                request_logging_config=RequestLoggingConfiguration(
+                    log_headers=True, log_body=True
+                ),
+                response_logging_config=ResponseLoggingConfiguration(
+                    log_headers=True, log_body=True
+                ),
+            ),
+        )
+        # Controllers
+        self.orders_controller = self.paypal_client.orders
 
 #     async def ping_paypal():
 #         url = "https://api.sandbox.paypal.com/v1/oauth2/token"  # Using sandbox URL for testing, production for live

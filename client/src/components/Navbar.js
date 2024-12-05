@@ -23,6 +23,9 @@ const items1 = [
 
 const Navbar = ({ selectedKey }) => {
   const currentItem = items1.find((item) => item.to === location.pathname);
+  const isDoctorPage = location.pathname === '/doctor';
+  const isPatientPage = location.pathname === '/patient';
+
   selectedKey = currentItem ? currentItem.key : "1";
 
   return (
@@ -35,10 +38,11 @@ const Navbar = ({ selectedKey }) => {
         style={{ flex: 1, minWidth: 0 }}
       >
         {items1.map((item) => (
-          <Menu.Item key={item.key}>
-            {/* Wrap each Menu.Item with Link to navigate to the respective route */}
-            <Link to={item.to}>{item.label}</Link>
-          </Menu.Item>
+          !(isDoctorPage || (isPatientPage && item.key === "4")) ? (
+            <Menu.Item key={item.key}>
+              <Link to={item.to}>{item.label}</Link>
+            </Menu.Item>
+          ) : null
         ))}
       </Menu>
     </Header>

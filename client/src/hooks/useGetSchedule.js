@@ -1,20 +1,20 @@
 import { useState, useEffect } from "react";
-import { getDoctorsByPincode } from "../api/services/doctorService";
+import { getScheduleByEmail } from "../api/services/doctorService";
 
-export const useDoctorsByPincode = (pincode) => {
-  const [data, setData] = useState([]);
+export const useGetSchedule = (email) => {
+  const [data, setData] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (!pincode) {
-      setError("Add pincode value");
+    if (!email) {
+      setError("No email associated");
       setLoading(false);
     } else {
-      const fetchDoctorsByPincode = async () => {
+      const fetchScheduleByEmail = async () => {
         try {
           setLoading(true);
-          const { status_code, body } = await getDoctorsByPincode(pincode);
+          const { status_code, body } = await getScheduleByEmail(email);
           if (status_code != 200) {
             setError(body);
           }
@@ -26,8 +26,8 @@ export const useDoctorsByPincode = (pincode) => {
         }
       };
 
-      fetchDoctorsByPincode();
+      fetchScheduleByEmail();
     }
-  }, [pincode]);
+  }, [email]);
   return { data, loading, error };
 };

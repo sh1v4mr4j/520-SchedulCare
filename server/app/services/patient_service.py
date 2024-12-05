@@ -105,6 +105,20 @@ class PatientService:
             return 200, "Address updated successfully"
         except Exception as e:
             return 500, e
+        
+    async def get_patient_by_email(self, email:str):
+        """
+        Gets the patient data from DB
+
+        email: email of the patient
+        """
+        try:
+            patient_data = await self.patient_collection.find_one({"email": email})
+            if not patient_data:
+                return 404, "Patient not found"
+            return 200, serialize_mongo_object(patient_data)
+        except Exception as e:
+            return 500, e
 
     async def login_patient(self, login: Login):
         """
