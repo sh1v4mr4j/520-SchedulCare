@@ -9,10 +9,10 @@ export const getRegisterUrl = async (email) => {
   });
 };
 
-export const verifyOtp = async (email, otp) => {
+export const verifyOtp = async (secret, otp) => {
   const url = ENDPOINTS.verifyOtp;
   return fetchClient(url, {
     method: "POST",
-    body: JSON.stringify({ email, otp }),
+    body: JSON.stringify({ secret, otp }),
   });
 };

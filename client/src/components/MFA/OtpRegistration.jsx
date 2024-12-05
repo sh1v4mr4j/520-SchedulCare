@@ -33,7 +33,7 @@ const OtpRegistration = () => {
 
   const handleMfaRegistration = (values) => {
     const { otp } = values;
-    verifyOtp(user.email, otp).then((response) => {
+    verifyOtp(user.secret, otp).then((response) => {
       if (response.status === 200) {
         notification.success({
           message: "Success",

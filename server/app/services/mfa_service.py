@@ -20,11 +20,11 @@ class MFAService:
         totp = pyotp.TOTP(secret)
         return totp.now()
 
-    def verify_otp(email: str, otp: str) -> bool:
+    def verify_otp(self, secret: str, otp: str) -> bool:
         """
         Verifies the OTP entered by the user against the stored secret.
         """
-        totp = pyotp.TOTP(email)
+        totp = pyotp.TOTP(secret)
         current_otp = totp.now()
         if current_otp == otp:
             return 200, "OTP verified successfully"

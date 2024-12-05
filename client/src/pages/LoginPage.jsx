@@ -3,10 +3,12 @@ import { Form, Input, Button, Checkbox, Select, notification } from "antd";
 import { UserOutlined, LockOutlined, MailOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { ENDPOINTS } from "../api/endpoint";
+import { useUserContext } from "../context/UserContext";
 
 const LoginPage = () => {
   const [role, setRole] = useState(""); // State to track the selected role
   const navigate = useNavigate();
+  const { setUser } = useUserContext();
 
   // Handle the change in role selection
   const handleRoleChange = (value) => {
@@ -48,6 +50,7 @@ const LoginPage = () => {
             }!`,
             duration: 3,
           });
+          setUser(data.body);
           navigate("/mfa/register");
         }
       })

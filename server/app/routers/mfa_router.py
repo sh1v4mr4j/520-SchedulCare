@@ -22,6 +22,6 @@ async def generate_qr_code(email: Annotated[str, Body(embed=True)]):
     return Response(status_code=status_code, body=response)
 
 @router.post("/verifyOtp", response_model=Response)
-async def verify_otp(email: Annotated[str, Body(embed=True)], otp: Annotated[int, Body(embed=True)]):
-    status_code, response = await mfa_service.verify_otp(email, otp)
+async def verify_otp(secret: Annotated[str, Body(embed=True)], otp: Annotated[int, Body(embed=True)]):
+    status_code, response = mfa_service.verify_otp(secret, otp)
     return Response(status_code=status_code, body=response)
