@@ -7,6 +7,7 @@ from app.shared.mongo_utils import serialize_mongo_object
 from app.models.location import Location
 from app.tests.mock import mock_doctor
 from app.models.login import Login
+from passlib.context import CryptContext
 import bcrypt
 
 from app.services.mfa_service import MFAService
@@ -23,6 +24,7 @@ class DoctorService:
 
         # Patients collection
         self.doctor_collection = self.database["doctors"]
+        self.pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
     def ping_mongo(self):
         """

@@ -112,17 +112,27 @@ class PatientService:
         """
         # Retrieve the patient data based on the provided email
         patient = await self.patient_collection.find_one({"email": login.email})
+        print(patient)
         
         # If the patient does not exist, raise an exception to prompt the user to register
         if not patient:
             return 401, "Invalid Credentials"
+        
+        # hashed_password = bcrypt.hashpw(login.password.encode('utf-8'), bcrypt.gensalt())
+        # login.password = hashed_password.decode('utf-8')
+
+        # print(patient["password"])
+        # print(login.password)
+
+        # if patient["password"] == login.password:
+        #     return 401, "Booba"
         
         # Verify if the provided password matches the stored hashed password
         if not self.pwd_context.verify(login.password, patient["password"]):
             return 401, "Invalid Credentials"
         
         # If authentication is successful, return a success response
-        return 200, {"message":"Login successful"}
+        return 200, serialize_mongo_object(patient)
 
 #Discuss placement
     async def verify_patient_otp(self, email: str, otp: str):
