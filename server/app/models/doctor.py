@@ -1,5 +1,6 @@
 from typing import Optional
 from pydantic import BaseModel
+from datetime import datetime
 
 from app.models.location import Location
 
@@ -14,10 +15,9 @@ class Doctor(BaseModel):
     scheduledApointment: bool = False
     location: Optional[Location] = {}
 
-class Availability(BaseModel):
+class DoctorSchedule(BaseModel):
     doctor_email: str
-    doctor_pincode: str
-    availabilityStart: str
-    availabilityEnd: str
-
+    doctor_pincode: int
+    startDate: datetime
+    endDate: datetime
 

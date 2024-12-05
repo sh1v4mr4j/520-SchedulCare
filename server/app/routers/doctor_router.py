@@ -5,6 +5,7 @@ from app.models.doctor import Doctor
 
 from app.shared.response import Response
 from app.models.location import Location
+from app.models.doctor import DoctorSchedule  
 
 app = APIRouter()
 
@@ -85,5 +86,44 @@ async def get_schedule_by_email(email: str):
         return Response(status_code=500, body = f"An error occured: {str(e)}")
     
 
+    
+
+@app.get("/doctor/{email}", response_model=Response)
+async def get_doctor(email: str):
+    """
+    Endpoint to get a doctor's details by email.
+
+    Args:
+        email (str): Email of the doctor.
+
+    Returns:
+        JSON response containing the doctor's details.
+    """
+    try:
+        
+        status_code, doctor_details = await doctor_service.get_doctor_by_email(email)
+        return Response(status_code=status_code, body=doctor_details)
+    except Exception as e:
+        return Response(status_code=500, body=f"An error occurred: {str(e)}")
+    
+@app.post("/doctor/doctorSchedule", response_model=Response)
+async def save_availability(availability: DoctorSchedule):
+    """
+    Endpoint to save a doctor's availability.
+
+    Args:
+        availability (DoctorSchedule): An DoctorSchedule object containing availability details.
+
+    Returns:
+        JSON response indicating success or failure.
+    """
+    try:
+        # Logic to save availability in the database
+        # You can create a new service method to handle this
+        # For example:
+        status_code, response = await doctor_service.save_availability(availability)
+        return Response(status_code=status_code, body={"message": response})
+    except Exception as e:
+        return Response(status_code=500, body=f"An error occurred: {str(e)}")
     
 

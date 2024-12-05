@@ -12,7 +12,9 @@ export const ENDPOINTS = {
   createOrder: `${API_BASE_URL}/payments/orders`,
   capturePayment: (order_id) =>
     `${API_BASE_URL}/payments/orders/${order_id}/capture`,
-  sendEmail: `${API_BASE_URL}/email/send-email`,
   chatAssistant: `${API_BASE_URL}/chat/generate`,
+  setDoctorAvailability: `${API_BASE_URL}/doctors/doctor/doctorSchedule`,
+  sendEmail: `${API_BASE_URL}/email/send-email`,
+  doctorByEmail: (email) => `${API_BASE_URL}/doctors/doctor/${email}`,
   getDoctorByEmail: (email) => `${API_BASE_URL}/doctors/${email}/schedule`,
 };
