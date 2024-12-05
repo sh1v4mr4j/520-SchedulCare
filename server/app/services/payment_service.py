@@ -42,7 +42,7 @@ class PaymentService:
         self.orders_controller = self.paypal_client.orders
 
     async def ping_paypal():
-        url = "https://api.sandbox.paypal.com/v1/oauth2/token"  # Use sandbox URL for testing, production for live
+        url = "https://api.sandbox.paypal.com/v1/oauth2/token"  # Using sandbox URL for testing, production for live
         auth = HTTPBasicAuth(os.getenv("PAYPAL_CLIENT_ID"), os.getenv("PAYPAL_CLIENT_SECRET"))
         headers = {"Content-Type": "application/x-www-form-urlencoded"}
         data = {"grant_type": "client_credentials"}
@@ -63,7 +63,7 @@ class PaymentService:
         :return: Serialized order response from PayPal
         """
         try:
-            # Adding `value="100"` by default for each appointment
+            # Adding `value="1100"` by default for each appointment
             order = self.orders_controller.orders_create(
                 {
                     "body": OrderRequest(
@@ -72,7 +72,7 @@ class PaymentService:
                             PurchaseUnitRequest(
                                 amount=AmountWithBreakdown(
                                     currency_code="USD",
-                                    value="100",
+                                    value="1100",
                                 ),
                             )
                         ],

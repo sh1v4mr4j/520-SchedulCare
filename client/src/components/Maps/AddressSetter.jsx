@@ -6,6 +6,7 @@ const AddressSetter = ({
   label = "Search",
   disabled = false,
   setSelectedLocation,
+  id = "search",
 }) => {
   // Alerts
   const [showAlert, setShowAlert] = useState(false);
@@ -80,6 +81,7 @@ const AddressSetter = ({
             ]}
           >
             <Input.Search
+              id={id}
               placeholder="Challenge me to find something ..."
               enterButton
               loading={searching}
