@@ -5,13 +5,10 @@ import {
   DatePicker,
   Form,
   Input,
-  InputNumber,
-  Radio,
-  Avatar,
-  Card,
   Flex,
 } from "antd";
 import DoctorCard from "./DoctorCard";
+import { useDoctorsByPincode } from "../hooks/useDoctor";
 
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
@@ -23,7 +20,9 @@ const normFile = (e) => {
   return e?.fileList;
 };
 
-const PatientForm = () => {
+const PatientForm = ({loading, patientData}) => {
+  const {data: doctorData, loading: doctorLoading, error:doctorError} = useDoctorsByPincode(patientData.pincode)
+
   return (
     <>
       <Form
@@ -31,19 +30,23 @@ const PatientForm = () => {
         wrapperCol={{ span: 14 }}
         layout="horizontal"
         style={{ maxWidth: 600 }}
+        loading={loading}
       >
         <Form.Item label="Patient Name">
-          <Input />
+          <div>{patientData.name}</div>
         </Form.Item>
         <Form.Item label="DOB">
-          <DatePicker />
+        <div>{patientData.dob}</div>
         </Form.Item>
         <Form.Item label="Pincode">
-          <InputNumber />
+          <div>{patientData.pincode}</div>
+        </Form.Item>
+        <Form.Item label="Gender">
+          <div>{patientData.gender}</div>
         </Form.Item>
         <Form.Item label="Doctors">
             <Flex style={{gap:"middle",align:"start"}}>
-                <DoctorCard />
+              <DoctorCard loading={doctorLoading} data={doctorData}/>
             </Flex>
         </Form.Item>
         <Form.Item>

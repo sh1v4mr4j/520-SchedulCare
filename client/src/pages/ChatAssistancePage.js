@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { Layout, Input, Button, Card, Typography, Space } from 'antd';
-import { SendOutlined, RobotOutlined, UserOutlined } from '@ant-design/icons';
+import { SendOutlined } from '@ant-design/icons';
 import 'antd/dist/reset.css';
 import { generateChatResponse } from '../api/services/chatService';
 
@@ -26,8 +26,6 @@ const ChatAssistancePage = () => {
           newMessage
         ]
       });
-
-      console.log('Received response:', response); // remove
 
       setMessages(prev => [...prev, { role: 'assistant', content: response.response }]);
     } catch (error) {

@@ -17,6 +17,7 @@ class DoctorService:
 
         # Patients collection
         self.doctor_collection = self.database["doctors"]
+        self.schedule_collection = self.database["doctorschedule"]
 
     def ping_mongo(self):
         """
@@ -44,6 +45,7 @@ class DoctorService:
         :param patient: Patient object
         :return: Created time of the record
         """
+        print(doctor.model_dump())
         resp = await self.doctor_collection.insert_one(doctor.model_dump())
         created_time = await self.doctor_collection.find_one({"id": resp.inserted_id})
         return created_time
@@ -53,11 +55,14 @@ class DoctorService:
         Gets all doctor in the given area (pincode)
         """
         try:
-            doctors = await self.doctor_collection.find({"pincode": {"$eq": pincode}}).to_list(length=10)
-            return 200, doctors
-        except:
-            get_doctor_by_pincode = [doctor for doctor in mock_doctor if doctor["pincode"] == pincode]
-            return 200, get_doctor_by_pincode
+            print("print")
+            # doctors = await self.doctor_collection.find_one({"pincode": pincode})
+            doctors = []
+            async for doctor in self.doctor_collection.find({"pincode": pincode}):
+                doctors.append(doctor)
+            return 200, [serialize_mongo_object(doctor_doc) for doctor_doc in doctors]
+        except Exception as e:
+            return 404, "Doctor not found" 
     
     async def set_location_for_doctor(self, doctor_email: str, address: Location):
         """
@@ -75,3 +80,18 @@ class DoctorService:
             return 200, "Address updated successfully"
         except Exception as e:
             return 500, e
+        
+    async def get_schedule_by_email(self,email:str):
+        """
+        Send the doctor schedule
+        """
+        try:
+            doctor_schedule = await self.schedule_collection.find_one({"doctor_email": email})
+            if not doctor_schedule:
+                return 404, "No schedule available"
+            
+            if doctor_schedule and "_id" in doctor_schedule:
+                doctor_schedule["_id"] = str(doctor_schedule["_id"])
+            return 200, doctor_schedule
+        except Exception as e:
+            return 500, {"error": f"An error occurred: {str(e)}"}

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { getPatientByEmail } from '../api/services/patientService';
 
 export const usePatientByEmail = (email) => {
@@ -12,8 +12,13 @@ export const usePatientByEmail = (email) => {
         const fecthPatientByEmail = async () => {
             try {
                 setLoading(true);
-                const data = await getPatientByEmail(email);
-                setData(data);
+                const {status_code, body} = await getPatientByEmail(email);
+                if(status_code!=200){
+                    setError(body)
+                }else{
+                setData(body);
+                }
+
             } catch (err){
                 setError(err);
             } finally {
@@ -22,8 +27,8 @@ export const usePatientByEmail = (email) => {
         }
 
         fecthPatientByEmail();
-
-        return {data, loading, error}
     }, [email])
+
+    return {data, loading, error}
 }
 
