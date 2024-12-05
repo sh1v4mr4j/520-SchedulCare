@@ -46,7 +46,7 @@ async def health_check():
 # Include the routers
 app.include_router(patient_router.app, prefix="/patients", tags=["patients"])
 app.include_router(doctor_router.app, prefix="/doctors", tags=["Doctor"])
-# app.include_router(payment_router.app, prefix="/payments", tags=["Payments"])
-# app.include_router(email_router.app, prefix="/email", tags=["EmailNotification"])
+app.include_router(payment_router.app, prefix="/payments", tags=["Payments"])
+app.include_router(email_router.app, prefix="/email", tags=["EmailNotification"])
 app.include_router(chat_router.router, prefix="/chat", tags=["chat"])
 app.include_router(mfa_router.router, prefix="/mfa", tags=["otp"])

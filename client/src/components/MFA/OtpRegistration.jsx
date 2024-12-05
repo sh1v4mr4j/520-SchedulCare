@@ -19,7 +19,6 @@ const OtpRegistration = () => {
     const secret = user.secret;
     getRegisterUrl(secret, email)
       .then((response) => {
-        console.log(response);
         if (response.status_code === 200) {
           setMfaRegisterUrl(response.body);
           setShowQRCode(true);

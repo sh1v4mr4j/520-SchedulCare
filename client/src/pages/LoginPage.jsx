@@ -17,8 +17,7 @@ const LoginPage = () => {
 
   // Handle form submission
   const onFinish = (values) => {
-    const { username, password, email } = values;
-    console.log("Login Form Values:", values);
+    const { password, email } = values;
 
     // Define the login URL based on the selected role
     const loginUrl =

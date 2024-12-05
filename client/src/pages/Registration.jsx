@@ -16,6 +16,7 @@ import {
   EyeOutlined,
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
+import { useUserContext } from "../context/UserContext";
 
 // Import the CSS file with the correct path
 import "../components/styles/RegistrationPage.css";
@@ -40,6 +41,7 @@ const RegistrationPage = () => {
   const [passwordFocused, setPasswordFocused] = useState(false);
   const [isButtonDisabled, setIsButtonDisabled] = useState(true); // State to track the button disabled status
   const [age, setAge] = useState(null);
+  const { setUser } = useUserContext();
   const navigate = useNavigate();
 
   const handleUserTypeChange = (value) => {
@@ -59,7 +61,6 @@ const RegistrationPage = () => {
   };
 
   const onFinish = (values) => {
-    console.log("Form Values:", values);
     let data = {};
     if (userType === "patient") {
       data = {
@@ -78,7 +79,6 @@ const RegistrationPage = () => {
               duration: 3,
             });
           } else {
-            console.log("Success:", data);
             navigate("/login");
           }
         })
@@ -110,8 +110,8 @@ const RegistrationPage = () => {
               duration: 3,
             });
           } else {
-            console.log("Success:", data);
-            navigate("/login");
+            setUser({ ...data.body, type: role });
+            navigate("/mfa/register");
           }
         })
         .catch((error) => {
