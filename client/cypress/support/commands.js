@@ -23,3 +23,15 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+
+import "cypress-xpath";
+
+Cypress.Commands.add("getIframeBody", (iframeSelector) => {
+  return cy
+    .get(iframeSelector)
+    .should("be.visible") // Ensure the iframe is visible
+    .then(($iframe) => {
+      const body = $iframe[0].contentDocument.body; // Access the body directly
+      cy.wrap(body).should("not.be.empty"); // Ensure it's not empty
+    });
+});
