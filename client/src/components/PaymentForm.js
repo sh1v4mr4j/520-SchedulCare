@@ -100,107 +100,109 @@ export const PaymentForm = () => {
   return (
     <div className="App">
       <PayPalScriptProvider options={initialOptions}>
-        <PayPalButtons
-          id="paypal-buttons"
-          style={{
-            shape: "rect",
-            layout: "vertical",
-            color: "gold",
-            label: "paypal",
-          }}
-          createOrder={async () => {
-            try {
-              const url = ENDPOINTS.createOrder;
-              const response = await fetch(url, {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                  cart: [
-                    {
-                      id: "YOUR_PRODUCT_ID",
-                      name: "YOUR_PRODUCT_ID",
-                      price: 1100.0,
-                      quantity: 1,
-                    },
-                  ],
-                }),
-              });
+        <div data-testid="paypal-button-container">
+          <PayPalButtons
+            id="paypal-buttons"
+            style={{
+              shape: "rect",
+              layout: "vertical",
+              color: "gold",
+              label: "paypal",
+            }}
+            createOrder={async () => {
+              try {
+                const url = ENDPOINTS.createOrder;
+                const response = await fetch(url, {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({
+                    cart: [
+                      {
+                        id: "YOUR_PRODUCT_ID",
+                        name: "YOUR_PRODUCT_ID",
+                        price: 1100.0,
+                        quantity: 1,
+                      },
+                    ],
+                  }),
+                });
 
-              const responseOrderData = await response.json();
-              const orderData = JSON.parse(responseOrderData);
+                const responseOrderData = await response.json();
+                const orderData = JSON.parse(responseOrderData);
 
-              if (orderData && orderData.id) {
-                return orderData.id;
-              } else {
-                const errorDetail = orderData?.details?.[0];
-                const errorMessage = errorDetail
-                  ? `${errorDetail.issue} ${errorDetail.description} (${orderData.debug_id})`
-                  : JSON.stringify(orderData);
+                if (orderData && orderData.id) {
+                  return orderData.id;
+                } else {
+                  const errorDetail = orderData?.details?.[0];
+                  const errorMessage = errorDetail
+                    ? `${errorDetail.issue} ${errorDetail.description} (${orderData.debug_id})`
+                    : JSON.stringify(orderData);
 
-                throw new Error(errorMessage);
-              }
-            } catch (error) {
-              console.error(error);
-              setMessage(`Could not initiate PayPal Checkout...${error}`);
-              updateModal(
-                "Transaction Failed",
-                `Could not initiate PayPal Checkout: ${error.message}`
-              );
-            }
-          }}
-          onApprove={async (data, actions) => {
-            try {
-              const url = ENDPOINTS.capturePayment(data?.orderID);
-              const response = await fetch(url, {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-              });
-
-              const responseOrderData = await response.json();
-              const orderData = JSON.parse(responseOrderData);
-
-              const errorDetail = orderData?.details?.[0];
-
-              if (errorDetail?.issue === "INSTRUMENT_DECLINED") {
-                return actions.restart();
-              } else if (errorDetail) {
-                throw new Error(
-                  `${errorDetail.description} (${orderData.debug_id})`
-                );
-              } else {
-                const transaction =
-                  orderData.purchase_units[0].payments.captures[0];
-
-                if (transaction.status === "COMPLETED") {
-                  await sendEmail(transaction);
-                  await addAppointmentDetail(user.email, doctorEmail, day);
+                  throw new Error(errorMessage);
                 }
+              } catch (error) {
+                console.error(error);
+                setMessage(`Could not initiate PayPal Checkout...${error}`);
+                updateModal(
+                  "Transaction Failed",
+                  `Could not initiate PayPal Checkout: ${error.message}`
+                );
+              }
+            }}
+            onApprove={async (data, actions) => {
+              try {
+                const url = ENDPOINTS.capturePayment(data?.orderID);
+                const response = await fetch(url, {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                });
 
+                const responseOrderData = await response.json();
+                const orderData = JSON.parse(responseOrderData);
+
+                const errorDetail = orderData?.details?.[0];
+
+                if (errorDetail?.issue === "INSTRUMENT_DECLINED") {
+                  return actions.restart();
+                } else if (errorDetail) {
+                  throw new Error(
+                    `${errorDetail.description} (${orderData.debug_id})`
+                  );
+                } else {
+                  const transaction =
+                    orderData.purchase_units[0].payments.captures[0];
+
+                  if (transaction.status === "COMPLETED") {
+                    await sendEmail(transaction);
+                    await addAppointmentDetail(user.email, doctorEmail, day);
+                  }
+
+                  setMessage(
+                    `Transaction ${transaction.status}: ${transaction.id}.`
+                  );
+                  updateModal(
+                    "Transaction Successful",
+                    `Transaction ${transaction.status}: ${transaction.id}. Amount: $${transaction.amount.value}`
+                  );
+                }
+              } catch (error) {
+                console.error(error);
                 setMessage(
-                  `Transaction ${transaction.status}: ${transaction.id}.`
+                  `Sorry, your transaction could not be processed...${error}`
                 );
                 updateModal(
-                  "Transaction Successful",
-                  `Transaction ${transaction.status}: ${transaction.id}. Amount: $${transaction.amount.value}`
+                  "Transaction Failed",
+                  `Sorry, your transaction could not be processed: ${error.message}`,
+                  "error"
                 );
               }
-            } catch (error) {
-              console.error(error);
-              setMessage(
-                `Sorry, your transaction could not be processed...${error}`
-              );
-              updateModal(
-                "Transaction Failed",
-                `Sorry, your transaction could not be processed: ${error.message}`,
-                "error"
-              );
-            }
-          }}
-        />
+            }}
+          />
+        </div>
       </PayPalScriptProvider>
       <Modal
         isOpen={isModalOpen}
