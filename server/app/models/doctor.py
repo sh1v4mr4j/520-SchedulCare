@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import List, Optional
 from pydantic import BaseModel
 from datetime import datetime
 
@@ -21,4 +21,5 @@ class DoctorSchedule(BaseModel):
     doctor_pincode: int
     startDate: datetime
     endDate: datetime
+    timeSlots: List[str]
 

@@ -19,6 +19,8 @@ class DoctorService:
     def __init__(self):
         self.uri = os.getenv("MONGO_URI")
         self.client = AsyncIOMotorClient(self.uri)
+        
+        print("connecting to", self.uri)
 
         # Keep the database and collection as instance variables
         self.database = self.client["schedulcare"]
