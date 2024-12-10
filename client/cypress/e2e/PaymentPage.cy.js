@@ -1,13 +1,11 @@
 describe("Payment page", () => {
-  const doctorEmail = "amazing@slotter.com"; // Define the email to test
-  const doctorPassword = "Amazing@1"; // Replace with the actual password
-  const role = "Doctor"; // Define the role for login
+  const patientEmail = "shivam@adarsh.com"; // Define the email to test
+  const patientPassword = "Raaj@123"; // Replace with the actual password
+  const role = "Patient"; // Define the role for login
 
-  const doctor = {
+  const patient = {
     name: "Amazing Slotter",
-    email: doctorEmail,
-    specialization: "Chest",
-    pincode: 1002,
+    email: patientEmail,
   };
 
   beforeEach(() => {
@@ -20,8 +18,8 @@ describe("Payment page", () => {
     cy.get(".ant-select-dropdown").contains(role).click(); // Select the doctor role
 
     // Log in as the doctor
-    cy.get("input[id='login_email']").type(doctorEmail); // Adjust selector as needed
-    cy.get("input[id='login_password']").type(doctorPassword); // Adjust selector as needed
+    cy.get("input[id='login_email']").type(patientEmail); // Adjust selector as needed
+    cy.get("input[id='login_password']").type(patientPassword); // Adjust selector as needed
     cy.get("button[type='submit']").click(); // Adjust selector as needed
 
     // Ensure login is successful by checking if redirected to a valid page
@@ -36,7 +34,7 @@ describe("Payment page", () => {
     cy.get("#scheduleAppointment").click();
 
     // Verify payments flow
-    cy.paypalFlow("<your-sandbox-email-id>", "<pwd>");
+    cy.paypalFlow("<sandbox-email>", "<pwd>");
     cy.contains("Close").should("be.visible");
 
     cy.get("#close").click();
