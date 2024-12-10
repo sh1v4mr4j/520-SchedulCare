@@ -8,40 +8,53 @@ import { generateChatResponse } from '../api/services/chatService';
 const { Header, Content } = Layout;
 const { Text } = Typography;
 
+// Main functional component for the chat assistance page
 const ChatAssistancePage = () => {
   const [userInput, setUserInput] = useState('');
   const [messages, setMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
+  // Function to send a message and get a response
   const sendMessage = async (userInput) => {
     const prompt = "You are a helpful assistant.";
+    // Creating a new message object for the user
     const newMessage = { role: 'user', content: userInput };
+    // Updating messages state with the new user message
     setMessages(prev => [...prev, newMessage]);
     setIsLoading(true);
 
     try {
+      // Sending the messages to the chat service and awaiting a response
       const response = await generateChatResponse({
         messages: [
-          { role: 'system', content: prompt },
-          newMessage
+          { role: 'system', content: prompt }, // System message
+          newMessage  // User message
         ]
       });
-
+      
+      // Updating messages state with the assistant's response
       setMessages(prev => [...prev, { role: 'assistant', content: response.response }]);
     } catch (error) {
+      // Logging any errors
       console.error('Error generating chat response:', error);
     } finally {
+      // Resetting loading state
       setIsLoading(false);
     }
   };
-
+  
+  // Function to handle sending the message when the button is clicked or Enter is pressed
   const handleSendMessage = () => {
+    // Checking if the input is not just whitespace
     if (userInput.trim()) {
+      // Sending the message
       sendMessage(userInput);
+      // Clearing the input field
       setUserInput('');
     }
   };
 
+  // Rendering the component
   return (
     <Layout style={{ minHeight: '100vh', backgroundColor: '#f0f2f5' }}>
       <Header style={{ backgroundColor: '#fff', padding: '0 24px', display: 'flex', justifyContent: 'center' }}>
@@ -137,5 +150,5 @@ const ChatAssistancePage = () => {
     </Layout>
   );
 }
-
+// Exporting the component for use in other parts of the application
 export default ChatAssistancePage;
