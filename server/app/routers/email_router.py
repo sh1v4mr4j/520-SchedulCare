@@ -6,6 +6,7 @@ app = APIRouter()
 
 email_service = EmailService()
 
+# Route to send email notification to patient
 @app.post("/send-email/")
 async def send_email(email: Annotated[str, Body()], subject: Annotated[str, Body()], message: Annotated[str, Body()]):
     print("Request received")
