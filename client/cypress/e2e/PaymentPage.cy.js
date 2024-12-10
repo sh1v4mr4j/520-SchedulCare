@@ -34,7 +34,7 @@ describe("Payment page", () => {
     cy.get("#scheduleAppointment").click();
 
     // Verify payments flow
-    cy.paypalFlow("<sandbox-email>", "<pwd>");
+    cy.paypalFlow("sb-hrgqe34257713@personal.example.com", "d]ZMV?08");
     cy.contains("Close").should("be.visible");
 
     cy.get("#close").click();
