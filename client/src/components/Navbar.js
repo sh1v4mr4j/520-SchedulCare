@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Image, Layout, Menu } from "antd";
 import SchedulCareLogo from "../images/SchedulCareLogo.png";
 
@@ -22,11 +22,23 @@ const items1 = [
 }));
 
 const Navbar = ({ selectedKey }) => {
+  const location = useLocation(); // Use location to get the current path
+
   const currentItem = items1.find((item) => item.to === location.pathname);
-  const isDoctorPage = location.pathname === '/doctor';
-  const isPatientPage = location.pathname === '/patient';
+  const isRegisterPage = location.pathname === '/register';
+  const isLoginPage = location.pathname === '/login';
+  const isMFAPage = location.pathname === '/mfa/register';
 
   selectedKey = currentItem ? currentItem.key : "1";
+
+  // Only render the tabs if the current page is not /register or /login
+  if (isRegisterPage || isLoginPage || isMFAPage) {
+    return (
+      <Header style={{ display: "flex", alignItems: "center" }}>
+        <Image src={SchedulCareLogo} width={55} />
+      </Header>
+    );
+  }
 
   return (
     <Header style={{ display: "flex", alignItems: "center" }}>
@@ -38,11 +50,9 @@ const Navbar = ({ selectedKey }) => {
         style={{ flex: 1, minWidth: 0 }}
       >
         {items1.map((item) => (
-          !(isDoctorPage || (isPatientPage && item.key === "4")) ? (
-            <Menu.Item key={item.key}>
-              <Link to={item.to}>{item.label}</Link>
-            </Menu.Item>
-          ) : null
+          <Menu.Item key={item.key}>
+            <Link to={item.to}>{item.label}</Link>
+          </Menu.Item>
         ))}
       </Menu>
     </Header>

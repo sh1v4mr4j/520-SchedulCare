@@ -1,36 +1,20 @@
 import React, { useState, useEffect } from "react";
-import {
-  Form,
-  Input,
-  Button,
-  Select,
-  DatePicker,
-  Radio,
-  Typography,
-  notification,
-} from "antd";
-import {
-  UserOutlined,
-  LockOutlined,
-  EyeInvisibleOutlined,
-  EyeOutlined,
-} from "@ant-design/icons";
+import {Form,Input,Button,Select,DatePicker,Radio,Typography,notification,Upload,Tooltip} from "antd";
+import {UserOutlined,LockOutlined,EyeInvisibleOutlined,EyeOutlined,UploadOutlined,InfoCircleOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../context/UserContext";
 
 // Import the CSS file with the correct path
 import "../components/styles/RegistrationPage.css";
-import {
-  registerDoctor,
-  registerPatient,
-} from "../api/services/registrationService";
+import {registerDoctor,registerPatient,} from "../api/services/registrationService";
 
 const { Text } = Typography;
 
 const RegistrationPage = () => {
   const [form] = Form.useForm();
   const [userType, setUserType] = useState(null);
-  const [password, setPassword] = useState("");
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [passwordValid, setPasswordValid] = useState({
     minLength: false,
     capitalLetter: false,
@@ -43,6 +27,9 @@ const RegistrationPage = () => {
   const [age, setAge] = useState(null);
   const { setUser } = useUserContext();
   const navigate = useNavigate();
+  const [licenseFile, setLicenseFile] = useState(null);
+
+  const allValid = Object.values(passwordValid).every(Boolean);
 
   const handleUserTypeChange = (value) => {
     setUserType(value);
@@ -59,6 +46,10 @@ const RegistrationPage = () => {
       specialChar: /[!@#$%^&*(),.?":{}|<>]/.test(value),
     });
   };
+  
+  const preventPasswordActions = (e) => {
+    e.preventDefault();
+  };
 
   const onFinish = (values) => {
     let data = {};
@@ -72,14 +63,15 @@ const RegistrationPage = () => {
       };
       registerPatient(data)
         .then((data) => {
-          if (data.body === "Patient already registered") {
+          if (data.status_code === 400) {
             notification.error({
               message: "Registration Failed",
-              description: "Patient already registered",
+              description: "This email is already registered",
               duration: 3,
             });
           } else {
-            navigate("/login");
+            setUser({ ...data.body, type: userType });
+            navigate("/mfa/register");            
           }
         })
         .catch((error) => {
@@ -100,17 +92,19 @@ const RegistrationPage = () => {
         password: values.password,
         specialisation: values.specialisation,
         pincode: values.pincode,
+        
+        
       };
       registerDoctor(data)
         .then((data) => {
           if (data.status_code === 400) {
             notification.error({
               message: "Registration Failed",
-              description: data.body,
+              description: "This email is already registered",
               duration: 3,
             });
           } else {
-            setUser({ ...data.body, type: role });
+            setUser({ ...data.body, type: userType });
             navigate("/mfa/register");
           }
         })
@@ -131,11 +125,16 @@ const RegistrationPage = () => {
 
   const isFormValid = () => {
     const fieldsValue = form.getFieldsValue();
+    console.log(fieldsValue);
     const confirmPassword = fieldsValue.confirm;
     const passwordMatch = password === confirmPassword;
+    console.log(passwordMatch);
+    console.log(password);
+    console.log(confirmPassword);
     const allFieldsFilled = Object.values(fieldsValue).every(
       (value) => value !== undefined && value !== ""
     );
+    console.log(allFieldsFilled);
     return (
       passwordValid.minLength &&
       passwordValid.capitalLetter &&
@@ -148,23 +147,18 @@ const RegistrationPage = () => {
   };
 
   useEffect(() => {
+    const isVal = isFormValid();
     setIsButtonDisabled(!isFormValid());
-  }, [form.getFieldsValue(), passwordValid]);
+  }, [form.getFieldsValue(), passwordValid,password]);
 
-  // const onValuesChange = (changedValues, allValues) => {
-  //   const confirmPassword = allValues.confirm;
-  //   const passwordMatch = password === confirmPassword;
-  //   const allFieldsFilled = Object.values(allValues).every(value => value !== undefined && value !== '');
-  //   setIsButtonDisabled(
-  //     !(passwordValid.minLength &&
-  //       passwordValid.capitalLetter &&
-  //       passwordValid.smallLetter &&
-  //       passwordValid.number &&
-  //       passwordValid.specialChar &&
-  //       passwordMatch &&
-  //       allFieldsFilled)
-  //   );
-  // };
+  const handleFileChange = ({ file }) => {
+    setLicenseFile(file);
+  };
+
+  const calculateMaxDate = () => {
+    const today = new Date();
+    return new Date(today.getFullYear() - 25, today.getMonth(), today.getDate());
+  };
 
   return (
     <div className="registration-container">
@@ -252,6 +246,7 @@ const RegistrationPage = () => {
             label="Password"
             rules={[{ required: true, message: "Please input your password" }]}
             hasFeedback
+            validateStatus={passwordFocused ? (allValid ? "success" : "error"):""}
             className="form-item"
           >
             <Input.Password
@@ -264,9 +259,18 @@ const RegistrationPage = () => {
               onChange={handlePasswordChange}
               onFocus={() => setPasswordFocused(true)}
               onBlur={() => setPasswordFocused(false)}
+              onCut={preventPasswordActions}
+              onCopy={preventPasswordActions}
+              onPaste={preventPasswordActions}
             />
           </Form.Item>
         )}
+      {allValid && (
+        <Form.Item className="form-item">
+          <span style={{ color: "green" }}>Password is strong!</span>
+        </Form.Item>
+      )}
+
 
         {userType && (
           <Form.Item
@@ -293,9 +297,13 @@ const RegistrationPage = () => {
               iconRender={(visible) =>
                 visible ? <EyeOutlined /> : <EyeInvisibleOutlined />
               }
+              onCut={preventPasswordActions}
+              onCopy={preventPasswordActions}
+              onPaste={preventPasswordActions}
             />
           </Form.Item>
         )}
+
 
         {passwordFocused && (
           <Form.Item className="form-item">
@@ -344,9 +352,47 @@ const RegistrationPage = () => {
               <Input placeholder="Specialisation" />
             </Form.Item>
 
+            {/* <Form.Item
+              name="license"
+              label="Medical License"
+              style={{ width: "100%" }}
+              valuePropName="fileList"
+              getValueFromEvent={(e) => (Array.isArray(e) ? e : e?.fileList)}
+              rules={[
+                { required: true, message: "Please upload your Medical License as a PDF file" },
+                {validator:(_,fileList)=>{
+                  const file = fileList?.[0];
+                  if(file && file.type !== "application/pdf"){
+                    return Promise.reject("Please upload a PDF file");
+                  }
+                  return Promise.resolve();
+                }
+                }
+              ]}
+              className="form-item"
+            >
+            <Upload
+             name="license"
+             accept=".pdf"
+             beforeUpload={() => false} // Prevent automatic upload
+             onChange={handleFileChange}
+             fileList={licenseFile? [licenseFile]: []}
+             maxCount={1}
+            >
+            <Button icon={<UploadOutlined />}>Click to Upload</Button>
+            </Upload>
+            </Form.Item> */}
+
             <Form.Item
               name="dob"
-              label="Date of Birth"
+              label={
+                <span>
+                  Date of Birth&nbsp;
+                  <Tooltip title="Doctors must be at least 25 years old to register.">
+                    <InfoCircleOutlined />
+                  </Tooltip>
+                </span>
+              }
               rules={[
                 { required: true, message: "Please input your date of birth" },
               ]}
@@ -354,7 +400,11 @@ const RegistrationPage = () => {
             >
               <DatePicker
                 style={{ width: "100%" }}
-                disabledDate={(current) => current && current > new Date()}
+                disabledDate={(current)=>{
+                  const maxDate = calculateMaxDate();
+                  return current && current.isAfter(maxDate);
+                }}
+                //disabledDate={(current) => current && current > new Date()}
               />
             </Form.Item>
 
@@ -377,16 +427,16 @@ const RegistrationPage = () => {
               rules={[{ required: true, message: "Please input your address" }]}
               className="form-item"
             >
-              <Input placeholder="Pincode" />
+              <Input placeholder="Address" />
             </Form.Item>
 
             <Form.Item
               name="pincode"
               label="Pincode"
-              rules={[{ required: true, message: "Please input your pincode" }]}
+              rules={[{ required: true, message: "Please input your pincode" },{pattern:/^[0-9]{6}$/,message:"Invalid pincode"}]}
               className="form-item"
             >
-              <Input type="number" placeholder="Pincode" />
+              <Input placeholder="Pincode" />
             </Form.Item>
           </>
         )}
@@ -422,14 +472,6 @@ const RegistrationPage = () => {
           </>
         )}
 
-        {/* {userType && (
-        <Form.Item>
-          <Button type="primary" htmlType="submit" style={{ width: '100%' }} disabled={!isFormValid()} block>
-            Register
-          </Button>
-        </Form.Item>
-        )} */}
-
         {userType && (
           <Form.Item className="form-item">
             <Button
@@ -437,11 +479,11 @@ const RegistrationPage = () => {
               style={{ width: "100%" }}
               htmlType="submit"
               className="registration-form-button"
-              // disabled={isButtonDisabled}
+              //disabled={isButtonDisabled}
             >
               Register
             </Button>
-          </Form.Item>
+\          </Form.Item>
         )}
 
         {userType && (
