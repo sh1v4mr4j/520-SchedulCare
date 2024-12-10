@@ -1,4 +1,8 @@
-# 520-SchedulCare
+# COMPSCI 520 Project: SchedulCare
+
+SchedulCare: A one-stop healthcare portal.
+
+Instructions to set up the project are provided below:
 
 ## Client setup
 
