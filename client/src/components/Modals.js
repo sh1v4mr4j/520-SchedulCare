@@ -55,7 +55,12 @@ export const DoctorCheckAvailabilityModal = ({ open, onClose, email }) => {
           <Button key="back" onClick={onClose}>
             Close
           </Button>,
-          <Button key="submit" type="primary" onClick={onClick}>
+          <Button
+            id="scheduleAppointment"
+            key="submit"
+            type="primary"
+            onClick={onClick}
+          >
             Schedule Appointment
           </Button>,
         ]}

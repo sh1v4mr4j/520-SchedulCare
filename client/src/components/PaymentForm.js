@@ -18,7 +18,7 @@ const Modal = ({ isOpen, onClose, title, content }) => {
       <div className="modal-content">
         <h2 className> {title}</h2>
         <p>{content}</p>
-        <button onClick={onClose}>Close</button>
+        <button id={"close"} onClick={onClose}>Close</button>
       </div>
     </div>
   );
@@ -98,7 +98,7 @@ export const PaymentForm = () => {
     }
   };
   return (
-    <div className="App">
+    <div className="App" id="paymentform">
       <PayPalScriptProvider options={initialOptions}>
         <div data-testid="paypal-button-container">
           <PayPalButtons

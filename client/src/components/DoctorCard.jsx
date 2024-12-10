@@ -29,6 +29,7 @@ const DoctorCard = ({ loading, data }) => {
           loading={loading}
           actions={[
             <Button
+              id="checkAvailability"
               key="checkAvailability"
               type="primary"
               onClick={() => showModal(card.email)}
