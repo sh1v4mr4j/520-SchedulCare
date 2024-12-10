@@ -12,13 +12,16 @@ import { useUserContext } from "../context/UserContext";
 
 const { Text } = Typography;
 
+// Main functional component for the Doctor Page
 const DoctorPage = () => {
+    // State variables for managing doctor details and availability
   const [doctorDetails, setDoctorDetails] = useState(null);
   const [availabilityStartDate, setAvailabilityStartDate] = useState(dayjs());
   const [availabilityEndDate, setAvailabilityEndDate] = useState(dayjs());
   const [selectedTimeSlots, setSelectedTimeSlots] = useState([]);
   const { user } = useUserContext();
 
+  // Time slots for availability selection
   const timeSlots = [
     "9:00 AM - 12:00 PM",
     "12:00 PM - 3:00 PM",
@@ -26,13 +29,18 @@ const DoctorPage = () => {
     "6:00 PM - 9:00 PM",
   ];
 
+  // useEffect hook to fetch doctor details when the component mounts
   useEffect(() => {
     const fetchDetails = async () => {
       try {
+        // Getting user's email from context
         const email = user.email;
+        // Fetching doctor details using the email
         const details = await fetchDoctorDetails(email);
+        // Updating state with fetched doctor details
         setDoctorDetails(details);
       } catch (error) {
+        // Displaying error message if fetching fails
         message.error("Error fetching doctor details");
       }
     };
@@ -40,40 +48,48 @@ const DoctorPage = () => {
     fetchDetails();
   }, []);
 
+  // Function to handle changes in the date range picker
   const handleDateRangeChange = (dates) => {
     if (dates) {
       const [startDate, endDate] = dates;
-
+      // Validating that the start date is not after the end date
       if (startDate.isAfter(endDate)) {
         message.error(
           "Start date cannot be later than the end date. Please select a valid range."
         );
-        return; // Do not update the state if the dates are invalid
+        return; // We do not want to update the state if the dates are invalid
       }
 
+      // Updating state with valid start and end dates
       setAvailabilityStartDate(startDate);
       setAvailabilityEndDate(endDate);
     } else {
+      // Resetting dates if no range is selected
       setAvailabilityStartDate(null);
       setAvailabilityEndDate(null);
     }
   };
-
+  
+  // Function to handle changes in selected time slots
   const handleTimeSlotChange = (checkedValues) => {
     setSelectedTimeSlots(checkedValues);
   };
 
+  // Function to handle saving the availability
   const handleSaveAvailability = async () => {
     if (!doctorDetails) {
       message.error("Doctor details are not available.");
       return;
     }
 
+    // Checking if at least one time slot is selected
     if (selectedTimeSlots.length === 0) {
+      // Displaying error if no time slots are selected
       message.error("Please select at least one time slot.");
       return;
     }
 
+    // Creating an availability object to send to the API
     const availability = {
       doctor_email: doctorDetails.email,
       doctor_pincode: doctorDetails.pincode,
@@ -83,6 +99,7 @@ const DoctorPage = () => {
     };
 
     try {
+      // Saving availability using the API
       await saveDoctorAvailability(availability);
       message.success("Availability saved successfully!");
     } catch (error) {
@@ -162,4 +179,5 @@ const DoctorPage = () => {
   );
 };
 
+// Exporting the component for use in other parts of the application
 export default DoctorPage;

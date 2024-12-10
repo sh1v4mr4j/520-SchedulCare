@@ -27,13 +27,7 @@ describe("Doctor Page - End-to-End Tests", () => {
       cy.url().should("not.include", "/login");
     });
   
-    //   beforeEach(() => {
-    //     // Visit the doctor page before each test
-    //     cy.visit(`/doctor`);
-    //   });
-  
     it("should log in and display correct doctor details when the page loads", () => {
-      // cy.visit(`/doctor`);
   
       // Ensure only the specific card containing doctor details is targeted
       cy.get(".ant-card-body")
