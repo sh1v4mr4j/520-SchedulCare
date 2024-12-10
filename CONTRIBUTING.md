@@ -4,11 +4,11 @@
 
 | Name                | Email                                     |
 | ------------------- | ----------------------------------------- |
-| Daksha Ladia        | johndoe@umass.edu                         |
+| Daksha Ladia        | dladia@umass.edu                         |
 | Nikhil Anand        | nikhilanand@umass.edu                     |
 | Shivam Raj          | shivamrj83@gmail.com, shivamraj@umass.edu |
-| Snigdha Ansu        | johndoe@umass.edu                         |
-| Rakshita Srivastava | johndoe@umass.edu                         |
+| Snigdha Ansu        | sansu@umass.edu                         |
+| Rakshita Srivastava | rakshitasriv@umass.edu                         |
 
 ## How to Contribute
 
