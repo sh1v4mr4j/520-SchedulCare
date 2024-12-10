@@ -18,7 +18,11 @@ describe("Payment page", () => {
     cy.get(".ant-select-dropdown").contains(role).click(); // Select the role
 
     // Log in as the patient
+
+    // Input email
     cy.get("input[id='login_email']").type(patientEmail); // Adjust selector as needed
+
+    // Input passoword
     cy.get("input[id='login_password']").type(patientPassword); // Adjust selector as needed
     cy.get("button[type='submit']").click(); // Adjust selector as needed
 
