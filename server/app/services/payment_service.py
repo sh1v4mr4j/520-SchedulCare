@@ -38,6 +38,11 @@ class PaymentService:
         self.orders_controller = self.paypal_client.orders
 
     async def ping_paypal():
+        """
+        Ping the Paypal sandbox service. If the ping is successful, return a success message.
+        Else, return the error message.
+        """
+        
         url = "https://api.sandbox.paypal.com/v1/oauth2/token"  # Using sandbox URL for testing, production for live
         auth = HTTPBasicAuth(os.getenv("PAYPAL_CLIENT_ID"), os.getenv("PAYPAL_CLIENT_SECRET"))
         headers = {"Content-Type": "application/x-www-form-urlencoded"}

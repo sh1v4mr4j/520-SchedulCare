@@ -7,6 +7,7 @@ app = APIRouter()
 
 appointment_service = AppointmentService()
 
+# Route to add appointment details in DB
 @app.post("/add")
 async def add_appointment(appointment: Annotated[Appointment,Body(embed=True)]):
     print("Request received")
