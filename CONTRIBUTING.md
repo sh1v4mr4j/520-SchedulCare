@@ -7,7 +7,7 @@
 | Daksha Ladia        | dladia@umass.edu                         |
 | Nikhil Anand        | nikhilanand@umass.edu                     |
 | Shivam Raj          | shivamrj83@gmail.com, shivamraj@umass.edu |
-| Snigdha Ansu        | sansu@umass.edu                         |
+| Snigdha Ansu        | snigdhaansu@gmail.com, sansu@umass.edu                        |
 | Rakshita Srivastava | rakshitasriv@umass.edu                         |
 
 ## How to Contribute
