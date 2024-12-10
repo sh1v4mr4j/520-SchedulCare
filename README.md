@@ -1,8 +1,9 @@
 # COMPSCI 520 Project: SchedulCare
 
 SchedulCare: A one-stop healthcare portal.
+We are building a healthcare portal where both doctors and patients can interact seamlessly. There is a MapView using which patients can navigate to their nearest ambulance, doctor, any medical healthcare facility, among others, and also take advantage of our find by pincode functionality to find closest places. Doctors can set their appointment availability and patients can book their appointments. There is calendar and date features used to set up appointments. Post appointment setting, patients can make a Payment via payment options (we have configured PayPal for this project). There is a AI Health Assistant to help with any user queries regarding any healthcare related suggestions. There are 2 dashboards, one for login and one for register, one each for doctor and patient. We have added MultiFactor Authentication to secure Doctor and patient logins. In addition to that, we have a check for Doctors while they register, to upload their Doctor certificate, to ensure safety and avoid any malpractice. 
 
-Instructions to set up the project are provided below:
+Instructions to install, configure and set up the project are provided below:
 
 ## Client setup
 
