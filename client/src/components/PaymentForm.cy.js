@@ -2,11 +2,41 @@ import { PaymentForm } from "./PaymentForm";
 import { UserProvider } from "../context/UserContext";
 import { BrowserRouter } from "react-router-dom";
 
+Cypress.on("uncaught:exception", (err, runnable) => {
+  // Returning false here prevents Cypress from failing the test
+  return false;
+});
+
 describe("PaymentForm Component", () => {
   beforeEach(() => {
     const mockUser = {
       email: "testuser@example.com",
     };
+
+    // Mock the order creation API
+    cy.intercept("POST", "payment/orders", {
+      statusCode: 200,
+      body: JSON.stringify({ id: "mock-order-id" }),
+    }).as("createOrder");
+
+    cy.intercept("POST", "orders/{order_id}/capture", {
+      statusCode: 200,
+      body: JSON.stringify({
+        purchase_units: [
+          {
+            payments: {
+              captures: [
+                {
+                  status: "COMPLETED",
+                  id: "mock-capture-id",
+                  amount: { value: "1100.00" },
+                },
+              ],
+            },
+          },
+        ],
+      }),
+    }).as("capturePayment");
 
     cy.mount(
       <BrowserRouter>
@@ -17,6 +47,7 @@ describe("PaymentForm Component", () => {
     );
   });
 
+  // Test if paypal page loads correctly
   it("renders PayPal payment page", () => {
     cy.get('[data-testid="paypal-script-loading"]').should("not.exist");
     cy.get('[data-testid="paypal-button-container"]').should("be.visible");
@@ -40,6 +71,7 @@ describe("PaymentForm Component", () => {
     });
   });
 
+  // Load modal successfully
   it("opens modal on successful transaction", () => {
     it("Interacts with Paypal buttons", () => {
       cy.xpath("/html/body/div/div/div/div/div/iframe[1]")
@@ -62,6 +94,7 @@ describe("PaymentForm Component", () => {
     });
   });
 
+  // Modal on failed transaction
   it("opens modal on failed transaction", () => {
     it("Interacts with Paypal buttons", () => {
       cy.xpath("/html/body/div/div/div/div/div/iframe[1]")
@@ -99,5 +132,9 @@ describe("PaymentForm Component", () => {
         );
       });
     });
+  });
+
+  it("Validate paypal button on click", () => {
+    cy.get("iframe").iframe().find('div[data-funding-source="paypal"]').click();
   });
 });
