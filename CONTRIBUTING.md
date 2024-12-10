@@ -4,7 +4,7 @@
 
 | Name                | Email                                     |
 | ------------------- | ----------------------------------------- |
-| Daksha Ladia        | dladia@umass.edu                         |
+| Daksha Ladia        | dladia@umass.edu, ddladia58@hotmail.com                         |
 | Nikhil Anand        | nikhilanand@umass.edu                     |
 | Shivam Raj          | shivamrj83@gmail.com, shivamraj@umass.edu |
 | Snigdha Ansu        | sansu@umass.edu                         |
