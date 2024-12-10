@@ -160,3 +160,7 @@ Due to the time lag between PyOTP and Google Authenticator web servers, the code
 4. Once you have generated your api key, configure this api key inside .env.dev file like this:
 GEMINI_API_KEY="<your_api_key>"
 5. Now you are good to go!
+
+
+
+### Video Demo Link: 
