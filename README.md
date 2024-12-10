@@ -7,7 +7,8 @@ Node (22.9.0 or higher) and npm
 
 1. Navigate to `client\` dir
 
-2. Install all the client libraries using the command 
+2. Install all the client libraries using the command
+
    ```bash
    npm install
    ```
@@ -17,8 +18,6 @@ Node (22.9.0 or higher) and npm
    npm start
    ```
    The application runs on localhost:3000
-
-
 
 ## Server setup
 
@@ -51,7 +50,7 @@ Node (22.9.0 or higher) and npm
 
 ## Using cypress testing
 
-1. Once done creating an end-to-end test in client/cypress/e2e, view the test work using `npx cypress open`. Make sure the application is already running.
+1. Once done creating an end-to-end test in client/cypress/e2e, view the test work using `npm cypress` in the client folder. Make sure the application is already running.
 
 ## Paypal Payment Gateway Setup (Sandbox version)
 
@@ -127,3 +126,21 @@ Take the following steps to get sandbox login information for business and perso
 6. Click on any email to open and view its content.
 
 ![alt text](mail.png)
+
+## Setting up MultiFactor Authentication
+
+Download and setup Google Authenticator App from the [Play Store](https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&hl=en_US) or the [App Store](https://apps.apple.com/us/app/google-authenticator/id388497605)
+
+#### My Authenticator code doesn't work?
+Due to the time lag between PyOTP and Google Authenticator web servers, the code expires after 30secs. In this case, wait until Authenticator creates a new code
+
+## Google Maps Embed API key
+1. Follow the setup instructions from the [Maps Embed API page](https://developers.google.com/maps/documentation/embed/cloud-setup)
+2. Add the API key as one of your environment variables as `REACT_APP_GOOGLE_MAPS_API_KEY`
+   ```bash
+   export REACT_APP_GOOGLE_MAPS_API_KEY=<your_api_key> >> ~/.zshrc
+   ```
+3. Restart your terminal and navigate to the client directory to restart the client application.
+> [!WARNING]  
+> You need to add the API key in your system environment variables to avoid exposing it in the codebase.  
+> Do not add it in the `.env.dev` file.
