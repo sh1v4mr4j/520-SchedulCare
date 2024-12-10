@@ -33,24 +33,24 @@ const PatientForm = ({loading, patientData}) => {
         loading={loading}
       >
         <Form.Item label="Patient Name">
-          <div>{patientData.name}</div>
+          <div id="patientname">{patientData.name}</div>
         </Form.Item>
-        <Form.Item label="DOB">
-        <div>{patientData.dob}</div>
+        <Form.Item  label="DOB">
+        <div id="dob">{patientData.dob}</div>
         </Form.Item>
-        <Form.Item label="Pincode">
-          <div>{patientData.pincode}</div>
+        <Form.Item  label="Pincode">
+          <div id="pin">{patientData.pincode}</div>
         </Form.Item>
         <Form.Item label="Gender">
-          <div>{patientData.gender}</div>
+          <div id="gender">{patientData.gender}</div>
         </Form.Item>
-        <Form.Item label="Doctors">
+        <Form.Item id="doctors" label="Doctors">
             <Flex style={{gap:"middle",align:"start"}}>
               <DoctorCard loading={doctorLoading} data={doctorData}/>
             </Flex>
         </Form.Item>
         <Form.Item>
-          <Button type="primary">Submit Changes</Button>
+          <Button id="submit" type="primary">Submit Changes</Button>
         </Form.Item>
       </Form>
     </>
