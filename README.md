@@ -50,7 +50,9 @@ Node (22.9.0 or higher) and npm
 
 ## Using cypress testing
 
-1. Once done creating an end-to-end test in client/cypress/e2e, view the test work using `npm cypress` in the client folder. Make sure the application is already running.
+1. Once done creating an end-to-end test in client/cypress/e2e, view the test work using `npx open cypress` in the client folder. Make sure the application is already running.
+
+For running Payment page e2e test, you need to configure your own sandbox email and password since it is third party payment.
 
 ## Paypal Payment Gateway Setup (Sandbox version)
 

@@ -25,10 +25,12 @@ const DoctorCard = ({ loading, data }) => {
     >
       {data.map((card, index) => (
         <Card
+          id="doctorcard"
           key={card.email}
           loading={loading}
           actions={[
             <Button
+              id="checkAvailability"
               key="checkAvailability"
               type="primary"
               onClick={() => showModal(card.email)}
