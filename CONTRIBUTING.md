@@ -2,13 +2,13 @@
 
 ## Current Contributors
 
-| Name                | Email                 |
-| ------------------- | --------------------- |
-| Daksha Ladia        | johndoe@umass.edu     |
-| Nikhil Anand        | nikhilanand@umass.edu |
-| Shivam Raj          | johndoe@umass.edu     |
-| Snigdha Ansu        | johndoe@umass.edu     |
-| Rakshita Srivastava | johndoe@umass.edu     |
+| Name                | Email                                     |
+| ------------------- | ----------------------------------------- |
+| Daksha Ladia        | johndoe@umass.edu                         |
+| Nikhil Anand        | nikhilanand@umass.edu                     |
+| Shivam Raj          | shivamrj83@gmail.com, shivamraj@umass.edu |
+| Snigdha Ansu        | johndoe@umass.edu                         |
+| Rakshita Srivastava | johndoe@umass.edu                         |
 
 ## How to Contribute
 
