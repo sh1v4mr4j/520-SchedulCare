@@ -144,3 +144,12 @@ Due to the time lag between PyOTP and Google Authenticator web servers, the code
 > [!WARNING]  
 > You need to add the API key in your system environment variables to avoid exposing it in the codebase.  
 > Do not add it in the `.env.dev` file.
+
+### GEMINI API credentials for using the AI Health Assistant
+
+1. Visit the link: https://ai.google.dev/gemini-api/docs/api-key 
+2. Click on "Get a Gemini API key in Google AI Studio"
+3. Once inside this page, Click "Create API Key"
+4. Once you have generated your api key, configure this api key inside .env.dev file like this:
+GEMINI_API_KEY="<your_api_key>"
+5. Now you are good to go!

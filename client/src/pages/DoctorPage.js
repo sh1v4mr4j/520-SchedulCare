@@ -9,7 +9,6 @@ import DoctorLayout from "../components/DoctorForm";
 import { DatePicker } from "antd";
 import dayjs from "dayjs";
 import { useUserContext } from "../context/UserContext";
-import { useLocation } from "react-router-dom";
 
 const { Text } = Typography;
 
@@ -19,7 +18,6 @@ const DoctorPage = () => {
   const [availabilityEndDate, setAvailabilityEndDate] = useState(dayjs());
   const [selectedTimeSlots, setSelectedTimeSlots] = useState([]);
   const { user } = useUserContext();
-  const location = useLocation();
 
   const timeSlots = [
     "9:00 AM - 12:00 PM",
@@ -31,9 +29,7 @@ const DoctorPage = () => {
   useEffect(() => {
     const fetchDetails = async () => {
       try {
-        const params = new URLSearchParams(location.search); // Parse query parameters
-        const testEmail = params.get("test"); // Check if "test" query parameter exists
-        const email = testEmail || user.email;
+        const email = user.email;
         const details = await fetchDoctorDetails(email);
         setDoctorDetails(details);
       } catch (error) {

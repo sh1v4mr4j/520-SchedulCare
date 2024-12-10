@@ -1,20 +1,52 @@
 describe("Doctor Page - End-to-End Tests", () => {
+    const doctorEmail = "amazing@slotter.com"; // Define the email to test
+    const doctorPassword = "Amazing@1"; // Replace with the actual password
+    const role = "Doctor"; // Define the role for login
+  
+    const doctor = {
+      name: "Amazing Slotter",
+      email: doctorEmail,
+      specialization: "Chest",
+      pincode: 1002,
+    };
+  
     beforeEach(() => {
-      // Visit the doctor page (adjust the URL as per your application)
-      cy.visit("/doctor?test=edsnowden@mbbs.com");
+      // Log in once before running all tests
+      cy.visit("/login?test=true");
+  
+      // Select the role
+      cy.get("input[role='combobox']").click(); // Open the dropdown
+      cy.get(".ant-select-dropdown").contains(role).click(); // Select the doctor role
+  
+      // Log in as the doctor
+      cy.get("input[id='login_email']").type(doctorEmail); // Adjust selector as needed
+      cy.get("input[id='login_password']").type(doctorPassword); // Adjust selector as needed
+      cy.get("button[type='submit']").click(); // Adjust selector as needed
+  
+      // Ensure login is successful by checking if redirected to a valid page
+      cy.url().should("not.include", "/login");
     });
   
-    it("should display correct doctor details when the page loads", () => {
+    //   beforeEach(() => {
+    //     // Visit the doctor page before each test
+    //     cy.visit(`/doctor`);
+    //   });
+  
+    it("should log in and display correct doctor details when the page loads", () => {
+      // cy.visit(`/doctor`);
+  
       // Ensure only the specific card containing doctor details is targeted
       cy.get(".ant-card-body")
-        .contains("Name: Ed Snowden")
+        .contains(`Name: ${doctor.name}`)
         .closest(".ant-card-body") // Ensure you're scoping the correct card
         .within(() => {
           // Verify the doctor details with specific values
-          cy.contains("Name: Ed Snowden").should("be.visible");
-          cy.contains("Email: edsnowden@mbbs.com").should("be.visible");
-          cy.contains("Specialisation: Orthopedic").should("be.visible");
-          cy.contains("Pincode: 112345").should("be.visible");
+          cy.contains(`Name: ${doctor.name}`).should("be.visible");
+          cy.contains(`Email: ${doctorEmail}`).should("be.visible"); // Use the variable here
+          cy.contains(`Specialisation: ${doctor.specialization}`).should(
+            "be.visible"
+          );
+          cy.contains(`Pincode: ${doctor.pincode}`).should("be.visible");
         });
     });
   
