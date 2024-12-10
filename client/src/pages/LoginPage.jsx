@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import { Form, Input, Button, Checkbox, Select, notification } from "antd";
 import { LockOutlined, MailOutlined } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { ENDPOINTS } from "../api/endpoint";
 import { useUserContext } from "../context/UserContext";
 
 const LoginPage = () => {
   const [role, setRole] = useState(""); // State to track the selected role
   const navigate = useNavigate();
-  const { setUser } = useUserContext();
+  const { user, setUser } = useUserContext();
+  const location = useLocation();
 
   // Handle the change in role selection
   const handleRoleChange = (value) => {
@@ -18,6 +19,9 @@ const LoginPage = () => {
   // Handle form submission
   const onFinish = (values) => {
     const { password, email } = values;
+
+    const params = new URLSearchParams(location.search);
+    const isTesting = params.has("test");
 
     // Define the login URL based on the selected role
     const loginUrl =
@@ -50,7 +54,11 @@ const LoginPage = () => {
             duration: 3,
           });
           setUser({ ...data.body, type: role });
-          navigate("/mfa/register");
+          if (isTesting) {
+            navigate(user.type === "doctor" ? "/doctor" : "/patient");
+          } else {
+            navigate(`/mfa/register`);
+          }
         }
       })
       .catch((error) => {
