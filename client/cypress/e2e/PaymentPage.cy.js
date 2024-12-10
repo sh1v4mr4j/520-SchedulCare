@@ -4,7 +4,7 @@ describe("Payment page", () => {
   const role = "Patient"; // Define the role for login
 
   const patient = {
-    name: "Amazing Slotter",
+    name: "Shivam",
     email: patientEmail,
   };
 
@@ -15,9 +15,9 @@ describe("Payment page", () => {
 
     // Select the role
     cy.get("input[role='combobox']").click(); // Open the dropdown
-    cy.get(".ant-select-dropdown").contains(role).click(); // Select the doctor role
+    cy.get(".ant-select-dropdown").contains(role).click(); // Select the role
 
-    // Log in as the doctor
+    // Log in as the patient
     cy.get("input[id='login_email']").type(patientEmail); // Adjust selector as needed
     cy.get("input[id='login_password']").type(patientPassword); // Adjust selector as needed
     cy.get("button[type='submit']").click(); // Adjust selector as needed

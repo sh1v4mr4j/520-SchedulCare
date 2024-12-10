@@ -25,6 +25,7 @@ const DoctorCard = ({ loading, data }) => {
     >
       {data.map((card, index) => (
         <Card
+          id="doctorcard"
           key={card.email}
           loading={loading}
           actions={[
