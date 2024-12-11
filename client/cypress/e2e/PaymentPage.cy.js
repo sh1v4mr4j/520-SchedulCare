@@ -38,7 +38,9 @@ describe("Payment page", () => {
     cy.get("#scheduleAppointment").click();
 
     // Verify payments flow
-    cy.paypalFlow("sb-hrgqe34257713@personal.example.com", "d]ZMV?08");
+
+    // Replace email password below with your sandbox payment account
+    cy.paypalFlow("<your email>", "<your-pass>");
     cy.contains("Close").should("be.visible");
 
     cy.get("#close").click();

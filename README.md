@@ -59,6 +59,14 @@ Node (22.9.0 or higher) and npm
 
 For running Payment page e2e test, you need to configure your own sandbox email and password since it is third party payment.
 
+## Backend Unit Testing
+
+1. Run unit tests for backend services using pytest.
+2. Move to `server/app` folder
+3. Install `pytest` package.
+4. Run unit tests using the command `pytest tests/` to run all tests.
+5. To run a single test, use command `pytest tests/payment_test.py`.
+
 ## Paypal Payment Gateway Setup (Sandbox version)
 
 ### Get client ID and client secret
@@ -139,22 +147,24 @@ Take the following steps to get sandbox login information for business and perso
 Download and setup Google Authenticator App from the [Play Store](https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&hl=en_US) or the [App Store](https://apps.apple.com/us/app/google-authenticator/id388497605)
 
 #### My Authenticator code doesn't work?
+
 Due to the time lag between PyOTP and Google Authenticator web servers, the code expires after 30secs. In this case, wait until Authenticator creates a new code
 
 ## Google Maps Embed API key
+
 1. Follow the setup instructions from the [Maps Embed API page](https://developers.google.com/maps/documentation/embed/cloud-setup)
 2. Add the API key as one of your environment variables as `REACT_APP_GOOGLE_MAPS_API_KEY`
    ```bash
    export REACT_APP_GOOGLE_MAPS_API_KEY=<your_api_key> >> ~/.zshrc
    ```
 3. Restart your terminal and navigate to the client directory to restart the client application.
-> [!WARNING]  
-> You need to add the API key in your system environment variables to avoid exposing it in the codebase.  
-> Do not add it in the `.env.dev` file.
+   > [!WARNING]  
+   > You need to add the API key in your system environment variables to avoid exposing it in the codebase.  
+   > Do not add it in the `.env.dev` file.
 
 ### GEMINI API credentials for using the AI Health Assistant
 
-1. Visit the link: https://ai.google.dev/gemini-api/docs/api-key 
+1. Visit the link: https://ai.google.dev/gemini-api/docs/api-key
 2. Click on "Get a Gemini API key in Google AI Studio"
 3. Once inside this page, Click "Create API Key"
 4. Once you have generated your api key, configure this api key inside .env.dev file like this:
