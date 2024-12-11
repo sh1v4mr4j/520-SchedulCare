@@ -1,20 +1,41 @@
 import React, { useState, useEffect } from "react";
-import {Form,Input,Button,Select,DatePicker,Radio,Typography,notification,Upload,Tooltip} from "antd";
-import {UserOutlined,LockOutlined,EyeInvisibleOutlined,EyeOutlined,UploadOutlined,InfoCircleOutlined } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom";
+import {
+  Form,
+  Input,
+  Button,
+  Select,
+  DatePicker,
+  Radio,
+  Typography,
+  notification,
+  Upload,
+  Tooltip,
+} from "antd";
+import {
+  UserOutlined,
+  LockOutlined,
+  EyeInvisibleOutlined,
+  EyeOutlined,
+  UploadOutlined,
+  InfoCircleOutlined,
+} from "@ant-design/icons";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useUserContext } from "../context/UserContext";
 
 // Import the CSS file with the correct path
 import "../components/styles/RegistrationPage.css";
-import {registerDoctor,registerPatient,} from "../api/services/registrationService";
+import {
+  registerDoctor,
+  registerPatient,
+} from "../api/services/registrationService";
 
 const { Text } = Typography;
 
 const RegistrationPage = () => {
   const [form] = Form.useForm();
   const [userType, setUserType] = useState(null);
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordValid, setPasswordValid] = useState({
     minLength: false,
     capitalLetter: false,
@@ -28,6 +49,7 @@ const RegistrationPage = () => {
   const { setUser } = useUserContext();
   const navigate = useNavigate();
   const [licenseFile, setLicenseFile] = useState(null);
+  const location = useLocation();
 
   const allValid = Object.values(passwordValid).every(Boolean);
 
@@ -46,7 +68,7 @@ const RegistrationPage = () => {
       specialChar: /[!@#$%^&*(),.?":{}|<>]/.test(value),
     });
   };
-  
+
   const preventPasswordActions = (e) => {
     e.preventDefault();
   };
@@ -71,7 +93,7 @@ const RegistrationPage = () => {
             });
           } else {
             setUser({ ...data.body, type: userType });
-            navigate("/mfa/register");            
+            navigate("/mfa/register");
           }
         })
         .catch((error) => {
@@ -92,8 +114,6 @@ const RegistrationPage = () => {
         password: values.password,
         specialisation: values.specialisation,
         pincode: values.pincode,
-        
-        
       };
       registerDoctor(data)
         .then((data) => {
@@ -101,9 +121,11 @@ const RegistrationPage = () => {
             notification.error({
               message: "Registration Failed",
               description: "This email is already registered",
-              duration: 3,
+              duration: 0,
+              key: "registration-failed",
             });
           } else {
+            notification.destroy("registration-failed");
             setUser({ ...data.body, type: userType });
             navigate("/mfa/register");
           }
@@ -113,7 +135,8 @@ const RegistrationPage = () => {
           notification.error({
             message: "Registration Failed",
             description: "Please try again later",
-            duration: 3,
+            duration: 0,
+            key: "registration-failed",
           });
         });
     }
@@ -125,16 +148,11 @@ const RegistrationPage = () => {
 
   const isFormValid = () => {
     const fieldsValue = form.getFieldsValue();
-    console.log(fieldsValue);
     const confirmPassword = fieldsValue.confirm;
     const passwordMatch = password === confirmPassword;
-    console.log(passwordMatch);
-    console.log(password);
-    console.log(confirmPassword);
     const allFieldsFilled = Object.values(fieldsValue).every(
       (value) => value !== undefined && value !== ""
     );
-    console.log(allFieldsFilled);
     return (
       passwordValid.minLength &&
       passwordValid.capitalLetter &&
@@ -149,7 +167,7 @@ const RegistrationPage = () => {
   useEffect(() => {
     const isVal = isFormValid();
     setIsButtonDisabled(!isFormValid());
-  }, [form.getFieldsValue(), passwordValid,password]);
+  }, [form.getFieldsValue(), passwordValid, password]);
 
   const handleFileChange = ({ file }) => {
     setLicenseFile(file);
@@ -157,7 +175,11 @@ const RegistrationPage = () => {
 
   const calculateMaxDate = () => {
     const today = new Date();
-    return new Date(today.getFullYear() - 25, today.getMonth(), today.getDate());
+    return new Date(
+      today.getFullYear() - 25,
+      today.getMonth(),
+      today.getDate()
+    );
   };
 
   return (
@@ -182,6 +204,7 @@ const RegistrationPage = () => {
           >
             <div className="role-selection-buttons">
               <Button
+                id="patient-button"
                 type={userType === "patient" ? "primary" : "default"}
                 onClick={() => handleUserTypeChange("patient")}
                 block
@@ -189,6 +212,7 @@ const RegistrationPage = () => {
                 Patient
               </Button>
               <Button
+                id="doctor-button"
                 type={userType === "doctor" ? "primary" : "default"}
                 onClick={() => handleUserTypeChange("doctor")}
                 block
@@ -202,6 +226,7 @@ const RegistrationPage = () => {
         {userType && (
           <Form.Item className="form-item">
             <Text
+              id="user-greeting"
               type="secondary"
               style={{
                 display: "block",
@@ -222,7 +247,7 @@ const RegistrationPage = () => {
             rules={[{ required: true, message: "Please input your name" }]}
             className="form-item"
           >
-            <Input prefix={<UserOutlined />} placeholder="Name" />
+            <Input id="name" prefix={<UserOutlined />} placeholder="Name" />
           </Form.Item>
         )}
 
@@ -236,7 +261,7 @@ const RegistrationPage = () => {
             ]}
             className="form-item"
           >
-            <Input prefix={<UserOutlined />} placeholder="Email" />
+            <Input id="email" prefix={<UserOutlined />} placeholder="Email" />
           </Form.Item>
         )}
 
@@ -246,11 +271,14 @@ const RegistrationPage = () => {
             label="Password"
             rules={[{ required: true, message: "Please input your password" }]}
             hasFeedback
-            validateStatus={passwordFocused ? (allValid ? "success" : "error"):""}
+            validateStatus={
+              passwordFocused ? (allValid ? "success" : "error") : ""
+            }
             className="form-item"
           >
             <Input.Password
               prefix={<LockOutlined />}
+              id="password"
               placeholder="Password"
               iconRender={(visible) =>
                 visible ? <EyeOutlined /> : <EyeInvisibleOutlined />
@@ -265,12 +293,11 @@ const RegistrationPage = () => {
             />
           </Form.Item>
         )}
-      {allValid && (
-        <Form.Item className="form-item">
-          <span style={{ color: "green" }}>Password is strong!</span>
-        </Form.Item>
-      )}
-
+        {allValid && (
+          <Form.Item className="form-item">
+            <span style={{ color: "green" }}>Password is strong!</span>
+          </Form.Item>
+        )}
 
         {userType && (
           <Form.Item
@@ -292,6 +319,7 @@ const RegistrationPage = () => {
             className="form-item"
           >
             <Input.Password
+              id="confirm-password"
               prefix={<LockOutlined />}
               placeholder="Confirm Password"
               iconRender={(visible) =>
@@ -303,7 +331,6 @@ const RegistrationPage = () => {
             />
           </Form.Item>
         )}
-
 
         {passwordFocused && (
           <Form.Item className="form-item">
@@ -349,39 +376,45 @@ const RegistrationPage = () => {
               ]}
               className="form-item"
             >
-              <Input placeholder="Specialisation" />
+              <Input id="specialisation" placeholder="Specialisation" />
             </Form.Item>
 
-            {/* <Form.Item
-              name="license"
-              label="Medical License"
-              style={{ width: "100%" }}
-              valuePropName="fileList"
-              getValueFromEvent={(e) => (Array.isArray(e) ? e : e?.fileList)}
-              rules={[
-                { required: true, message: "Please upload your Medical License as a PDF file" },
-                {validator:(_,fileList)=>{
-                  const file = fileList?.[0];
-                  if(file && file.type !== "application/pdf"){
-                    return Promise.reject("Please upload a PDF file");
-                  }
-                  return Promise.resolve();
-                }
-                }
-              ]}
-              className="form-item"
-            >
-            <Upload
-             name="license"
-             accept=".pdf"
-             beforeUpload={() => false} // Prevent automatic upload
-             onChange={handleFileChange}
-             fileList={licenseFile? [licenseFile]: []}
-             maxCount={1}
-            >
-            <Button icon={<UploadOutlined />}>Click to Upload</Button>
-            </Upload>
-            </Form.Item> */}
+            {
+              <Form.Item
+                name="license"
+                label="Medical License"
+                style={{ width: "100%" }}
+                valuePropName="fileList"
+                getValueFromEvent={(e) => (Array.isArray(e) ? e : e?.fileList)}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please upload your Medical License as a PDF file",
+                  },
+                  {
+                    validator: (_, fileList) => {
+                      const file = fileList?.[0];
+                      if (file && file.type !== "application/pdf") {
+                        return Promise.reject("Please upload a PDF file");
+                      }
+                      return Promise.resolve();
+                    },
+                  },
+                ]}
+                className="form-item"
+              >
+                <Upload
+                  name="license"
+                  accept=".pdf"
+                  beforeUpload={() => false} // Prevent automatic upload
+                  onChange={handleFileChange}
+                  fileList={licenseFile ? [licenseFile] : []}
+                  maxCount={1}
+                >
+                  <Button icon={<UploadOutlined />}>Click to Upload</Button>
+                </Upload>
+              </Form.Item>
+            }
 
             <Form.Item
               name="dob"
@@ -400,10 +433,11 @@ const RegistrationPage = () => {
             >
               <DatePicker
                 style={{ width: "100%" }}
-                disabledDate={(current)=>{
+                disabledDate={(current) => {
                   const maxDate = calculateMaxDate();
                   return current && current.isAfter(maxDate);
                 }}
+                id="dob"
                 //disabledDate={(current) => current && current > new Date()}
               />
             </Form.Item>
@@ -415,9 +449,15 @@ const RegistrationPage = () => {
               className="form-item"
             >
               <Radio.Group>
-                <Radio value="male">Male</Radio>
-                <Radio value="female">Female</Radio>
-                <Radio value="other">Other</Radio>
+                <Radio id="male" value="male">
+                  Male
+                </Radio>
+                <Radio id="female" value="female">
+                  Female
+                </Radio>
+                <Radio id="other" value="other">
+                  Other
+                </Radio>
               </Radio.Group>
             </Form.Item>
 
@@ -427,16 +467,19 @@ const RegistrationPage = () => {
               rules={[{ required: true, message: "Please input your address" }]}
               className="form-item"
             >
-              <Input placeholder="Address" />
+              <Input id="address" placeholder="Address" />
             </Form.Item>
 
             <Form.Item
               name="pincode"
               label="Pincode"
-              rules={[{ required: true, message: "Please input your pincode" },{pattern:/^[0-9]{6}$/,message:"Invalid pincode"}]}
+              rules={[
+                { required: true, message: "Please input your pincode" },
+                { pattern: /^[0-9]{6}$/, message: "Invalid pincode" },
+              ]}
               className="form-item"
             >
-              <Input placeholder="Pincode" />
+              <Input id="pincode" placeholder="Pincode" />
             </Form.Item>
           </>
         )}
@@ -454,6 +497,7 @@ const RegistrationPage = () => {
               <DatePicker
                 style={{ width: "100%" }}
                 disabledDate={(current) => current && current > new Date()}
+                id="dob"
               />
             </Form.Item>
 
@@ -464,9 +508,15 @@ const RegistrationPage = () => {
               className="form-item"
             >
               <Radio.Group>
-                <Radio value="male">Male</Radio>
-                <Radio value="female">Female</Radio>
-                <Radio value="other">Other</Radio>
+                <Radio id="malep" value="male">
+                  Male
+                </Radio>
+                <Radio id="femalep" value="female">
+                  Female
+                </Radio>
+                <Radio id="otherp" value="other">
+                  Other
+                </Radio>
               </Radio.Group>
             </Form.Item>
           </>
@@ -479,11 +529,12 @@ const RegistrationPage = () => {
               style={{ width: "100%" }}
               htmlType="submit"
               className="registration-form-button"
+              id="register-button"
               //disabled={isButtonDisabled}
             >
               Register
             </Button>
-\          </Form.Item>
+          </Form.Item>
         )}
 
         {userType && (
