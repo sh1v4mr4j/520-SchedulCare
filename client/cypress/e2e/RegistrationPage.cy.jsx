@@ -70,6 +70,7 @@ describe("<RegistrationPage />", () => {
       cy.get("#confirm-password").type("Amazing@1");
       cy.get("#dob").type("2024-12-02");
       cy.get("#femalep").click();
+      cy.get("#pincode").type("123456");
 
       cy.intercept("POST", "/patients/addPatient", {
         status: 200,
@@ -92,6 +93,7 @@ describe("<RegistrationPage />", () => {
       cy.get("#confirm-password").type("Amazing@1");
       cy.get("#dob").type("2024-12-02");
       cy.get("#femalep").click();
+      cy.get("#pincode").type("123456");
 
       //checking the otp verification to compare after clicking the register button incase of registration success
       cy.get("#register-button")
