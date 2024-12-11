@@ -55,7 +55,7 @@ const LoginPage = () => {
           });
           setUser({ ...data.body, type: role });
           if (isTesting) {
-            navigate(user.type === "doctor" ? "/doctor" : "/patient");
+            navigate(role === "doctor" ? "/doctor" : "/patient");
           } else {
             navigate(`/mfa/register`);
           }
@@ -125,10 +125,6 @@ const LoginPage = () => {
           rules={[{ required: true, message: "Please input your password!" }]}
         >
           <Input.Password prefix={<LockOutlined />} placeholder="Password" />
-        </Form.Item>
-
-        <Form.Item>
-          <Checkbox>Remember me</Checkbox>
         </Form.Item>
 
         <Form.Item>

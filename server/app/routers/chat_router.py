@@ -16,6 +16,7 @@ genai.configure(api_key=GOOGLE_API_KEY)
 # Initialize Gemini model
 model = genai.GenerativeModel('gemini-pro')
 
+# Prompt to send to the Gemini Assistant
 HEALTHCARE_PROMPT = """You are a knowledgeable healthcare assistant. Your role is to:
 1. Listen carefully to patients' health concerns
 2. Provide general health guidance and suggestions

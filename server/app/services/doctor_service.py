@@ -1,6 +1,6 @@
 import os
 
-from motor.motor_asyncio import AsyncIOMotorClient
+from motor.motor_asyncio import AsyncIOMotorClient,AsyncIOMotorGridFSBucket
 
 from app.models.doctor import Doctor
 from app.shared.mongo_utils import serialize_mongo_object
@@ -9,20 +9,28 @@ from app.tests.mock import mock_doctor
 from app.models.login import Login
 from passlib.context import CryptContext
 import bcrypt
-
+from gridfs import GridFS
+from bson import ObjectId
+from pymongo import MongoClient
+from bson import ObjectId
+from fastapi import File, UploadFile
 from app.services.mfa_service import MFAService
 
 mfa_service = MFAService()
 from app.models.doctor import DoctorSchedule
 
+
 class DoctorService:
     def __init__(self):
+        # Initialize the DoctorService with MongoDB connection
+        # Get MongoDB URI from environment variables
         self.uri = os.getenv("MONGO_URI")
         self.client = AsyncIOMotorClient(self.uri)
         
         print("connecting to", self.uri)
 
         # Keep the database and collection as instance variables
+        # Access the 'schedulcare' database
         self.database = self.client["schedulcare"]
 
         # Patients collection
@@ -32,6 +40,9 @@ class DoctorService:
 
         # Availability collection
         self.availability_collection = self.database["doctorschedule"]
+
+        #GridFS storage for storing pdf files
+        self.grid_fs = AsyncIOMotorGridFSBucket(self.database)
 
     def ping_mongo(self):
         """
@@ -53,16 +64,17 @@ class DoctorService:
             doctors.append(patient)
         return [serialize_mongo_object(doctor_doc) for doctor_doc in doctors]
 
+    # async def add_doctor(self, doctor: Doctor, license_file: UploadFile=File(...)):
     async def add_doctor(self, doctor: Doctor):
         """
-        Add a patient to the patients collection
-        :param patient: Patient object
+        Add a doctor to the doctors collection
+        :param doctor: Doctor object
         :return: Created time of the record
         """
-        # Check if the patient already exists in the database
+        # Check if the doctor already exists in the database
         existing_doctor = await self.doctor_collection.find_one({"email": doctor.email})
         if existing_doctor:
-            return 400, "Doctor already registered"
+            return 400, serialize_mongo_object(existing_doctor)
 
         # Hash the password before storing it
         hashed_password = bcrypt.hashpw(doctor.password.encode('utf-8'), bcrypt.gensalt())
@@ -71,9 +83,33 @@ class DoctorService:
         secret = mfa_service.generate_mfa_secret()
         doctor.secret = secret
 
+        # #Handle the pdf file
+        # pdf_file_id = None
+        # if pdf_file:
+        #     #Storing the pdf file in the gridfs
+        #     try:
+        #         # Debugging step: Check the type of the pdf_file
+        #         print(f"Received file: {pdf_file.filename}, type: {type(pdf_file)}")
+
+        #         # Ensure we have the correct file object
+        #         if not hasattr(pdf_file, 'file'):
+        #             return 400, {"error": "Invalid file format, no 'file' attribute found"}
+        #         file_stream = pdf_file.file
+        #         pdf_file_id = await self.grid_fs.upload_from_stream(pdf_file.filename,file_stream)
+        #         doctor.pdf_file_id = str(pdf_file_id)
+        #     except Exception as e:
+        #         return 500, {"error": f"An error occurred while storing the pdf file: {str(e)}"}
+        # Create the doctor data to insert into the collection
+        doctor_data = doctor.model_dump()  # Convert doctor object to a dictionary
+
         # Return the response with a success message and QR code
-        resp = await self.doctor_collection.insert_one(doctor.model_dump())
-        return 200, 'Doctor added successfully'
+        resp = await self.doctor_collection.insert_one(doctor_data)
+
+        new_doctor = await self.doctor_collection.find_one({"email": doctor.email})
+
+        #return 200, 'Doctor added successfully'
+        return 200, serialize_mongo_object(new_doctor)
+
     
     async def get_doctor_by_pincode(self, pincode: int):
         """

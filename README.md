@@ -1,4 +1,9 @@
-# 520-SchedulCare
+# COMPSCI 520 Project: SchedulCare
+
+SchedulCare: A one-stop healthcare portal.
+We are building a healthcare portal where both doctors and patients can interact seamlessly. There is a MapView using which patients can navigate to their nearest ambulance, doctor, any medical healthcare facility, among others, and also take advantage of our find by pincode functionality to find closest places. Doctors can set their appointment availability and patients can book their appointments. There is calendar and date features used to set up appointments. Post appointment setting, patients can make a Payment via payment options (we have configured PayPal for this project). There is a AI Health Assistant to help with any user queries regarding any healthcare related suggestions. There are 2 dashboards, one for login and one for register, one each for doctor and patient. We have added MultiFactor Authentication to secure Doctor and patient logins. In addition to that, we have a check for Doctors while they register, to upload their Doctor certificate, to ensure safety and avoid any malpractice. 
+
+Instructions to install, configure and set up the project are provided below:
 
 ## Client setup
 
@@ -163,5 +168,10 @@ Due to the time lag between PyOTP and Google Authenticator web servers, the code
 2. Click on "Get a Gemini API key in Google AI Studio"
 3. Once inside this page, Click "Create API Key"
 4. Once you have generated your api key, configure this api key inside .env.dev file like this:
-   GEMINI_API_KEY="<your_api_key>"
+GEMINI_API_KEY="<your_api_key>"
 5. Now you are good to go!
+
+
+
+### Video Demo Link: 
+>>>>>>> main
