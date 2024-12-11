@@ -22,5 +22,3 @@ class DoctorSchedule(BaseModel):
     doctor_pincode: int
     startDate: datetime
     endDate: datetime
-    timeSlots: List[str]
-
