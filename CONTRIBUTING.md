@@ -27,7 +27,6 @@
 | Backend tests         | pytests                         | Snigdha            | Setup and written backend tests for python services 
 | Backend development   | Fast API                        | Everyone will do their own backend | Shivam: 1. Wrote backend routes, service and models for patient page and adding doctor. <br> 2. Was actively reviewing PRs to keep the backend code structured. <br> Snigdha : 1. Wrote the backend routes, services and models for payemnt page, email notification service and adding appointment details <br> 2. Actively reviewed PRs to ensure code is clean and well structured. Daksha: 1. Actively reviewed PRs and gave comments. <br> 2. Set the user context for Patient Page. <br/> Wrote the Chat and Doctor's service, router, components, pages and required endpoints. 
 | Map view             | Google Map                      | Nikhil             |
-| Doctor’s calendar     | antd                             | Shivam             |
 | Sign up               | Includes authentication         | Rakshita           |
 | Email notification    | Fast Mail                       | Snigdha            |
 | Cypress tests         | End-to-end                      | Every team member  |
