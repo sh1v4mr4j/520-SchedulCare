@@ -1,5 +1,5 @@
 import unittest
-from unittest.mock import AsyncMock, Mock, patch
+from unittest.mock import AsyncMock, MagicMock, Mock, patch
 from app.services.payment_service import PaymentService
 
 class TestPaymentService(unittest.TestCase):
@@ -8,6 +8,7 @@ class TestPaymentService(unittest.TestCase):
         # Create an instance of the PaymentService class for testing
         self.payment_service = PaymentService()
 
+    # Test to check if create order is successful
     @patch('app.services.payment_service.ApiHelper.json_serialize')  # Mock ApiHelper
     @patch('app.services.payment_service.OrdersController.orders_create')  # Mock orders_create
     async def test_create_order_success(self, mock_orders_create, mock_json_serialize):
@@ -63,6 +64,7 @@ class TestPaymentService(unittest.TestCase):
         mock_orders_create.assert_called_once()  # Ensure orders_create was called
         mock_json_serialize.assert_called_once()  # Ensure json_serialize was called
 
+    # Test to check if create_order fails
     @patch('app.services.payment_service.ApiHelper.json_serialize')  # Mock ApiHelper
     @patch('app.services.payment_service.OrdersController.orders_create')  # Mock orders_create
     async def test_create_order_failure(self, mock_orders_create, mock_json_serialize):
@@ -78,6 +80,7 @@ class TestPaymentService(unittest.TestCase):
         mock_orders_create.assert_called_once()  # Ensure orders_create was called
         mock_json_serialize.assert_not_called()  # Ensure json_serialize was not called because of the exception
 
+    # Test to check if capture order is successful
     @patch('app.services.payment_service.ApiHelper.json_serialize')  # Mock ApiHelper
     @patch('app.services.payment_service.OrdersController.orders_capture')  # Mock orders_capture
     async def test_capture_order_success(self, mock_orders_capture, mock_json_serialize):
@@ -121,6 +124,7 @@ class TestPaymentService(unittest.TestCase):
         mock_orders_capture.assert_called_once()  # Ensure orders_capture was called
         mock_json_serialize.assert_called_once()  # Ensure json_serialize was called
 
+    # Test to check if capture order is failing
     @patch('app.services.payment_service.ApiHelper.json_serialize')  # Mock ApiHelper
     @patch('app.services.payment_service.OrdersController.orders_capture')  # Mock orders_capture
     async def test_capture_order_failure(self, mock_orders_capture, mock_json_serialize):

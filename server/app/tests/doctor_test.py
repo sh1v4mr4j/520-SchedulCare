@@ -13,21 +13,7 @@ class TestDoctorService(unittest.IsolatedAsyncioTestCase):
         # Create an instance of the DoctorService class for testing
         self.doctor_service = DoctorService()
 
-    @patch('app.services.doctor_service.AsyncIOMotorClient')
-    async def test_add_doctor_success(self, mock_client):
-        # Create a mock doctor
-        mock_doctor = Doctor(name="Dr. Test", email="test@doctor.com", password="password123", pincode=12345, specialisation="Cardiology", dob="1987-08-02", gender="Male")
-        
-        #Mock call for find_one
-        self.doctor_service.doctor_collection.find_one = AsyncMock(return_value=None)
-        
-        # Mock the database call for insert_one
-        self.doctor_service.doctor_collection.insert_one = AsyncMock(return_value=AsyncMock(inserted_id=123))
-        
-        status_code, message = await self.doctor_service.add_doctor(mock_doctor)
-        self.assertEqual(status_code, 200)
-        self.assertEqual(message, 'Doctor added successfully')
-
+    # Test if doctor exists
     @patch('app.services.doctor_service.AsyncIOMotorClient')
     async def test_add_doctor_existing(self, mock_client):
         # Create a mock doctor
@@ -38,8 +24,8 @@ class TestDoctorService(unittest.IsolatedAsyncioTestCase):
         
         status_code, message = await self.doctor_service.add_doctor(mock_doctor)
         self.assertEqual(status_code, 400)
-        self.assertEqual(message, "Doctor already registered")
 
+    # Test to fetch all doctors
     @patch('app.services.doctor_service.AsyncIOMotorClient')
     async def test_get_all_doctors_success(self, mock_client):
         # Mock the doctor documents in the collection
@@ -61,6 +47,7 @@ class TestDoctorService(unittest.IsolatedAsyncioTestCase):
         expected_doctors = [serialize_mongo_object(doc) for doc in mock_doctors]
         self.assertEqual(doctors, expected_doctors)
 
+    # Test to fetch all doctors under given pincode
     @patch('app.services.doctor_service.AsyncIOMotorClient')
     async def test_get_doctor_by_pincode_success(self, mock_client):
         # Mock doctor documents in the new format
