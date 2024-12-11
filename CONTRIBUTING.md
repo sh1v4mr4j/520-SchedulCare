@@ -21,8 +21,11 @@
 | Patient Page          | Data fetch from backend         | Shivam             | 1. Fetched data from backend regarding the particular email of patient <br> 2. Displayed Calendar to scheule and appointment which is filtered <br>to the availability set up by the doctor. <br> 3. Fetched different doctor in the card view and populated the data.
 | Doctor’s Page         | Data fetch from backend         | Daksha             |
 | Chat Assistance       | Open AI                         | Daksha             |
-| Payment Portal        | PayPal                          | Snigdha            |
-| Backend development   | Fast API                        | Everyone will do their own backend | Shivam: Wrote backend routes, service and models for patient page and adding doctor. <br> 2. Was actively reviewing PRs to keep the backend code structured. 
+| Payment Portal        | PayPal                          | Snigdha            | 1. Integrated with Paypal Sandbox environment to enable payments for patients to schedule appointment with a doctor <br> 2. Setup Sandbox app and personal accounts for seamless payments in sandbox environments from user to merchant <br> 3. Created modal to show payment status message to user before redirecting to Patient page |
+| Email notification    | Fast Mail                       | Snigdha            | 1. Integrated with mailtrap.io to send emails to users via an SMTP server. <br> 2. This enables real time updates to users on any transcations performed through SchedulCare app
+| Appointment Details    | Push data to backend           | Snigdha            | Save appointment details of patient when he/she schedules an appointment with a doctor, such as patient detail, doctor detail and transaction date. Save is performed only after transaction is successful
+| Backend tests         | pytests                         | Snigdha            | Setup and written backend tests for python services 
+| Backend development   | Fast API                        | Everyone will do their own backend | Shivam: 1. Wrote backend routes, service and models for patient page and adding doctor. <br> 2. Was actively reviewing PRs to keep the backend code structured. <br> Snigdha : 1. Wrote the backend routes, services and models for payemnt page, email notification service and adding appointment details <br> 2. Actively reviewed PRs to ensure code is clean and well structured.
 | Map view             | Google Map                      | Nikhil             |
 | Doctor’s calendar     | antd                             | Shivam             |
 | Sign up               | Includes authentication         | Rakshita           |
