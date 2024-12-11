@@ -18,16 +18,7 @@ const DoctorPage = () => {
   const [doctorDetails, setDoctorDetails] = useState(null);
   const [availabilityStartDate, setAvailabilityStartDate] = useState(dayjs());
   const [availabilityEndDate, setAvailabilityEndDate] = useState(dayjs());
-  const [selectedTimeSlots, setSelectedTimeSlots] = useState([]);
   const { user } = useUserContext();
-
-  // Time slots for availability selection
-  const timeSlots = [
-    "9:00 AM - 12:00 PM",
-    "12:00 PM - 3:00 PM",
-    "3:00 PM - 6:00 PM",
-    "6:00 PM - 9:00 PM",
-  ];
 
   // useEffect hook to fetch doctor details when the component mounts
   useEffect(() => {
@@ -69,11 +60,6 @@ const DoctorPage = () => {
       setAvailabilityEndDate(null);
     }
   };
-  
-  // Function to handle changes in selected time slots
-  const handleTimeSlotChange = (checkedValues) => {
-    setSelectedTimeSlots(checkedValues);
-  };
 
   // Function to handle saving the availability
   const handleSaveAvailability = async () => {
@@ -82,20 +68,12 @@ const DoctorPage = () => {
       return;
     }
 
-    // Checking if at least one time slot is selected
-    if (selectedTimeSlots.length === 0) {
-      // Displaying error if no time slots are selected
-      message.error("Please select at least one time slot.");
-      return;
-    }
-
     // Creating an availability object to send to the API
     const availability = {
       doctor_email: doctorDetails.email,
       doctor_pincode: doctorDetails.pincode,
       startDate: availabilityStartDate.format("YYYY-MM-DD"),
-      endDate: availabilityEndDate.format("YYYY-MM-DD"),
-      timeSlots: selectedTimeSlots, // Send multiple selected time slots
+      endDate: availabilityEndDate.format("YYYY-MM-DD")
     };
 
     try {
@@ -156,15 +134,6 @@ const DoctorPage = () => {
             value={[availabilityStartDate, availabilityEndDate]}
             format="YYYY-MM-DD"
             style={{ width: "100%" }}
-          />
-        </div>
-        <div style={{ marginTop: "20px" }}>
-          <Text style={{ fontSize: "18px" }}>Select Time Slots:</Text>
-          <Checkbox.Group
-            options={timeSlots}
-            value={selectedTimeSlots}
-            onChange={handleTimeSlotChange}
-            style={{ marginTop: "10px" }}
           />
         </div>
         <Button
