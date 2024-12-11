@@ -19,8 +19,8 @@
 | Backend setup         |                                  | Nikhil             |
 | Navbar                | antd                             | Shivam             |
 | Patient Page          | Data fetch from backend         | Shivam             |
-| Doctor’s Page         | Data fetch from backend         | Daksha             |
-| Chat Assistance       | Open AI                         | Daksha             |
+| Doctor’s Page         | Appointment Scheduling & Fetch Doctor Details from backend       | Daksha             |
+| Chat Assistance       | Gemini LLM                     | Daksha             |
 | Payment Portal        | PayPal                          | Snigdha            |
 | Backend development   | Fast API                        | Everyone will do their own backend |
 | Map view              | Google Map                      | Nikhil             |
