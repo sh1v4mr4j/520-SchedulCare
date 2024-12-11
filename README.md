@@ -5,6 +5,9 @@ We are building a healthcare portal where both doctors and patients can interact
 
 Instructions to install, configure and set up the project are provided below:
 
+### Link to video demonstration
+[520 video presentation link](https://drive.google.com/drive/folders/1Ye24zasYRp0I8RofXGdWQe6fJFyIdWcp?usp=sharing)
+
 ## Client setup
 
 Pre-Requisites :
