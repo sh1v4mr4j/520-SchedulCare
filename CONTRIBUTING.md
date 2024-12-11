@@ -4,13 +4,33 @@
 
 | Name                | Email                                     |
 | ------------------- | ----------------------------------------- |
-| Daksha Ladia        | dladia@umass.edu
+| Daksha Ladia        | dladia@umass.edu                          |
 | Nikhil Anand        | nikhilanand@umass.edu                     |
 | Shivam Raj          | shivamrj83@gmail.com, shivamraj@umass.edu |
-| Snigdha Ansu        | snigdhaansu@gmail.com, sansu@umass.edu                        |
-| Rakshita Srivastava | rakshitasriv@umass.edu                         |
+| Snigdha Ansu        | snigdhaansu@gmail.com, sansu@umass.edu    |
+| Rakshita Srivastava | rakshitasriv@umass.edu                    |
 
-## How to Contribute
+## Tasks
+
+| Feature                | Details                         | Assigned To        | Remarks                                     |
+|------------------------|----------------------------------|--------------------| ------------------------------------------ |
+| Login                 | Includes authentication         | Rakshita           |
+| Frontend setup        |                                  | Shivam             |
+| Backend setup         |                                  | Nikhil             |
+| Navbar                | antd                             | Shivam             |
+| Patient Page          | Data fetch from backend         | Shivam             |
+| Doctor’s Page         | Data fetch from backend         | Daksha             |
+| Chat Assistance       | Open AI                         | Daksha             |
+| Payment Portal        | PayPal                          | Snigdha            |
+| Backend development   | Fast API                        | Everyone will do their own backend |
+| Map view              | Google Map                      | Nikhil             |
+| Doctor’s calendar     | antd                             | Shivam             |
+| Sign up               | Includes authentication         | Rakshita           |
+| Email notification    | Fast Mail                       | Snigdha            |
+| Cypress tests         | End-to-end                      | Every team member  |
+
+
+
 
 ### Creating a Branch
 
