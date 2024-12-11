@@ -120,7 +120,11 @@ const LoginPage = () => {
             { type: "email", message: "Please input a valid email!" },
           ]}
         >
-          <Input id="email" prefix={<MailOutlined />} placeholder="Email" />
+          <Input
+            id="login_email"
+            prefix={<MailOutlined />}
+            placeholder="Email"
+          />
         </Form.Item>
 
         {/* Password Field */}
@@ -130,7 +134,7 @@ const LoginPage = () => {
           rules={[{ required: true, message: "Please input your password!" }]}
         >
           <Input.Password
-            id="password"
+            id="login_password"
             prefix={<LockOutlined />}
             placeholder="Password"
           />
