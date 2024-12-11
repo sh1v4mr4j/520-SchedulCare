@@ -49,8 +49,8 @@ describe("<LoginPage />", () => {
     // Check if the login form and essential elements are present
     cy.get("h2").should("have.text", "Login");
     cy.get("#select-role").should("exist");
-    cy.get("#email").should("exist");
-    cy.get("#password").should("exist");
+    cy.get("#login_email").should("exist");
+    cy.get("#login_password").should("exist");
     cy.get("#login-button").should("exist");
   });
 
@@ -65,8 +65,8 @@ describe("<LoginPage />", () => {
       cy.get("#select-role").click();
       cy.get(".ant-select-dropdown").should("be.visible"); // This checks if the dropdown is visible
       cy.get(".ant-select-dropdown").contains("Patient").click(); // Use .ant-select-dropdown as a more reliable selector
-      cy.get("#email").type("rakshita@patient.com");
-      cy.get("#password").type("Qwerty@1");
+      cy.get("#login_email").type("rakshita@patient.com");
+      cy.get("#login_password").type("Qwerty@1");
 
       cy.intercept("POST", "/patients/patientLogin", {
         status: 200,
@@ -86,8 +86,8 @@ describe("<LoginPage />", () => {
       cy.get("#select-role").click();
       cy.get(".ant-select-dropdown").should("be.visible"); // This checks if the dropdown is visible
       cy.get(".ant-select-dropdown").contains("Patient").click(); // Use .ant-select-dropdown as a more reliable selector
-      cy.get("#email").type("rakshita@patient.com");
-      cy.get("#password").type("Qwerty@1");
+      cy.get("#login_email").type("rakshita@patient.com");
+      cy.get("#login_password").type("Qwerty@1");
 
       cy.intercept("POST", "/patients/patientLogin", {
         status: 200,
@@ -116,8 +116,8 @@ describe("<LoginPage />", () => {
       cy.get("#select-role").click();
       cy.get(".ant-select-dropdown").should("be.visible"); // This checks if the dropdown is visible
       cy.get(".ant-select-dropdown").contains("Doctor").click(); // Use .ant-select-dropdown as a more reliable selector
-      cy.get("#email").type("rakshita@doctor.com");
-      cy.get("#password").type("Qwerty@1");
+      cy.get("#login_email").type("rakshita@doctor.com");
+      cy.get("#login_password").type("Qwerty@1");
 
       cy.intercept("POST", "/doctors/doctorLogin", {
         status: 200,
@@ -137,8 +137,8 @@ describe("<LoginPage />", () => {
       cy.get("#select-role").click();
       cy.get(".ant-select-dropdown").should("be.visible"); // This checks if the dropdown is visible
       cy.get(".ant-select-dropdown").contains("Doctor").click(); // Use .ant-select-dropdown as a more reliable selector
-      cy.get("#email").type("rakshita@doctor.com");
-      cy.get("#password").type("Qwerty@1");
+      cy.get("#login_email").type("rakshita@doctor.com");
+      cy.get("#login_password").type("Qwerty@1");
 
       cy.intercept("POST", "/doctors/doctorLogin", {
         status: 200,
