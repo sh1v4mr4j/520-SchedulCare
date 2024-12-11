@@ -3,13 +3,14 @@ import PatientForm from "../components/PatientForm";
 import Heading from "../components/Heading";
 import { usePatientByEmail } from "../hooks/usePatientByEmail";
 import ErrorModal from "../components/ErrorModal";
-
+import { useUserContext } from "../context/UserContext";
 
 const PatientPage = () => {
-  const email = "logan.anderson@example.com";
+  const { user } = useUserContext();
+  const email = user.email;
   const {data, loading, error} = usePatientByEmail(email);
   const [isModalOpen, setModalOpen] = useState(false);
-
+  
   return (
     <>
     {error && (
