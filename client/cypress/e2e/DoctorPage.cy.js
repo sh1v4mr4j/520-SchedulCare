@@ -19,8 +19,8 @@ describe("Doctor Page - End-to-End Tests", () => {
       cy.get(".ant-select-dropdown").contains(role).click(); // Select the doctor role
   
       // Log in as the doctor
-      cy.get("input[id='login_email']").type(doctorEmail); // Adjust selector as needed
-      cy.get("input[id='login_password']").type(doctorPassword); // Adjust selector as needed
+      cy.get("input[id='email']").type(doctorEmail); // Adjust selector as needed
+      cy.get("input[id='password']").type(doctorPassword); // Adjust selector as needed
       cy.get("button[type='submit']").click(); // Adjust selector as needed
   
       // Ensure login is successful by checking if redirected to a valid page
