@@ -25,6 +25,8 @@
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
 import "cypress-xpath";
+import 'cypress-file-upload';
+
 
 Cypress.Commands.add("getIframeBody", (iframeSelector) => {
   return cy

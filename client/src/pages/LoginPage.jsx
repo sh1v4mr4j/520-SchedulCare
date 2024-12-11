@@ -97,12 +97,17 @@ const LoginPage = () => {
           rules={[{ required: true, message: "Please select your role!" }]}
         >
           <Select
+            id="select-role"
             placeholder="Select your role"
             onChange={handleRoleChange}
             value={role}
           >
-            <Select.Option value="doctor">Doctor</Select.Option>
-            <Select.Option value="patient">Patient</Select.Option>
+            <Select.Option id="doctor" value="doctor">
+              Doctor
+            </Select.Option>
+            <Select.Option id="patient" value="patient">
+              Patient
+            </Select.Option>
           </Select>
         </Form.Item>
 
@@ -115,7 +120,7 @@ const LoginPage = () => {
             { type: "email", message: "Please input a valid email!" },
           ]}
         >
-          <Input prefix={<MailOutlined />} placeholder="Email" />
+          <Input id="email" prefix={<MailOutlined />} placeholder="Email" />
         </Form.Item>
 
         {/* Password Field */}
@@ -124,11 +129,20 @@ const LoginPage = () => {
           label="Password"
           rules={[{ required: true, message: "Please input your password!" }]}
         >
-          <Input.Password prefix={<LockOutlined />} placeholder="Password" />
+          <Input.Password
+            id="password"
+            prefix={<LockOutlined />}
+            placeholder="Password"
+          />
         </Form.Item>
 
         <Form.Item>
-          <Button type="primary" htmlType="submit" style={{ width: "100%" }}>
+          <Button
+            id="login-button"
+            type="primary"
+            htmlType="submit"
+            style={{ width: "100%" }}
+          >
             Log In
           </Button>
         </Form.Item>
@@ -137,6 +151,7 @@ const LoginPage = () => {
         <Form.Item style={{ textAlign: "center" }}>
           <Button
             type="link"
+            id="register-link"
             onClick={() => navigate("/register")}
             style={{ padding: 0, fontSize: "14px" }}
           >

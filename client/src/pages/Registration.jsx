@@ -164,11 +164,6 @@ const RegistrationPage = () => {
     );
   };
 
-  useEffect(() => {
-    const isVal = isFormValid();
-    setIsButtonDisabled(!isFormValid());
-  }, [form.getFieldsValue(), passwordValid, password]);
-
   const handleFileChange = ({ file }) => {
     setLicenseFile(file);
   };
@@ -442,7 +437,6 @@ const RegistrationPage = () => {
                   return current && current.isAfter(maxDate);
                 }}
                 id="dob"
-                //disabledDate={(current) => current && current > new Date()}
               />
             </Form.Item>
 
@@ -473,19 +467,21 @@ const RegistrationPage = () => {
             >
               <Input id="address" placeholder="Address" />
             </Form.Item>
-
-            <Form.Item
-              name="pincode"
-              label="Pincode"
-              rules={[
-                { required: true, message: "Please input your pincode" },
-                { pattern: /^[0-9]{6}$/, message: "Invalid pincode" },
-              ]}
-              className="form-item"
-            >
-              <Input id="pincode" placeholder="Pincode" />
-            </Form.Item>
           </>
+        )}
+
+        {userType && (
+          <Form.Item
+            name="pincode"
+            label="Pincode"
+            rules={[
+              { required: true, message: "Please input your pincode" },
+              { pattern: /^[0-9]{6}$/, message: "Invalid pincode" },
+            ]}
+            className="form-item"
+          >
+            <Input id="pincode" placeholder="Pincode" />
+          </Form.Item>
         )}
 
         {userType === "patient" && (
