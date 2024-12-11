@@ -55,7 +55,7 @@ const LoginPage = () => {
           });
           setUser({ ...data.body, type: role });
           if (isTesting) {
-            navigate(user.type === "doctor" ? "/doctor" : "/patient");
+            navigate(role === "doctor" ? "/doctor" : "/patient");
           } else {
             navigate(`/mfa/register`);
           }

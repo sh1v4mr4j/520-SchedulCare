@@ -22,12 +22,15 @@ from app.models.doctor import DoctorSchedule
 
 class DoctorService:
     def __init__(self):
+        # Initialize the DoctorService with MongoDB connection
+        # Get MongoDB URI from environment variables
         self.uri = os.getenv("MONGO_URI")
         self.client = AsyncIOMotorClient(self.uri)
         
         print("connecting to", self.uri)
 
         # Keep the database and collection as instance variables
+        # Access the 'schedulcare' database
         self.database = self.client["schedulcare"]
 
         # Patients collection

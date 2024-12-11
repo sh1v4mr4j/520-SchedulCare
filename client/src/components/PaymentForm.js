@@ -10,6 +10,7 @@ import { addAppointmentDetail } from "../api/services/appointmentService";
 // Renders errors or successful transactions on the screen.
 const Message = ({ content }) => <p>{content}</p>;
 
+// Modal to display transaction status duing payments flow
 const Modal = ({ isOpen, onClose, title, content }) => {
   if (!isOpen) return null;
 
@@ -18,7 +19,9 @@ const Modal = ({ isOpen, onClose, title, content }) => {
       <div className="modal-content">
         <h2 className> {title}</h2>
         <p>{content}</p>
-        <button id={"close"} onClick={onClose}>Close</button>
+        <button id={"close"} onClick={onClose}>
+          Close
+        </button>
       </div>
     </div>
   );
@@ -67,11 +70,13 @@ export const PaymentForm = () => {
     setIsModalOpen(true);
   };
 
+  // Close the modal and redirect to patient page on successful transaction
   const closeModal = () => {
     navigate(`/patient`, { replace: true });
     setIsModalOpen(false);
   };
 
+  // Send email to patient about transaction completion
   const sendEmail = async (transaction) => {
     try {
       const url = ENDPOINTS.sendEmail;
@@ -97,6 +102,7 @@ export const PaymentForm = () => {
       setMessage(`Error sending email: ${error.message}`);
     }
   };
+
   return (
     <div className="App" id="paymentform">
       <PayPalScriptProvider options={initialOptions}>
@@ -109,6 +115,7 @@ export const PaymentForm = () => {
               color: "gold",
               label: "paypal",
             }}
+            // Call the backend to initiate paypal payment
             createOrder={async () => {
               try {
                 const url = ENDPOINTS.createOrder;
@@ -151,6 +158,7 @@ export const PaymentForm = () => {
                 );
               }
             }}
+            // After payment inititiation, redirect for payment approval
             onApprove={async (data, actions) => {
               try {
                 const url = ENDPOINTS.capturePayment(data?.orderID);
@@ -166,6 +174,7 @@ export const PaymentForm = () => {
 
                 const errorDetail = orderData?.details?.[0];
 
+                // Handle errors for failed transcation scenarios
                 if (errorDetail?.issue === "INSTRUMENT_DECLINED") {
                   return actions.restart();
                 } else if (errorDetail) {
@@ -177,13 +186,18 @@ export const PaymentForm = () => {
                     orderData.purchase_units[0].payments.captures[0];
 
                   if (transaction.status === "COMPLETED") {
+                    // Send email for payment completion
                     await sendEmail(transaction);
+
+                    // Add appointment details to DB
                     await addAppointmentDetail(user.email, doctorEmail, day);
                   }
 
                   setMessage(
                     `Transaction ${transaction.status}: ${transaction.id}.`
                   );
+
+                  // On successful transaction completion, display the modal
                   updateModal(
                     "Transaction Successful",
                     `Transaction ${transaction.status}: ${transaction.id}. Amount: $${transaction.amount.value}`
