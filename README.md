@@ -174,6 +174,3 @@ Due to the time lag between PyOTP and Google Authenticator web servers, the code
 GEMINI_API_KEY="<your_api_key>"
 5. Now you are good to go!
 
-
-
-### Video Demo Link: 
