@@ -62,6 +62,17 @@ const OtpRegistration = () => {
             <h2>MFA Registration</h2>
           </Row>
           <Row justify="center" gutter={[16, 16]}>
+            <Col span={20}>
+              <p
+                style={{ textAlign: "center", fontSize: "16px", color: "#555" }}
+              >
+                To complete registration, please install the Google
+                Authenticator app on your mobile device. Scan the QR code below
+                to link your account.
+              </p>
+            </Col>
+          </Row>
+          <Row justify="center" gutter={[16, 16]}>
             <Col span={10}>
               {showQRCode ? (
                 <QRCodeSVG
@@ -70,7 +81,7 @@ const OtpRegistration = () => {
                   bgColor={"#ffffff"}
                   fgColor={"#000000"}
                   level={"Q"} // Error correction level
-                  includeMargin={true}
+                  marginSize={true}
                 />
               ) : (
                 <></>
@@ -98,6 +109,7 @@ const OtpRegistration = () => {
                     placeholder="OTP"
                     value={otp}
                     onChange={(e) => setOtp(e.target.value)}
+                    id="otp"
                   />
                 </Form.Item>
 
@@ -107,6 +119,7 @@ const OtpRegistration = () => {
                     htmlType="submit"
                     style={{ width: "100%" }}
                     disabled={!otp}
+                    id="verify-otp"
                   >
                     Verify OTP
                   </Button>

@@ -128,10 +128,6 @@ const LoginPage = () => {
         </Form.Item>
 
         <Form.Item>
-          <Checkbox>Remember me</Checkbox>
-        </Form.Item>
-
-        <Form.Item>
           <Button type="primary" htmlType="submit" style={{ width: "100%" }}>
             Log In
           </Button>
