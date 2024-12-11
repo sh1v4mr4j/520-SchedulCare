@@ -1,3 +1,4 @@
+//Declaring the constants for the doctor and patient objects
 const doctor = {
   email: "rakhs@gmail.com",
   name: "John Doctor",
@@ -21,7 +22,7 @@ const patient = {
   address: {},
   secret: "DMDPKDCBEIJEHH3A32ZTWITIEKO4QWJI",
 };
-
+//Describe block for the RegistrationPage component
 describe("<RegistrationPage />", () => {
   beforeEach(() => {
     cy.visit("/register?test=true");
@@ -35,6 +36,7 @@ describe("<RegistrationPage />", () => {
       },
     }).as("mfaRegister");
 
+    // Create an intercept for verifying the OTP
     cy.intercept("POST", "/mfa/verifyOtp", {
       status: 200,
       body: { status_code: 200, message: "Success" },
@@ -46,6 +48,7 @@ describe("<RegistrationPage />", () => {
     cy.get("#doctor-button").should("exist");
   });
 
+  //Describe block for the Patient Registration
   describe("Patient Registration", () => {
     beforeEach(() => {
       cy.get("#patient-button").click();
@@ -59,6 +62,7 @@ describe("<RegistrationPage />", () => {
       cy.get("#user-greeting").contains("Patient");
     });
 
+    //Test case for trying to register an already existing patient
     it("trying to register an already existing patient", () => {
       cy.get("#name").type("Amazing Slotter");
       cy.get("#email").type("amazing1@slotter.com");
@@ -66,6 +70,7 @@ describe("<RegistrationPage />", () => {
       cy.get("#confirm-password").type("Amazing@1");
       cy.get("#dob").type("2024-12-02");
       cy.get("#femalep").click();
+      cy.get("#pincode").type("123456");
 
       cy.intercept("POST", "/patients/addPatient", {
         status: 200,
@@ -79,6 +84,8 @@ describe("<RegistrationPage />", () => {
         cy.url().should("eq", url);
       });
     });
+
+    //Test case for trying to register a new patient
     it("trying to register a new patient", () => {
       cy.get("#name").type("Amazing Slotter");
       cy.get("#email").type("amazing1@slotter.com");
@@ -86,6 +93,7 @@ describe("<RegistrationPage />", () => {
       cy.get("#confirm-password").type("Amazing@1");
       cy.get("#dob").type("2024-12-02");
       cy.get("#femalep").click();
+      cy.get("#pincode").type("123456");
 
       //checking the otp verification to compare after clicking the register button incase of registration success
       cy.get("#register-button")
@@ -96,8 +104,14 @@ describe("<RegistrationPage />", () => {
           cy.get("#verify-otp").click();
         });
     });
+    // Switch to doctor registration
+    it("Redirect to doctor registration if not patient", () => {
+      cy.get("#switch-form").should("be.visible").click();
+      cy.url().should("eq", `${Cypress.config().baseUrl}/register?test=true`);
+    });
   });
 
+  //Describe block for the Doctor Registration
   describe("Doctor Registration", () => {
     beforeEach(() => {
       cy.get("#doctor-button").click();
@@ -111,13 +125,19 @@ describe("<RegistrationPage />", () => {
       cy.get("#user-greeting").contains("Doctor");
     });
 
+    //Test case for trying to register an already existing doctor
     it("trying to register an already existing doctor", () => {
+      const filePath = "license.pdf";
       cy.get("#name").type("Amazing Slotter");
       cy.get("#email").type("amazing1@slotter.com");
       cy.get("#password").type("Amazing@1");
       cy.get("#confirm-password").type("Amazing@1");
       cy.get("#dob").type("1988-12-02");
       cy.get("#specialisation").type("ENT");
+      cy.get("#license").attachFile(filePath);
+      cy.contains("Please upload your Medical License as a PDF file").should(
+        "not.exist"
+      );
       cy.get("#male").click();
       cy.get("#address").type("123 Test Street");
       cy.get("#pincode").type("123456");
@@ -134,13 +154,20 @@ describe("<RegistrationPage />", () => {
         cy.url().should("eq", url);
       });
     });
+
+    //Test case for trying to register a new doctor
     it("trying to register a new doctor", () => {
+      const filePath = "license.pdf";
       cy.get("#name").type("Amazing Slotter");
       cy.get("#email").type("amazing1@slotter.com");
       cy.get("#password").type("Amazing@1");
       cy.get("#confirm-password").type("Amazing@1");
       cy.get("#dob").type("1988-12-02");
       cy.get("#specialisation").type("ENT");
+      cy.get("#license").attachFile(filePath);
+      cy.contains("Please upload your Medical License as a PDF file").should(
+        "not.exist"
+      );
       cy.get("#male").click();
       cy.get("#address").type("123 Test Street");
       cy.get("#pincode").type("123456");
@@ -153,6 +180,11 @@ describe("<RegistrationPage />", () => {
           cy.get("#otp").type("123456");
           cy.get("#verify-otp").click();
         });
+    });
+    // Switch to patient registration
+    it("Redirect to patient registration if not doctor", () => {
+      cy.get("#switch-form").should("be.visible").click();
+      cy.url().should("eq", `${Cypress.config().baseUrl}/register?test=true`);
     });
   });
 });

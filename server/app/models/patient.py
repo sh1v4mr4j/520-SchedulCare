@@ -17,5 +17,6 @@ class Patient(BaseModel):
     gender: str
     password: str
     appointments: list[Appointment]  = []
+    pincode: int
     address: Optional[Location] = {}
     secret: Optional[str] = None

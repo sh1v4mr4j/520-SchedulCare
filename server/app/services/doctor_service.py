@@ -83,22 +83,6 @@ class DoctorService:
         secret = mfa_service.generate_mfa_secret()
         doctor.secret = secret
 
-        # #Handle the pdf file
-        # pdf_file_id = None
-        # if pdf_file:
-        #     #Storing the pdf file in the gridfs
-        #     try:
-        #         # Debugging step: Check the type of the pdf_file
-        #         print(f"Received file: {pdf_file.filename}, type: {type(pdf_file)}")
-
-        #         # Ensure we have the correct file object
-        #         if not hasattr(pdf_file, 'file'):
-        #             return 400, {"error": "Invalid file format, no 'file' attribute found"}
-        #         file_stream = pdf_file.file
-        #         pdf_file_id = await self.grid_fs.upload_from_stream(pdf_file.filename,file_stream)
-        #         doctor.pdf_file_id = str(pdf_file_id)
-        #     except Exception as e:
-        #         return 500, {"error": f"An error occurred while storing the pdf file: {str(e)}"}
         # Create the doctor data to insert into the collection
         doctor_data = doctor.model_dump()  # Convert doctor object to a dictionary
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Form,
   Input,
@@ -59,7 +59,6 @@ const RegistrationPage = () => {
 
   const handlePasswordChange = (e) => {
     const value = e.target.value;
-    setPassword(value);
     setPasswordValid({
       minLength: value.length >= 8,
       capitalLetter: /[A-Z]/.test(value),
@@ -82,6 +81,7 @@ const RegistrationPage = () => {
         dob: values.dob,
         gender: values.gender,
         password: values.password,
+        pincode: values.pincode,
       };
       registerPatient(data)
         .then((data) => {
@@ -164,11 +164,6 @@ const RegistrationPage = () => {
     );
   };
 
-  useEffect(() => {
-    const isVal = isFormValid();
-    setIsButtonDisabled(!isFormValid());
-  }, [form.getFieldsValue(), passwordValid, password]);
-
   const handleFileChange = ({ file }) => {
     setLicenseFile(file);
   };
@@ -190,6 +185,7 @@ const RegistrationPage = () => {
         initialValues={{ remember: true }}
         className="registration-form"
         layout="vertical"
+        onValuesChange={isFormValid}
       >
         <h2 className="registration-header">Register</h2>
 
@@ -283,7 +279,6 @@ const RegistrationPage = () => {
               iconRender={(visible) =>
                 visible ? <EyeOutlined /> : <EyeInvisibleOutlined />
               }
-              value={password}
               onChange={handlePasswordChange}
               onFocus={() => setPasswordFocused(true)}
               onBlur={() => setPasswordFocused(false)}
@@ -339,7 +334,9 @@ const RegistrationPage = () => {
                 {passwordValid.minLength ? "✔️ " : "❌ "} Minimum 8 characters
               </li>
               <li
-                style={{ color: passwordValid.capitalLetter ? "green" : "red" }}
+                style={{
+                  color: passwordValid.capitalLetter ? "green" : "red",
+                }}
               >
                 {passwordValid.capitalLetter ? "✔️ " : "❌ "} At least one
                 capital letter
@@ -383,6 +380,7 @@ const RegistrationPage = () => {
               <Form.Item
                 name="license"
                 label="Medical License"
+                id="license"
                 style={{ width: "100%" }}
                 valuePropName="fileList"
                 getValueFromEvent={(e) => (Array.isArray(e) ? e : e?.fileList)}
@@ -405,6 +403,7 @@ const RegistrationPage = () => {
               >
                 <Upload
                   name="license"
+                  id="license"
                   accept=".pdf"
                   beforeUpload={() => false} // Prevent automatic upload
                   onChange={handleFileChange}
@@ -438,7 +437,6 @@ const RegistrationPage = () => {
                   return current && current.isAfter(maxDate);
                 }}
                 id="dob"
-                //disabledDate={(current) => current && current > new Date()}
               />
             </Form.Item>
 
@@ -469,19 +467,21 @@ const RegistrationPage = () => {
             >
               <Input id="address" placeholder="Address" />
             </Form.Item>
-
-            <Form.Item
-              name="pincode"
-              label="Pincode"
-              rules={[
-                { required: true, message: "Please input your pincode" },
-                { pattern: /^[0-9]{6}$/, message: "Invalid pincode" },
-              ]}
-              className="form-item"
-            >
-              <Input id="pincode" placeholder="Pincode" />
-            </Form.Item>
           </>
+        )}
+
+        {userType && (
+          <Form.Item
+            name="pincode"
+            label="Pincode"
+            rules={[
+              { required: true, message: "Please input your pincode" },
+              { pattern: /^[0-9]{6}$/, message: "Invalid pincode" },
+            ]}
+            className="form-item"
+          >
+            <Input id="pincode" placeholder="Pincode" />
+          </Form.Item>
         )}
 
         {userType === "patient" && (
@@ -490,7 +490,10 @@ const RegistrationPage = () => {
               name="dob"
               label="Date of Birth"
               rules={[
-                { required: true, message: "Please input your date of birth" },
+                {
+                  required: true,
+                  message: "Please input your date of birth",
+                },
               ]}
               className="form-item"
             >
@@ -539,7 +542,7 @@ const RegistrationPage = () => {
 
         {userType && (
           <Form.Item className="switch-role-button">
-            <Button type="link" onClick={handleSwitchRole}>
+            <Button id="switch-form" type="link" onClick={handleSwitchRole}>
               {userType === "doctor"
                 ? "Not a doctor? Switch to Patient Registration"
                 : "Not a patient? Switch to Doctor Registration"}
