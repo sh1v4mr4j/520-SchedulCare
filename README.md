@@ -57,8 +57,12 @@ Node (22.9.0 or higher) and npm
    - **DO NOT COMMIT** this file. (thanks!)
 
 ## Using cypress testing
+Once done creating an end-to-end test in client/cypress/e2e,
 
-1. Once done creating an end-to-end test in client/cypress/e2e, view the test work using `npx open cypress` in the client folder. Make sure the application is already running.
+1. Stop the server. Inside server/app/, export mongo db creds:
+export MONGO_URI="mongodb+srv://<username>:<password>@animus.piv6r.mongodb.net/?retryWrites=true&w=majority&appName=Animus"
+2. Start the server: `fastapi dev main.py`
+3.Run `npx open cypress` in the client folder. Make sure the application is already running.
 
 For running Payment page e2e test, you need to configure your own sandbox email and password since it is third party payment.
 
