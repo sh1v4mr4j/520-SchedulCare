@@ -82,6 +82,7 @@ const RegistrationPage = () => {
         dob: values.dob,
         gender: values.gender,
         password: values.password,
+        pincode: values.pincode,
       };
       registerPatient(data)
         .then((data) => {
@@ -383,6 +384,7 @@ const RegistrationPage = () => {
               <Form.Item
                 name="license"
                 label="Medical License"
+                id="license"
                 style={{ width: "100%" }}
                 valuePropName="fileList"
                 getValueFromEvent={(e) => (Array.isArray(e) ? e : e?.fileList)}
@@ -405,6 +407,7 @@ const RegistrationPage = () => {
               >
                 <Upload
                   name="license"
+                  id="license"
                   accept=".pdf"
                   beforeUpload={() => false} // Prevent automatic upload
                   onChange={handleFileChange}
@@ -539,7 +542,7 @@ const RegistrationPage = () => {
 
         {userType && (
           <Form.Item className="switch-role-button">
-            <Button type="link" onClick={handleSwitchRole}>
+            <Button id="switch-form" type="link" onClick={handleSwitchRole}>
               {userType === "doctor"
                 ? "Not a doctor? Switch to Patient Registration"
                 : "Not a patient? Switch to Doctor Registration"}
