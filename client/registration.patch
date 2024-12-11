@@ -1,0 +1,185 @@
+diff --git a/client/src/pages/Registration.jsx b/client/src/pages/Registration.jsx
+index 0033b42..aa9be8b 100644
+--- a/client/src/pages/Registration.jsx
++++ b/client/src/pages/Registration.jsx
+@@ -1,4 +1,4 @@
+-import React, { useState, useEffect } from "react";
++import React, { useState } from "react";
+ import {
+   Form,
+   Input,
+@@ -25,9 +25,7 @@ const { Text } = Typography;
+ 
+ const RegistrationPage = () => {
+   const { user, setUser } = useUserContext();
+-  const [form] = Form.useForm();
+   const [userType, setUserType] = useState(null);
+-  const [password, setPassword] = useState("");
+   const [passwordValid, setPasswordValid] = useState({
+     minLength: false,
+     capitalLetter: false,
+@@ -36,8 +34,6 @@ const RegistrationPage = () => {
+     specialChar: false,
+   });
+   const [passwordFocused, setPasswordFocused] = useState(false);
+-  const [isButtonDisabled, setIsButtonDisabled] = useState(true); // State to track the button disabled status
+-  const [age, setAge] = useState(null);
+   const navigate = useNavigate();
+ 
+   const handleUserTypeChange = (value) => {
+@@ -46,7 +42,6 @@ const RegistrationPage = () => {
+ 
+   const handlePasswordChange = (e) => {
+     const value = e.target.value;
+-    setPassword(value);
+     setPasswordValid({
+       minLength: value.length >= 8,
+       capitalLetter: /[A-Z]/.test(value),
+@@ -57,7 +52,6 @@ const RegistrationPage = () => {
+   };
+ 
+   const onFinish = (values) => {
+-    console.log("Form Values:", values);
+     let data = {};
+     if (userType === "patient") {
+       data = {
+@@ -84,7 +78,6 @@ const RegistrationPage = () => {
+               duration: 3,
+             });
+           } else {
+-            console.log("Success:", data);
+             navigate("/login");
+             setUser({ ...user, email: values.email, type: "patient" }); // Update the user context
+           }
+@@ -117,7 +110,6 @@ const RegistrationPage = () => {
+       })
+         .then((response) => response.json())
+         .then((data) => {
+-          console.log("my data", data);
+           if (data.status_code === 400) {
+             notification.error({
+               message: "Registration Failed",
+@@ -125,7 +117,6 @@ const RegistrationPage = () => {
+               duration: 3,
+             });
+           } else {
+-            console.log("Success:", data);
+             navigate("/login");
+             setUser({ ...user, email: values.email, type: "doctor" }); // Update the user context
+           }
+@@ -145,42 +136,29 @@ const RegistrationPage = () => {
+     setUserType(userType === "doctor" ? "patient" : "doctor");
+   };
+ 
+-  const isFormValid = () => {
+-    const fieldsValue = form.getFieldsValue();
+-    const confirmPassword = fieldsValue.confirm;
+-    const passwordMatch = password === confirmPassword;
+-    const allFieldsFilled = Object.values(fieldsValue).every(
++  const isFormValid = (changedValues, allValues) => {
++    const confirmPassword = allValues.confirm || null;
++    const password = allValues.password || null;
++    const passwordMatch =
++      password !== null &&
++      confirmPassword !== null &&
++      password === confirmPassword;
++    const allFieldsFilled = Object.values(allValues).every(
+       (value) => value !== undefined && value !== ""
+     );
+-    return (
++    const isFormValid =
+       passwordValid.minLength &&
+       passwordValid.capitalLetter &&
+       passwordValid.smallLetter &&
+       passwordValid.number &&
+       passwordValid.specialChar &&
+       passwordMatch &&
+-      allFieldsFilled
+-    );
++      allFieldsFilled;
++    setRegistrationDisabled(!isFormValid);
++    return isFormValid;
+   };
+ 
+-  useEffect(() => {
+-    setIsButtonDisabled(!isFormValid());
+-  }, [form.getFieldsValue(), passwordValid]);
+-
+-  // const onValuesChange = (changedValues, allValues) => {
+-  //   const confirmPassword = allValues.confirm;
+-  //   const passwordMatch = password === confirmPassword;
+-  //   const allFieldsFilled = Object.values(allValues).every(value => value !== undefined && value !== '');
+-  //   setIsButtonDisabled(
+-  //     !(passwordValid.minLength &&
+-  //       passwordValid.capitalLetter &&
+-  //       passwordValid.smallLetter &&
+-  //       passwordValid.number &&
+-  //       passwordValid.specialChar &&
+-  //       passwordMatch &&
+-  //       allFieldsFilled)
+-  //   );
+-  // };
++  const [registrationDisabled, setRegistrationDisabled] = useState(true);
+ 
+   return (
+     <div className="registration-container">
+@@ -190,6 +168,7 @@ const RegistrationPage = () => {
+         initialValues={{ remember: true }}
+         className="registration-form"
+         layout="vertical"
++        onValuesChange={isFormValid}
+       >
+         <h2 className="registration-header">Register</h2>
+ 
+@@ -276,7 +255,6 @@ const RegistrationPage = () => {
+               iconRender={(visible) =>
+                 visible ? <EyeOutlined /> : <EyeInvisibleOutlined />
+               }
+-              value={password}
+               onChange={handlePasswordChange}
+               onFocus={() => setPasswordFocused(true)}
+               onBlur={() => setPasswordFocused(false)}
+@@ -320,7 +298,9 @@ const RegistrationPage = () => {
+                 {passwordValid.minLength ? "✔️ " : "❌ "} Minimum 8 characters
+               </li>
+               <li
+-                style={{ color: passwordValid.capitalLetter ? "green" : "red" }}
++                style={{
++                  color: passwordValid.capitalLetter ? "green" : "red",
++                }}
+               >
+                 {passwordValid.capitalLetter ? "✔️ " : "❌ "} At least one
+                 capital letter
+@@ -364,7 +344,10 @@ const RegistrationPage = () => {
+               name="dob"
+               label="Date of Birth"
+               rules={[
+-                { required: true, message: "Please input your date of birth" },
++                {
++                  required: true,
++                  message: "Please input your date of birth",
++                },
+               ]}
+               className="form-item"
+             >
+@@ -413,7 +396,10 @@ const RegistrationPage = () => {
+               name="dob"
+               label="Date of Birth"
+               rules={[
+-                { required: true, message: "Please input your date of birth" },
++                {
++                  required: true,
++                  message: "Please input your date of birth",
++                },
+               ]}
+               className="form-item"
+             >
+@@ -445,7 +431,7 @@ const RegistrationPage = () => {
+               style={{ width: "100%" }}
+               htmlType="submit"
+               className="registration-form-button"
+-              // disabled={isButtonDisabled}
++              disabled={registrationDisabled}
+             >
+               Register
+             </Button>
