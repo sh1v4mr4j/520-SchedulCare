@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Form,
   Input,
@@ -59,7 +59,6 @@ const RegistrationPage = () => {
 
   const handlePasswordChange = (e) => {
     const value = e.target.value;
-    setPassword(value);
     setPasswordValid({
       minLength: value.length >= 8,
       capitalLetter: /[A-Z]/.test(value),
@@ -191,6 +190,7 @@ const RegistrationPage = () => {
         initialValues={{ remember: true }}
         className="registration-form"
         layout="vertical"
+        onValuesChange={isFormValid}
       >
         <h2 className="registration-header">Register</h2>
 
@@ -284,7 +284,6 @@ const RegistrationPage = () => {
               iconRender={(visible) =>
                 visible ? <EyeOutlined /> : <EyeInvisibleOutlined />
               }
-              value={password}
               onChange={handlePasswordChange}
               onFocus={() => setPasswordFocused(true)}
               onBlur={() => setPasswordFocused(false)}
@@ -340,7 +339,9 @@ const RegistrationPage = () => {
                 {passwordValid.minLength ? "✔️ " : "❌ "} Minimum 8 characters
               </li>
               <li
-                style={{ color: passwordValid.capitalLetter ? "green" : "red" }}
+                style={{
+                  color: passwordValid.capitalLetter ? "green" : "red",
+                }}
               >
                 {passwordValid.capitalLetter ? "✔️ " : "❌ "} At least one
                 capital letter
@@ -493,7 +494,10 @@ const RegistrationPage = () => {
               name="dob"
               label="Date of Birth"
               rules={[
-                { required: true, message: "Please input your date of birth" },
+                {
+                  required: true,
+                  message: "Please input your date of birth",
+                },
               ]}
               className="form-item"
             >
